@@ -1,14 +1,14 @@
-package com.nohkumado.iaidotoho;
+package com.nohkumado.nohutils;
 
 import android.app.*;
 import android.os.*;
 
-public class MainActivity extends Activity 
+public class LibraryActivity extends Activity 
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.library);
     }
 }

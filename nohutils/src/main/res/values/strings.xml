@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="lib_name">nohutils</string>
+    <string name="hello_world">Hello world!</string>
+		<string name="numeric_asked">asking for numeric input</string>
+		<string name="not_a_numeric"><![CDATA[Answer wasn\'t numeric]]></string>
+		<string name="question_is_int">Asking for int</string>
+		<string name="not_an_int"><![CDATA[Answer wasn\'t int]]></string>
+		<string name="start">welcome to noh shell</string>
+		<string name="syntax_error">syntax error!</string>
+		
+</resources>

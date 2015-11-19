@@ -1,11 +1,43 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
 
-    <TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+	<TextView
+		android:text="@string/hello_world"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:textAlignment="center"/>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:orientation="vertical"
+		android:id="@+id/shellView">
+
+		<ScrollView
+			android:layout_height="match_parent"
+			android:layout_width="match_parent">
+
+			<TextView
+				android:layout_height="match_parent"
+				android:layout_width="match_parent"
+				android:text="shell output"
+				android:id="@+id/textOut"/>
+
+		</ScrollView>
+
+		<EditText
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:ems="10"
+			android:id="@+id/TextIn"
+			android:text="shell input"/>
+
+	</LinearLayout>
 
 </LinearLayout>
+
