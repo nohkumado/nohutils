@@ -156,4 +156,8 @@ public interface ShellI
      * @return 
      */
     public HashMap<String,CommandI> feedCmds(HashMap<String,CommandI> cmds);
+
+	public int getDisplayWidth();
+
+	
 }//public class ShellI

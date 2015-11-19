@@ -49,6 +49,7 @@ import java.util.*;
  */
 public class Shell implements Cloneable,ShellI,OnEditorActionListener
 {
+
 	protected HashMap<String,Object> localVars = new HashMap<String,Object>();
 	protected ArrayList<String> screenContent = null;
   protected CommandParserI cmdParser = null;
@@ -677,5 +678,16 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 		Log.d(TAG, errorMsg);
 	}
 
+	@Override
+	public int getDisplayWidth()
+	{
+		int result = 20;
+		if(out != null)
+		{
+			result = (int) (out.getWidth()/out.getTextSize());
+		}
+		return result;
+	}
 
+	
 }//public class Shell

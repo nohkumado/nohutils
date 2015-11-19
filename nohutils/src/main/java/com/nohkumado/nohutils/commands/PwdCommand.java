@@ -64,10 +64,11 @@ public class PwdCommand extends Command implements Cloneable, CommandI
   public String execute()
   {
     String result = "";
-    String pwd = (String)shell.ressource("pwd");
+    String pwd = (String)shell.get("pwd");
     if(pwd == null ) pwd = System.getProperty("user.dir");
     else if(pwd.length() <= 0 ) pwd = System.getProperty("user.dir");
     shell.set("pwd",pwd);
+		//shell.print(pwd);
     return(pwd);
   }//end execute
   /**

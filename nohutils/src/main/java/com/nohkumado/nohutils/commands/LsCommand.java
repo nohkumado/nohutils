@@ -34,6 +34,7 @@ import java.util.*;
 import java.io.*;
 import java.util.regex.*;
 import com.nohkumado.nohutils.*;
+import android.util.*;
 
 public class LsCommand extends Command implements Cloneable, CommandI
 {
@@ -68,28 +69,63 @@ public class LsCommand extends Command implements Cloneable, CommandI
   public String execute()
   {
     String result = "";
-    //TODO fetch PwdCommand from shell here would be more elegant
-    String pwd = (String) shell.ressource("pwd");
-    if (pwd == null) pwd = System.getProperty("user.dir");
-    else if (pwd.length() <= 0) pwd = System.getProperty("user.dir");
-
+		CommandI pwdCmd = new PwdCommand(shell);
+    String pwd = pwdCmd.execute();
+    //if (pwd == null) pwd = System.getProperty("user.dir");
+    //else if (pwd.length() <= 0) pwd = System.getProperty("user.dir");
+		//Log.d("LsCmd", "pwd = " + pwd);
+		String sep = System.getProperty("file.separator");
     if (!path.equals(""))
     {
-      if (!path.startsWith("/")) path = pwd + System.getProperty("file.separator") + path;
+      if (!path.startsWith("/")) path = pwd + sep + path;
     }// if(value != "")
     else path = pwd;
-
+		//Log.d("LsCmd", "path = " + path);
+		
     File theDir = new File(path);
     if (theDir.exists() && theDir.isDirectory())
     {
+			//Log.d("LsCmd", "reading dir");
       String[] choices = theDir.list(filter);
+			int maxlength = 1;
+			ArrayList<String> content = new ArrayList<String>();
       for (String name : choices) 
       {
-				result +=  name + "\n";
-      }//for(String name : choices) 
+				File aFile = new File(path+sep+name);
+				if(aFile.exists())
+				{
+					if(name.length() > maxlength) maxlength = name.length();
+					if(aFile.isDirectory()) content.add(name+"/");
+					else if(aFile.isFile()) content.add(name+"*");
+					else content.add(name);
+				}
+				}//for(String name : choices)
+				int numOfchars = shell.getDisplayWidth();
+				
+			int numOfCols = numOfchars/maxlength;
+			if(numOfCols <1 ) numOfCols = 1;
+			Log.d("lscm","available chars: "+numOfchars+" malength: "+maxlength+" = "+numOfCols);
+			
+			ColumPrinter mp = new  ColumPrinter(numOfCols, 2, "-");
+			String    oneRow[] = new String [ 3 ];
+			int counter = 0;
+			for (String name : content)
+			{
+				oneRow[counter] = name;
+				counter++;
+				if(counter%numOfCols == 0)
+				{
+					mp.add(oneRow);
+					counter = 0;
+				}
+			}
+			mp.print();
+			result += mp.toString();
+      
+			//Log.d("LsCmd", "read dir: "+result);
       return(result);
     }//if(theDir.exists() && theDir.isDirectory())
-
+		//else Log.d("LsCmd", "no such  dir");
     return(result);
   }//end execute
 

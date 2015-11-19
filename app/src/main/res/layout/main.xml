@@ -5,22 +5,17 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<TextView
-		android:text="@string/hello_world"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center"
-		android:textAlignment="center"/>
-
 	<LinearLayout
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
 		android:orientation="vertical"
 		android:id="@+id/shellView">
 
 		<ScrollView
 			android:layout_height="match_parent"
-			android:layout_width="match_parent">
+			android:layout_width="match_parent"
+			android:layout_weight="1.0"
+			android:background="@drawable/border">
 
 			<TextView
 				android:layout_height="match_parent"
@@ -30,13 +25,16 @@
 
 		</ScrollView>
 
-		<EditText
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
-			android:ems="10"
-			android:id="@+id/TextIn"
-			android:text="shell input"/>
-
+			<EditText
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					android:layout_weight="1.0"
+					android:ems="14"
+					android:id="@+id/TextIn"
+					android:text="shell input"
+					android:padding="12dp"
+					android:lines="3"/>
+			
 	</LinearLayout>
 
 </LinearLayout>
