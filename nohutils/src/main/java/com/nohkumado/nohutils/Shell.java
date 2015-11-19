@@ -522,6 +522,14 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 		}
 		//Log.d(TAG,"complete text '"+sb.toString()+"'");
 		out.setText(sb.toString());
+		
+		Object obj = out.getParent();
+		if(obj instanceof ScrollView)
+		{
+			ScrollView scroll_view = (ScrollView) obj;
+			DownScroller scroll = new DownScroller(scroll_view);
+			scroll_view.post(scroll);
+		}
 		out.invalidate();
   }//protected void print(String something)
 	//------------------------------------------------------------------
