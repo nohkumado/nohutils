@@ -248,6 +248,8 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
   public void exit()
   {
     rmRessource("pwd");
+		rmRessource("prompt");
+		
     running = false;
     //System.out.println("set running to false....");
   }//end exit
@@ -530,6 +532,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 	public void exit(String aMessage)
 	{
 		print(aMessage);
+		exit();
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_HOME);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

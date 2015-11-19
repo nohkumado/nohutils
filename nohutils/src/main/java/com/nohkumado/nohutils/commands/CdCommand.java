@@ -84,11 +84,11 @@ public class CdCommand extends Command implements Cloneable, CommandI
       if (newDir.exists())
       {
 				if (newDir.isDirectory()) shell.set("pwd", newDir.getAbsolutePath());
-				else result += shell.msg("not_a_dir");
+				else result += shell.msg(R.string.cd_not_a_dir);
       }// if(newDir.exists())
-      else result += shell.msg("does_not_exist");
+      else result += shell.msg(R.string.cd_does_not_exist);
     }// if(line != null && line.length() > 0)
-    else result += shell.msg("provide_a_dir_to_enter");
+    else result += shell.msg(R.string.cd_provide_a_dir_to_enter);
 
     return(result);
   }//end execute
@@ -106,7 +106,7 @@ public class CdCommand extends Command implements Cloneable, CommandI
 	{
 		if (line.matches(".."))
 		{
-			String pwd = (String)shell.ressource("pwd");
+			String pwd = (String)shell.get("pwd");
 			String[] result = pwd.split(System.getProperty("file.separator"));
 			if (result.length > 1)
 			{

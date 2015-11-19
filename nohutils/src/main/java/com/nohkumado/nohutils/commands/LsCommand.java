@@ -40,26 +40,26 @@ public class LsCommand extends Command implements Cloneable, CommandI
   protected String path = "";
   protected FilenameFilter filter;
   /**
-    CTOR
+	 CTOR
 
-    Build up a reference
+	 Build up a reference
 
    */
   public LsCommand(ShellI s)
   {
     super(s);
-		if(s != null) name = s.msg(R.string.ls);
+		if (s != null) name = s.msg(R.string.ls);
   }// public Command()
 
-  public LsCommand(ShellI s,String n)
+  public LsCommand(ShellI s, String n)
   {
-    super(s,n);
+    super(s, n);
   }// public LsCommand()
   /**
 
-    execute
+	 execute
 
-    activate this command
+	 activate this command
 
    * @param line 
    * @param heap 
@@ -70,22 +70,22 @@ public class LsCommand extends Command implements Cloneable, CommandI
     String result = "";
     //TODO fetch PwdCommand from shell here would be more elegant
     String pwd = (String) shell.ressource("pwd");
-    if(pwd == null ) pwd = System.getProperty("user.dir");
-    else if(pwd.length() <= 0 ) pwd = System.getProperty("user.dir");
+    if (pwd == null) pwd = System.getProperty("user.dir");
+    else if (pwd.length() <= 0) pwd = System.getProperty("user.dir");
 
-    if(!path.equals(""))
+    if (!path.equals(""))
     {
-      if(!path.startsWith("/")) path = pwd+System.getProperty("file.separator")+path;
+      if (!path.startsWith("/")) path = pwd + System.getProperty("file.separator") + path;
     }// if(value != "")
     else path = pwd;
 
     File theDir = new File(path);
-    if(theDir.exists() && theDir.isDirectory())
+    if (theDir.exists() && theDir.isDirectory())
     {
       String[] choices = theDir.list(filter);
-      for(String name : choices) 
+      for (String name : choices) 
       {
-	result +=  name+"\n";
+				result +=  name + "\n";
       }//for(String name : choices) 
       return(result);
     }//if(theDir.exists() && theDir.isDirectory())
@@ -105,31 +105,31 @@ public class LsCommand extends Command implements Cloneable, CommandI
   public String parse(String line)
   {
     path = "";
-    if(line != null && line.length() > 0)
+    if (line != null && line.length() > 0)
     {
       String[] result = line.split(System.getProperty("file.separator"));
-      if(result.length > 1)
+      if (result.length > 1)
       {
-	int x=0; 
-	if(result.length > 1) path = ""; //reset the path if there is a path component!
-	for (; x<result.length-1; x++) path += result[x]+System.getProperty("file.separator");
-	line = result[x];
+				int x=0; 
+				if (result.length > 1) path = ""; //reset the path if there is a path component!
+				for (; x < result.length - 1; x++) path += result[x] + System.getProperty("file.separator");
+				line = result[x];
       }// if(result.lenght > 1)«»
 
       Pattern regexp = Pattern.compile("^(.*?)\\*(.*)");
       Matcher matcher = regexp.matcher(line);
-      if(matcher.find())
+      if (matcher.find())
       {
-      line = matcher.group(1)+".*"+matcher.group(2);
-	try
-	{
-	  filter = new PatternFileFilter(line);
-	}// try
-	catch(PatternSyntaxException e)
-	{
-	  shell.print(shell.msg("invalide_pattern")+"\n");
-	  
-	}// catch(PatternSyntaxException e)«»
+				line = matcher.group(1) + ".*" + matcher.group(2);
+				try
+				{
+					filter = new PatternFileFilter(line);
+				}// try
+				catch (PatternSyntaxException e)
+				{
+					shell.print(shell.msg(R.string.lscmd_invalid_pattern) + "\n");
+
+				}// catch(PatternSyntaxException e)«»
       }//if(matcher.find())
       else path += line;
     }// if(line != null && line.length() > 0)
@@ -138,14 +138,14 @@ public class LsCommand extends Command implements Cloneable, CommandI
   }// public String parse(String line)
   /**
 
-    help
+	 help
 
-    issue the help message associated with this command
+	 issue the help message associated with this command
 
    */
   public String help()
   {
-    return(shell.msg(R.string.ls_help)	+"\n");
+    return(shell.msg(R.string.ls_help)	+ "\n");
   }//end help
   //make a copy of this object
   public Object clone()

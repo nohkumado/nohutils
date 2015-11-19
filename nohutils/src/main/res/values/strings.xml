@@ -19,7 +19,14 @@
 		<string name="ls">ls</string>
 		<string name="cd">cd</string>
 		<string name="cd_help">cd {path}, change directory</string>
+		<string name="cd_not_a_dir">not a directory</string>
+		<string name="cd_does_not_exist">does not exist</string>
+		<string name="cd_provide_a_dir_to_enter">provide a dir to enter</string>
+		
 		<string name="ls_help">ls, list directory content</string>
 		<string name="pwd_help">pwd, to display actual working directory</string>
 		<string name="quit_help">type quit to exit</string>
-</resources>
+		<string name="shell_exiting">shell exiting</string>
+		<string name="lscmd_invalid_pattern">invalid pattern</string>
+		
+		</resources>

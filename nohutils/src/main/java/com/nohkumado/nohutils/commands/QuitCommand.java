@@ -36,26 +36,26 @@ import com.nohkumado.nohutils.*;
 public class QuitCommand extends Command implements Cloneable, CommandI
 {
   /**
-    CTOR
+	 CTOR
 
-    Build up a reference
+	 Build up a reference
 
    */
   public QuitCommand(ShellI s)
   {
     super(s);
-		if(s != null) name = s.msg(R.string.quit);
+		if (s != null) name = s.msg(R.string.quit);
   }// public Command()
 
-  public QuitCommand(ShellI s,String n)
+  public QuitCommand(ShellI s, String n)
   {
-    super(s,n);
+    super(s, n);
   }// public QuitCommand()
   /**
 
-    execute
+	 execute
 
-    activate this command
+	 activate this command
 
    * @param line 
    * @param heap 
@@ -63,31 +63,28 @@ public class QuitCommand extends Command implements Cloneable, CommandI
    */
   public String execute()
   {
-    shell.exit();
-    return(shell.msg("shell_exiting")+"\n");
+    shell.exit(shell.msg(R.string.shell_exiting));
+		
+    return(shell.msg(R.string.shell_exiting) + "\n");
   }//end execute
   /**
 
-    help
+	 help
 
-    issue the help message associated with this command
+	 issue the help message associated with this command
 
    */
   public String help()
   {
-    return(shell.msg(R.string.quit_help)+"\n");
+    return(shell.msg(R.string.quit_help) + "\n");
   }//end help
-    //make a copy of this object
-    public Object clone()
-    {
-	//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
-      QuitCommand cloned = (QuitCommand)super.clone();
-   //  QuitCommand cloned = new QuitCommand(shell);
-   //cloned.type = type;
-   //cloned.name = name;
-   //cloned.group = group;
-   //cloned.messageHandler = messageHandler;
-   //cloned.shell = shell;
+	/**
+	 make a copy of this object
+	 */
+	public Object clone()
+	{
+		//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
+		QuitCommand cloned = (QuitCommand)super.clone();
     return cloned;
-    }//public Object clone()
+	}//public Object clone()
 }//public class Command
