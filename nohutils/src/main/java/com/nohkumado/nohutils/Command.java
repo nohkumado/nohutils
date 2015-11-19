@@ -39,99 +39,104 @@ import java.util.*;
 public class Command 
 implements Cloneable, CommandI
 {
-    protected String type = null;
-    protected String name = null;
-    protected String group = "user";
-    protected ShellI shell = null;
-    protected HashMap<String,Object> parameter ;
+	protected String type = null;
+	protected String name = null;
+	protected String group = "user";
+	protected ShellI shell = null;
+	protected HashMap<String,Object> parameter ;
 
 
-    /**
-      CTOR
+	/**
+	 CTOR
 
-      Build up a reference
+	 Build up a reference
 
-*/
-    public Command(ShellI s)
-    {
-      shell = s;
-    }// public Command()
+	 */
+	public Command(ShellI s)
+	{
+		shell = s;
+	}// public Command()
 
-    public Command(ShellI s, String n)
-    {
-      this(s);
-        name = n;
-    }// public Command()
-    /** 
-     * name
-     *
-     * return the name of this command
-     * 
-     * @return the name of this item as a string
-     */
-    public String name() { return(name); }// public String name()
-    /** 
-     * name
-     *
-     * set the name of this command
-     * 
-     * @return the name of this item as a string
-     */
-    public void name(String n) {name = n;}
+	public Command(ShellI s, String n)
+	{
+		this(s);
+		name = n;
+	}// public Command()
+	/** 
+	 * name
+	 *
+	 * return the name of this command
+	 * 
+	 * @return the name of this item as a string
+	 */
+	public String name()
+	{ return(name); }// public String name()
+	/** 
+	 * name
+	 *
+	 * set the name of this command
+	 * 
+	 * @return the name of this item as a string
+	 */
+	public void name(String n)
+	{name = n;}
 
-    /**
+	/**
 
-      execute
+	 execute
 
-      activate this command
+	 activate this command
 
-     * @return 
-     */
-    public String execute()
-    {
-        return("Command::exe : abstract class no code\n");
-    }//end execute
-    /**
+	 * @return 
+	 */
+	public String execute()
+	{
+		return("Command::exe : abstract class no code\n");
+	}//end execute
+	/**
 
-      help
+	 help
 
-      issue the help message associated with this command
+	 issue the help message associated with this command
 
-     * @return the help message
-*/
-    public String help()
-    {
-        return(shell.msg("no help")+"\n");
-    }//end help
-    /** 
-     * clone this command 
-     * make a copy of this object
-     * 
-     * @return a copy of this object
-     */
-    public Object clone()
-    {
-      try
-      {
-	//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
-	Command cloned = (Command)super.clone();
-	return(cloned);
-      }
-      catch(CloneNotSupportedException e) {System.err.println("can't clone this"); e.printStackTrace();}
-      return(null);
-    }//public Object clone()
-    /** 
-     * parse the command line for evenutal other switches options etc 
-     * 
-     * @param line line woth ooptions but without the command name
-     * @return the unparsed rest
-     */
-    public String parse(String line) { return(line);}
-    /** 
-     * instead of parsing the options, give them directly, eg when invoking a command from the program code directly
-     * 
-     * @param parms the hashtable with the options
-     * @param parms 
-     */
-    public void setParameters(HashMap<String,Object> parms){ parameter = parms;};
+	 * @return the help message
+	 */
+	public String help()
+	{
+		return(shell.msg("no help") + "\n");
+	}//end help
+	/** 
+	 * clone this command 
+	 * make a copy of this object
+	 * 
+	 * @return a copy of this object
+	 */
+	public Object clone()
+	{
+		try
+		{
+			//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
+			Command cloned = (Command)super.clone();
+			return(cloned);
+		}
+		catch (CloneNotSupportedException e)
+		{System.err.println("can't clone this"); e.printStackTrace();}
+		return(null);
+	}//public Object clone()
+	/** 
+	 * parse the command line for evenutal other switches options etc 
+	 * 
+	 * @param line line woth ooptions but without the command name
+	 * @return the unparsed rest
+	 */
+	public String parse(String line)
+	{ return(line);}
+	/** 
+	 * instead of parsing the options, give them directly, eg when invoking a command from the program code directly
+	 * 
+	 * @param parms the hashtable with the options
+	 * @param parms 
+	 */
+	public void setParameters(HashMap<String,Object> parms)
+	{ parameter = parms;};
 }//public class Command

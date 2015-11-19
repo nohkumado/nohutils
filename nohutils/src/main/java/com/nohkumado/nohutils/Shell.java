@@ -32,9 +32,9 @@ package com.nohkumado.nohutils;
 
 //import com.gnu.utils.*;
 import android.content.*;
+import android.content.res.*;
 import android.util.*;
 import android.view.*;
-import android.view.inputmethod.*;
 import android.widget.*;
 import android.widget.TextView.*;
 import java.io.*;
@@ -110,7 +110,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 			maxLines = MAXLINES;
 		}
 
-		Log.d(TAG, "init printing start message");
+		//Log.d(TAG, "init printing start message");
 		print(msg(R.string.start));
     prompt();
     return(true);
@@ -227,6 +227,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 			in.setText(prompt);
 			in.setSelection(prompt.length());			
 		}
+		set("prompt", prompt);
 		return(prompt);
   }//end prompt
   /** 
@@ -347,30 +348,22 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
   public String msg(String m)
   {
 		if (context == null) return m;
-		int resourceId = context.getResources().getIdentifier(m, "strings", context.getPackageName());
-		return(context.getResources().getString(resourceId));
-  }// public String msg(String m)
-  /**
-	 run: 
-	 event loop 
-   */
-	public void run()
-	{
-		/** if necessary issue the prompt a first time!*/
-		/** now initialise the loop that will read from the inputStream until
-		 *exhaustion */
-		//System.out.println("runnning is "+running);
-		//TODO check if the todo list is filled and exe those commands prior to anything else
-		while (running == true) 
+		
+		try
 		{
-			if (!batchMode) print(prompt());
-			ArrayList<CommandI> toWorkOf = cmdParser.parse(read());
-
-			executeCommands(toWorkOf);
-			//for(Iterator<CommandI> i = toWorkOf.iterator(); i.hasNext();)
-		}//while (running == true) 
-	}
-
+			int resourceId = context.getResources().getIdentifier(m, "strings", context.getPackageName());
+			return(context.getResources().getString(resourceId));
+		}
+	catch (Resources.NotFoundException e) { Log.e(TAG,"not found message : "+m);}
+	return(m);
+	}// public String msg(String m)
+	/**
+	 executeCommands
+	 
+	 @param toWorkOf
+	 
+	 cycle over list and execute the stored commands, i think not thread safe...
+ */
 	private void executeCommands(ArrayList<CommandI> toWorkOf)
 	{
 		if (toWorkOf.size() > 0) 
@@ -458,7 +451,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 			String incoming = tw.getText().toString().trim();
 			//Log.d(TAG, "read extracted " + incoming);
 			String logEntry = prompt()+" "+incoming;
-			Log.d(TAG,"should print out '"+incoming+"'");
+			//Log.d(TAG,"should print out '"+incoming+"'");
 			print(incoming);
 			//Log.d(TAG,"proceeding to parse");
 			ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
@@ -513,32 +506,34 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
   public void print(String something)
   {
 		something = something.trim();
-		Log.d(TAG,"print '"+something+"'");
+		//Log.d(TAG,"print '"+something+"'");
 		screenContent.add(something);
 		if (screenContent.size() > maxLines) 
 			while (screenContent.size() > maxLines) screenContent.remove(0);
 		StringBuilder sb = new StringBuilder();
 		for (String s : screenContent)
 		{
-			Log.d(TAG,"adding line '"+s+"'");
+			//Log.d(TAG,"adding line '"+s+"'");
 			sb.append(s);
 			sb.append("\n");
 		}
-		Log.d(TAG,"complete text '"+sb.toString()+"'");
+		//Log.d(TAG,"complete text '"+sb.toString()+"'");
 		out.setText(sb.toString());
 		out.invalidate();
   }//protected void print(String something)
 	//------------------------------------------------------------------
   public void error(String aMessage) 
   {
-    print("Error:" + aMessage);
+    Log.e(TAG,"Error:" + aMessage);
   }//public void error(String aMessage) 
 	//------------------------------------------------------------------
 	public void exit(String aMessage)
 	{
-
-		System.out.println(aMessage);
-		exit();
+		print(aMessage);
+		Intent intent = new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
 	}//public void die(String aMessag)
 	//------------------------------------------------------------------
 	/** in fact read a line...*/

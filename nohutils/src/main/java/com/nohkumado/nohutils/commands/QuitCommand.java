@@ -44,6 +44,7 @@ public class QuitCommand extends Command implements Cloneable, CommandI
   public QuitCommand(ShellI s)
   {
     super(s);
+		if(s != null) name = s.msg(R.string.quit);
   }// public Command()
 
   public QuitCommand(ShellI s,String n)
@@ -74,7 +75,7 @@ public class QuitCommand extends Command implements Cloneable, CommandI
    */
   public String help()
   {
-    return(shell.msg("type")+" "+name+" "+shell.msg("to exit")+"\n");
+    return(shell.msg(R.string.quit_help)+"\n");
   }//end help
     //make a copy of this object
     public Object clone()

@@ -61,7 +61,8 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			if (cmds.get(key) instanceof CommandI)
 			{
 	      CommandI aCmd = cmds.get(key);
-	      aCmd.name(key);
+	      //aCmd.name(key);
+				//Log.d(TAG,"about to add comd "+key+" v: "+aCmd+" to "+commands);
 				commands.put(key, aCmd);
 			}// if(cmds.get(key) instanceof Command)
 
@@ -81,11 +82,19 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 	{
 		ArrayList<CommandI> resultStack = new ArrayList<CommandI>();
 		boolean stillToParse = false;
+		String lastprompt = (String)shell.get("prompt");
+		if(lastprompt != null) line = line.replace(lastprompt,"").trim();
 		do
 		{
+			Log.d(TAG,"parsing line : "+line);
 			//maybe this isnt needed as long as no command is found the help is called anyway TODO
 			if (line.matches("^help|^h$|^\\?"))
-			{ System.out.println(" = help " + line);help(); return(resultStack);}
+			{ 
+			  System.out.println(" = help " + line);
+				help(); 
+				return(resultStack);
+			}
+			Log.d(TAG,"continuing parse");
 			//if(line.matches("^help") || line.matches("^h$") || line.matches("^\\?")) { System.out.println(" = help "+line);help(); return(resultStack);}
 			//System.out.println("parsing : "+line);
 			/*TODO let see, we need to break up the line to extract a key or a subpart of the key of a command, containsKey(Object key) does the job for a complete key, but not for part of it, then we need to know what the separator is, easiet cas is space, but for the jrl editor we will have single char commands, vi style with eventual modifiers... usual modifiers are numerical, can there be textual modifiers? but then we can uppose/impose apostrophing them!
@@ -98,13 +107,13 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			String mode;
 			if (shell.get("parsing") != null) mode = shell.get("parsing").toString();
 			else mode = "tokenized";
-			if(mode.equals("parsing"))
+			if (mode.equals("parsing"))
 			{
-				shell.set("parsing","tokenized");
+				shell.set("parsing", "tokenized");
 				mode = "tokenized";
 			}
 			//Log.d(TAG,"mode "+mode);
-			
+
 			if (mode == "tokenized")
 			{
 				if (line.matches("^(\\S+)\\s*$"))
@@ -128,7 +137,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 						{
 							String rest = aCmd.parse(args);
 							if (rest == "" | rest == null) stillToParse = false;
-							else stillToParse = false;
+							else stillToParse = true;
 							resultStack.add(aCmd);
 						}//if(aCmd != null) 
 					}//if(matcher.find())

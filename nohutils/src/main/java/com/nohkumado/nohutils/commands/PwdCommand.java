@@ -44,6 +44,7 @@ public class PwdCommand extends Command implements Cloneable, CommandI
   public PwdCommand(ShellI s)
   {
     super(s);
+		if(s != null) name = s.msg(R.string.pwd);
   }// public Command()
 
   public PwdCommand(ShellI s,String n)
@@ -78,7 +79,7 @@ public class PwdCommand extends Command implements Cloneable, CommandI
    */
   public String help()
   {
-    return(shell.msg("pwd")+" "+shell.msg("to_display_actual_working_directory")+"\n");
+    return(shell.msg(R.string.pwd_help)+"\n");
   }//end help
   /** 
    * copy this object 

@@ -34,10 +34,11 @@ import java.io.*;
 import java.util.*;
 import java.util.regex.*;
 import com.nohkumado.nohutils.*;
+import android.util.*;
 
 public class CdCommand extends Command implements Cloneable, CommandI
 {
-  protected String name = "", path = "";
+  protected String path = "";
   /**
 	 CTOR
 
@@ -47,7 +48,9 @@ public class CdCommand extends Command implements Cloneable, CommandI
   public CdCommand(ShellI s)
   {
     super(s);
-  }// public Command()
+		name = shell.msg(R.string.cd);
+		//Log.d("CD","cd cmd: "+shell.msg(R.string.cd));
+	}// public Command()
 
   public CdCommand(ShellI s, String n)
   {
@@ -124,7 +127,7 @@ public class CdCommand extends Command implements Cloneable, CommandI
    */
   public String help()
   {
-    return(shell.msg("set") + " " + name + " " + shell.msg("value") + " " + shell.msg("to_set_a_value") + "\n");
+    return(shell.msg(R.string.cd_help) + "\n");
   }//end help
 	//make a copy of this object
 	public Object clone()

@@ -117,11 +117,6 @@ public interface ShellI
    */
   public String help();
   /**
-      run: 
-       event loop 
-   */
-  public void run();
-  /**
     issue a statement....
    */
   public void print(String n);

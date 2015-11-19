@@ -48,6 +48,7 @@ public class LsCommand extends Command implements Cloneable, CommandI
   public LsCommand(ShellI s)
   {
     super(s);
+		if(s != null) name = s.msg(R.string.ls);
   }// public Command()
 
   public LsCommand(ShellI s,String n)
@@ -144,7 +145,7 @@ public class LsCommand extends Command implements Cloneable, CommandI
    */
   public String help()
   {
-    return(shell.msg("ls")+" <"+shell.msg("path")+"> "+shell.msg("to_display_directory")+"\n");
+    return(shell.msg(R.string.ls_help)	+"\n");
   }//end help
   //make a copy of this object
   public Object clone()

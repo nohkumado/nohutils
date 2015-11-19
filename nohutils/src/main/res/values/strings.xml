@@ -9,5 +9,17 @@
 		<string name="not_an_int"><![CDATA[Answer wasn\'t int]]></string>
 		<string name="start">welcome to noh shell</string>
 		<string name="syntax_error">syntax error!</string>
-		
+		<string name="set">set</string>
+		<string name="variable_list">Variable list</string>
+		<string name="endlist">End list</string>
+		<string name="variables">Variables</string>
+		<string name="sethelp">set {varname} {value}, without argument show values</string>
+		<string name="quit">quit</string>
+		<string name="pwd">pwd</string>
+		<string name="ls">ls</string>
+		<string name="cd">cd</string>
+		<string name="cd_help">cd {path}, change directory</string>
+		<string name="ls_help">ls, list directory content</string>
+		<string name="pwd_help">pwd, to display actual working directory</string>
+		<string name="quit_help">type quit to exit</string>
 </resources>

@@ -38,7 +38,7 @@ import java.util.regex.*;
 
 public class SetCommand extends Command implements Cloneable, CommandI
 {
-  protected String name = "", value = "";
+  protected String var_name = "", var_value = "";
   /**
 	 CTOR
 
@@ -48,6 +48,7 @@ public class SetCommand extends Command implements Cloneable, CommandI
   public SetCommand(ShellI s)
   {
     super(s);
+		if(s != null) name = s.msg(R.string.set);
   }// public Command()
 
   public SetCommand(ShellI s, String n)
@@ -67,30 +68,30 @@ public class SetCommand extends Command implements Cloneable, CommandI
   public String execute()
   {
     String result = "";
-    if (name != "")
+    if (var_name != "")
     {
-      result += name + " : ";
-      if (value != "") shell.set(name, value);
-      if (shell.ressource(name) != null)
-				result += shell.ressource(name) + "\n";
-      else result += shell.get(name) + "\n";
+      result += var_name + " : ";
+      if (var_value != "") shell.set(var_name, var_value);
+      if (shell.ressource(var_name) != null)
+				result += shell.ressource(var_name) + "\n";
+      else result += shell.get(var_name) + "\n";
     }// if(value != "")
     else
     {
-      result = shell.msg("Variable_list") + ":\nEnvironment:\n";
+      result = shell.msg(R.string.variable_list) + ":\nEnvironment:\n";
       HashMap<String,Object> environment = (HashMap<String,Object>)shell.ressource(null);
       for (Iterator<String> e = environment.keySet().iterator(); e.hasNext();)
       {
 				String argName = e.next();
 				result += argName + " : " + environment.get(argName) + "\n";
       }// for(Iterator<String> e = environment.keySet().iterator(); e.hasNext();)
-      result += shell.msg("Variables") + "\n";
+      result += shell.msg(R.string.variables) + "\n";
       Map<String,Object> locenvironment = (Map<String,Object>)shell.getAll();
 			for (Map.Entry<String, Object> entry : locenvironment.entrySet())
       {
 				result += entry.getKey() + " : " + entry.getValue() + "\n";
       }// for(Iterator<String> e = environment.keySet().iterator(); e.hasNext();)
-      result += shell.msg("endlist") + "\n";
+      result += shell.msg(R.string.endlist) + "\n";
     }// else
     return(result);
   }//end execute
@@ -111,8 +112,8 @@ public class SetCommand extends Command implements Cloneable, CommandI
 		Matcher matcher = pattern.matcher(line);
 		if (matcher.find())
 		{
-			name = matcher.group(1);
-			value = matcher.group(2);
+			var_name = matcher.group(1);
+			var_value = matcher.group(2);
 		}//if(matcher.find())
 		//System.out.print("parsed: ("+name+","+value+")\n");
 		return("");
@@ -125,8 +126,8 @@ public class SetCommand extends Command implements Cloneable, CommandI
 	 */
 	public void setParameters(HashMap<String,Object> parms)
 	{
-		if (parms.containsKey("name")) name = (String)parms.get("name");
-		if (parms.containsKey("value")) name = (String)parms.get("value");
+		if (parms.containsKey("name")) var_name = (String)parms.get("name");
+		if (parms.containsKey("value")) var_value = (String)parms.get("value");
 	}// public void setParameters(HashMap<String,Object> parms)«»
   /**
 
@@ -137,7 +138,8 @@ public class SetCommand extends Command implements Cloneable, CommandI
    */
   public String help()
   {
-    return(shell.msg("set") + " " + name + " " + shell.msg("value") + " " + shell.msg("to_set_a_value") + "\n");
+		//return(shell.msg("set") + " " + var_name + " " + shell.msg("value") + " " + shell.msg("to_set_a_value") + "\n");
+    return(shell.msg(R.string.sethelp));
   }//end help
 	//make a copy of this object
 	public Object clone()
