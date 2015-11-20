@@ -28,5 +28,7 @@
 		<string name="quit_help">type quit to exit</string>
 		<string name="shell_exiting">shell exiting</string>
 		<string name="lscmd_invalid_pattern">invalid pattern</string>
+		<string name="cmd_command">command</string>
+		<string name="cmd_unparsed_args">has unparsed arguments</string>
 		
 		</resources>

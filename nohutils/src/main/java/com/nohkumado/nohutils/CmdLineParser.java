@@ -81,22 +81,17 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 	public ArrayList<CommandI> parse(String line)
 	{
 		ArrayList<CommandI> resultStack = new ArrayList<CommandI>();
-		boolean stillToParse = false;
 		String lastprompt = (String)shell.get("prompt");
 		if(lastprompt != null) line = line.replace(lastprompt,"").trim();
-		do
-		{
-			Log.d(TAG,"parsing line : "+line);
+			//Log.d(TAG,"parsing line : "+line);
 			//maybe this isnt needed as long as no command is found the help is called anyway TODO
 			if (line.matches("^help|^h$|^\\?"))
 			{ 
-			  System.out.println(" = help " + line);
+			  //System.out.println(" = help " + line);
 				help(); 
 				return(resultStack);
 			}
-			Log.d(TAG,"continuing parse");
-			//if(line.matches("^help") || line.matches("^h$") || line.matches("^\\?")) { System.out.println(" = help "+line);help(); return(resultStack);}
-			//System.out.println("parsing : "+line);
+			//Log.d(TAG,"continuing parse");
 			/*TODO let see, we need to break up the line to extract a key or a subpart of the key of a command, containsKey(Object key) does the job for a complete key, but not for part of it, then we need to know what the separator is, easiet cas is space, but for the jrl editor we will have single char commands, vi style with eventual modifiers... usual modifiers are numerical, can there be textual modifiers? but then we can uppose/impose apostrophing them!
 			 */
 			//char to char test if in Strng ' or >"
@@ -116,45 +111,36 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 
 			if (mode == "tokenized")
 			{
-				if (line.matches("^(\\S+)\\s*$"))
+				TokenParser parser = new TokenParser(this);
+				if(!parser.parse(line, resultStack))
 				{
-					line = line.trim();
-					//dont forget to call the parse method of the command  need to split it up TODO BTW here we add the parsing ehm... since the Commands hold the shell, thew dont need to get the heap explicitely, no?
-					CommandI aCmd = findCmd(line);
-					if (aCmd != null) aCmd.parse("");
-					if (aCmd != null) resultStack.add(aCmd);
-				}//if(line.matches("^(\\S+)\\s*$"))
-				else
-				{
-					Pattern pattern = Pattern.compile("^(\\S+)\\s+(.*)$");
-					Matcher matcher = pattern.matcher(line);
-					if (matcher.find())
+					if(parser.errorCode() == parser.UNPARSED_ARGS)
 					{
-						String cmd = matcher.group(1);
-						String args = matcher.group(2);
-						CommandI aCmd = findCmd(cmd);
-						if (aCmd != null) 
-						{
-							String rest = aCmd.parse(args);
-							if (rest == "" | rest == null) stillToParse = false;
-							else stillToParse = true;
-							resultStack.add(aCmd);
-						}//if(aCmd != null) 
-					}//if(matcher.find())
-					else System.out.println("failure of tokenized parsing of " + line);
-				}//else
+						StringBuilder sb = new StringBuilder();
+						sb.append(shell.msg(R.string.syntax_error));
+						sb.append(" ");
+						sb.append(shell.msg(R.string.cmd_command));
+						sb.append(" ");
+						sb.append(parser.errorCmd());
+						sb.append(" ");
+						sb.append(shell.msg(R.string.cmd_unparsed_args));
+						sb.append(" ");
+						sb.append(parser.errorMsg());
+						
+						shell.print(sb.toString());
+					}
+				}
 			}//if(mode == null || mode == "tokenized")
 			else if (mode == "vilike")
 			{
-				System.out.println("please provide an implementation for this parsing mode");
+				Log.d(TAG,"please provide an implementation for this parsing mode");
 			}//else if(mode == "vilike")
 			else
 			{
-				System.out.println("unsupported parsing mode");
+				Log.e(TAG,"unsupported parsing mode");
 				help(); return(resultStack);
 			}//else
-		}while(stillToParse);
-
+	
 		if (resultStack.size() <= 0)  shell.print(shell.msg(R.string.syntax_error));
 
 		return(resultStack);
