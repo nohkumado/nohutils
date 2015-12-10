@@ -39,7 +39,6 @@ import java.util.*;
 public class Command 
 implements Cloneable, CommandI
 {
-
 	protected String type = null;
 	protected String name = null;
 	protected String group = "user";
@@ -158,4 +157,12 @@ implements Cloneable, CommandI
 		if (stream != null) return true;
 		return false;
 	}
+	@Override
+	public String expand(String actArg)
+	{
+		return "";
+	}
+
+
+	
 }//public class Command

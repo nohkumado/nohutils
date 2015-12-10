@@ -82,6 +82,9 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 
 	 */
 	public ArrayList<CommandI> parse(String line)
+	{return parse(line,true);}
+	
+	public ArrayList<CommandI> parse(String line,boolean strictParse)
 	{
 		ArrayList<CommandI> resultStack = new ArrayList<CommandI>();
 		String lastprompt = shell.prompt();
@@ -92,7 +95,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			{ 
 			  Log.d(TAG," = help " + line);
 				help(); 
-				return(resultStack);
+				if(strictParse) return(resultStack);
 			}
 			//Log.d(TAG,"continuing parse");
 			/*TODO let see, we need to break up the line to extract a key or a subpart of the key of a command, containsKey(Object key) does the job for a complete key, but not for part of it, then we need to know what the separator is, easiet cas is space, but for the jrl editor we will have single char commands, vi style with eventual modifiers... usual modifiers are numerical, can there be textual modifiers? but then we can uppose/impose apostrophing them!
@@ -115,7 +118,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			if (mode == "tokenized")
 			{
 				TokenParser parser = new TokenParser(this);
-				if(!parser.parse(line, resultStack))
+				if(strictParse && !parser.parse(line, resultStack))
 				{
 					if(parser.errorCode() == parser.UNPARSED_ARGS)
 					{
@@ -144,7 +147,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 				help(); return(resultStack);
 			}//else
 	
-		if (resultStack.size() <= 0)  shell.print(shell.msg(R.string.syntax_error));
+		if (strictParse && resultStack.size() <= 0)  shell.print(shell.msg(R.string.syntax_error));
 
 		return(resultStack);
 	}//public Vector<CommandI> parse(String line)

@@ -1,4 +1,4 @@
- /** Id: CommandI.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
+/** Id: CommandI.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
  *
  * NAME CommandI 
  *
@@ -38,58 +38,58 @@ import java.util.*;
 
 public interface CommandI extends Cloneable, PipableI
 {
-    /** 
-     * name
-     *
-     * return the name of this command
-     * 
-     * @return the name of this item as a string
-     */
-    public String name();
-    /** 
-     * name
-     *
-     * set the name of this command
-     * 
-     * @return the name of this item as a string
-     */
-    public void name(String n);
-    /**
+	/** 
+	 * name
+	 *
+	 * return the name of this command
+	 * 
+	 * @return the name of this item as a string
+	 */
+	public String name();
+	/** 
+	 * name
+	 *
+	 * set the name of this command
+	 * 
+	 * @return the name of this item as a string
+	 */
+	public void name(String n);
+	/**
 
-      execute
+	 execute
 
-      activate this command
+	 activate this command
 
-     * @param line 
-     * @param heap 
-     * @return 
-     */
-    public String execute();
-    /**
+	 * @param line 
+	 * @param heap 
+	 * @return 
+	 */
+	public String execute();
+	/**
 
-      parse
+	 parse
 
-      parse for eventual arguments, return what is not needed
+	 parse for eventual arguments, return what is not needed
 
-     * @param line 
-     * @return 
-     */
-    public String parse(String line);
-    /** 
-     * instead of parsing the options, give them directly, eg when invoking a command from the program code directly
-     * 
-     * @param parms the hashtable with the options
-     * @param parms 
-     */
-    public void setParameters(HashMap<String,Object> parms);
-    /**
+	 * @param line 
+	 * @return 
+	 */
+	public String parse(String line);
+	/** 
+	 * instead of parsing the options, give them directly, eg when invoking a command from the program code directly
+	 * 
+	 * @param parms the hashtable with the options
+	 * @param parms 
+	 */
+	public void setParameters(HashMap<String,Object> parms);
+	/**
 
-      help
+	 help
 
-      issue the help message associated with this command
+	 issue the help message associated with this command
 
-*/
-    public String help();
-    public Object clone(); //?? should be added by the cloning interface??
-
+	 */
+	public String help();
+	public Object clone(); //?? should be added by the cloning interface??
+	public String expand(String actArg);
 }//public class CommandI

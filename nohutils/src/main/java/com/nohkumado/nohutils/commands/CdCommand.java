@@ -70,31 +70,32 @@ public class CdCommand extends Command implements Cloneable, CommandI
    */
   public String execute()
   {
-		Log.d(TAG,"cd exe ");
+		Log.d(TAG, "cd exe ");
     String result = "";
     if (path != null && path.length() > 0)
     {
-			Log.d(TAG,"path valid: "+path);
+			Log.d(TAG, "path valid: " + path);
       if (!path.startsWith("/"))
       {
-				Log.d(TAG,"no absolute path ");
+				Log.d(TAG, "no absolute path ");
 				String pwd = (String)shell.get("pwd");
-				Log.d(TAG,"shell tells us pwd is:  "+pwd);
+				Log.d(TAG, "shell tells us pwd is:  " + pwd);
 				if (pwd == null) pwd = System.getProperty("user.dir");
 				else if (pwd.length() <= 0) pwd = System.getProperty("user.dir");
-				Log.d(TAG,"consistency?  "+pwd);
-				
+				Log.d(TAG, "consistency?  " + pwd);
+
 				if (!(pwd.equals("/") && pwd.endsWith("/"))) pwd += System.getProperty("file.separator");
-				Log.d(TAG,"add missing /?:  "+pwd);
-				path = pwd +path;
-				Log.d(TAG,"no absolute path "+pwd);
+				Log.d(TAG, "add missing /?:  " + pwd);
+				path = pwd + path;
+				Log.d(TAG, "no absolute path " + pwd);
       }// else
 			Log.d(TAG, "about to cd into " + path);
       File newDir = new File(path);
       if (newDir.exists())
       {
-				if (newDir.canRead()) result += shell.msg(R.string.cd_not_enough_rights);
-				else if (newDir.isDirectory()) shell.set("pwd", newDir.getAbsolutePath());
+				//if (newDir.canRead()) result += shell.msg(R.string.cd_not_enough_rights);
+				//else 
+				if (newDir.isDirectory()) shell.set("pwd", newDir.getAbsolutePath());
 				else result += shell.msg(R.string.cd_not_a_dir);
       }// if(newDir.exists())
       else result += shell.msg(R.string.cd_does_not_exist);
@@ -116,11 +117,11 @@ public class CdCommand extends Command implements Cloneable, CommandI
 	public String parse(String line)
 	{
 		Log.d(TAG, "parsing " + line);
-		if(line.length()<= 0) path = System.getProperty("user.dir");
+		if (line.length() <= 0) path = System.getProperty("user.dir");
 		else if (line.matches(".."))
 		{
 			String pwd = (String)shell.get("pwd");
-			Log.d(TAG,"got pwd from shell: "+pwd);
+			Log.d(TAG, "got pwd from shell: " + pwd);
 			String[] result = pwd.split(System.getProperty("file.separator"));
 			if (result.length > 1)
 			{
@@ -158,4 +159,65 @@ public class CdCommand extends Command implements Cloneable, CommandI
 		//cloned.shell = shell;
     return cloned;
 	}//public Object clone()
+
+	public String expand(String arg)
+	{
+		String actPath = path;
+		File actTry = new File(path);
+		if (actTry.exists())
+		{
+
+		}
+		if (!path.startsWith("/")) actPath = shell.get("pwd") + "/" + actPath;
+
+		if (path.startsWith("/"))
+		{
+			//its an absolute path.....
+			String[] splitted = actPath.split("/");
+			Log.d(TAG, "splitted the path: " + Arrays.toString(splitted));
+			String rest = splitted[splitted.length - 1];
+			StringBuilder temppath = new StringBuilder();
+			temppath.append("/");
+			for (int i = 0; i < splitted.length - 2; i++)	temppath.append(splitted[i] + "/");
+			actPath = temppath.toString();
+			Log.d(TAG, "separated into " + actPath + " and " + rest);
+			actTry = new File(actPath);
+			if (actTry.exists() && actTry.isDirectory())
+			{
+				
+				String[] content = actTry.list();
+				Log.d(TAG, "is dir! contents "+Arrays.toString(content));
+				ArrayList<String> choices = new ArrayList<String>();
+
+				for (String oneName : content)
+					if (oneName.startsWith(rest)) choices.add(oneName);
+				Log.d(TAG, "extracted choices "+choices);
+				
+				if (choices.size() <= 0) shell.beep();
+				else if (choices.size() == 1) return choices.get(0).substring(rest.length());
+				else
+				{
+					Log.d(TAG, "several choices searching least common denominator ");
+					String start = choices.remove(0);
+					ArrayList<String> subMenge = new ArrayList<String>();
+					
+					for(String oneName: choices)
+						subMenge.add(greatestCommonPrefix(start,oneName));
+						int minLength = start.length();
+						for(String oneName: subMenge) if(oneName.length() < minLength) minLength = oneName.length();
+						return start.substring(0,minLength);
+				}
+			}
+		}
+		return("");
+	}
+	public String greatestCommonPrefix(String a, String b) {
+    int minLength = Math.min(a.length(), b.length());
+    for (int i = 0; i < minLength; i++) {
+			if (a.charAt(i) != b.charAt(i)) {
+				return a.substring(0, i);
+			}
+    }
+    return a.substring(0, minLength);
+	}
 }//public class Command

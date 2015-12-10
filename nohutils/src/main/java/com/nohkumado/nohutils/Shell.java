@@ -74,6 +74,8 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 
 	protected  int maxHistory = 1024;
 	protected int histNavigation = 0;
+
+	private int tabcount;
   /** CTOR
 
    */
@@ -509,7 +511,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 			if (incoming.length() > 0)  history.add(incoming);
 			if (history.size() > maxHistory) 
 				while (history.size() > maxHistory) history.remove(0);
-			
+
 			//Log.d(TAG, "read extracted " + incoming);
 			if (actQuestion != null)
 			{
@@ -545,28 +547,31 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) 
 	{
-		//Log.d(TAG, "hit key :" + keyCode + " in?(" + KeyEvent.KEYCODE_DPAD_UP + "," + KeyEvent.KEYCODE_TAB + ")");
+
+		Log.d(TAG, "hit key :" + keyCode + " stamp " + event.getEventTime());
 		if (keyCode == KeyEvent.KEYCODE_DPAD_UP)
 		{
 			histNavigation++;
 			int actPost = history.size() - histNavigation;
-			if(actPost < 0)
+			if (actPost < 0)
 			{
 				context.playSound();
 				actPost = 0;
 				histNavigation = history.size();
 			}
 			//TODO beware, if there are expansion commands in the prompt what then??
-			printOnCmdline(prompt()+" "+history.get(actPost));
+			if (history.size() > actPost) printOnCmdline(prompt() + " " + history.get(actPost));
+			else printOnCmdline(prompt());
 		}
 		else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN)
 		{
 			histNavigation--;
 			int actPost = history.size() - histNavigation;
 			String content = "";
-			if(actPost >= history.size())
+			if (actPost >= history.size())
 			{
-				if(actPost == history.size()) {}
+				if (actPost == history.size())
+				{}
 				else 
 				{
 					context.playSound();
@@ -576,12 +581,46 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 			}
 			else content = history.get(actPost);
 			//TODO beware, if there are expansion commands in the prompt what then??
-			printOnCmdline(prompt()+" "+content);
+			printOnCmdline(prompt() + " " + content);
 		}
-		
 		else if (keyCode == KeyEvent.KEYCODE_TAB)
 		{
-			print("hit tab key");
+			tabcount++;
+			print("hit tab key at " + event.getEventTime());
+
+			if (tabcount == 1)
+			{
+				if (v instanceof EditText)
+				{
+					EditText tw = (EditText)v;
+					String incoming = tw.getText().toString().trim();
+					String lastprompt = prompt();
+					if (lastprompt != null) incoming = incoming.replace(lastprompt.trim(), "").trim();
+
+					
+					print("tabkey, parsing: '" + incoming + "'");
+					ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
+					if (toWorkOf.size() > 0)
+					{
+						CommandI lastCmd = toWorkOf.get(toWorkOf.size() - 1);
+						StringBuilder corrected = new StringBuilder();
+						corrected.append(prompt());
+						corrected.append(incoming);
+						corrected.append(lastCmd.expand(""));
+						Log.d(TAG,"changed line to "+corrected.toString());
+						printOnCmdline(corrected.toString());
+					}
+					else
+					{
+						print("couldn't parse " + incoming);
+					}
+
+				}
+				else
+					print("uhm tab key but not from the edittext??");
+				tabcount = 0;
+			}
+
 		}
 		return false;
 	}
@@ -947,5 +986,10 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
     }
     return true; 
 	} 
+
+	public void beep()
+	{
+		if (context != null)		context.playSound();
+	}
 
 }//public class Shell

@@ -90,7 +90,7 @@ public class TokenParser
 				CommandI aCmd = parentParser.findCmd(cmd);
 				if (aCmd != null) 
 				{
-					line =  aCmd.parse(args);
+					line = aCmd.parse(args);
 					resultStack.add(aCmd);
 				}//if(aCmd != null) 
 				else result = false;

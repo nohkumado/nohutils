@@ -169,5 +169,5 @@ public interface ShellI extends PipableI
 	*/
 	public void setInOut(EditText in, TextView out);
 	public InputStream open(String name)  throws IOException;
-	
+	public void beep();
 }//public class ShellI
