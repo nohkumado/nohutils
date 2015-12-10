@@ -17,6 +17,8 @@ public class TokenParser
 
 	protected int errorCode = 0;
 	protected String errorCmd = "";
+
+	private static final int UNPARSABLE = 2;
 	
 
 	public TokenParser(CmdLineParser p)
@@ -25,18 +27,16 @@ public class TokenParser
 	public boolean parse(String line, ArrayList<CommandI> resultStack)
 	{
 		boolean  result = true;
-		errorMsg = "";
+		errorMsg = errorCmd = "";
 		errorCode = 0;
 
 		Matcher matcher;
 		int lineLength = 1;
 		do
 		{
-			Log.d(TAG, "parsing " + line);
 			lineLength = line.length();
 			if (line.matches("^(\\S+)\\s*$"))
 			{
-				Log.d(TAG, "found simple cmd ");
 
 				line = line.trim();
 				//dont forget to call the parse method of the command  
@@ -54,8 +54,6 @@ public class TokenParser
 			}//if(line.matches("^(\\S+)\\s*$"))
 			else if ((matcher = pat_semic1.matcher(line)).find() || (matcher = pat_semic.matcher(line)).find())
 			{
-				Log.d(TAG, "found semicolon separated ");
-
 				String cmd = matcher.group(1);
 				String args;
 				if (matcher.groupCount() == 2)
@@ -68,8 +66,6 @@ public class TokenParser
 					args = matcher.group(2);
 					line = matcher.group(3);
 				}
-				Log.d(TAG, "splitted into  " + cmd + ", " + args + ", " + line);
-
 
 				CommandI aCmd = parentParser.findCmd(cmd);
 				if (aCmd != null) 
@@ -89,8 +85,6 @@ public class TokenParser
 			}//else if((matcher = pat_semic.matcher(line)).find())
 			else if ((matcher = pat_cmd_arg.matcher(line)).find())
 			{
-				Log.d(TAG, "found cmd with args");
-
 				String cmd = matcher.group(1);
 				String args = matcher.group(2);
 				CommandI aCmd = parentParser.findCmd(cmd);
@@ -101,8 +95,13 @@ public class TokenParser
 				}//if(aCmd != null) 
 				else result = false;
 			}//else
-			else Log.e(TAG, "failure of tokenized parsing of " + line);
-
+			else
+			{
+				result = false;
+				errorCode =  UNPARSABLE;
+				errorMsg = line;
+				return result;
+			}
 		}while(line != null && line.length() > 0 && (line.length() - lineLength) != 0);
 
 		return result && !(line != null && line.length() > 0);

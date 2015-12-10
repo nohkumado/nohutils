@@ -72,14 +72,15 @@ public class SetCommand extends Command implements Cloneable, CommandI
     {
       result += var_name + " : ";
       if (var_value != "") shell.set(var_name, var_value);
-      if (shell.ressource(var_name) != null)
-				result += shell.ressource(var_name) + "\n";
+      if (shell.preference(var_name) != null)
+				result += shell.preference(var_name) + "\n";
       else result += shell.get(var_name) + "\n";
     }// if(value != "")
     else
     {
       result = shell.msg(R.string.variable_list) + ":\nEnvironment:\n";
-      HashMap<String,Object> environment = (HashMap<String,Object>)shell.ressource(null);
+			//TODO suspect here.... check it out...
+      HashMap<String,Object> environment = (HashMap<String, Object>) shell.getAll();
       for (Iterator<String> e = environment.keySet().iterator(); e.hasNext();)
       {
 				String argName = e.next();

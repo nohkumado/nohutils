@@ -58,9 +58,12 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 	{
 		for (String key: cmds.keySet())
 		{
+			//Log.d(TAG,"about to add command "+key);
+			
 			if (cmds.get(key) instanceof CommandI)
 			{
 	      CommandI aCmd = cmds.get(key);
+				//Log.d(TAG,"command is "+aCmd);
 	      //aCmd.name(key);
 				//Log.d(TAG,"about to add comd "+key+" v: "+aCmd+" to "+commands);
 				commands.put(key, aCmd);
@@ -81,13 +84,13 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 	public ArrayList<CommandI> parse(String line)
 	{
 		ArrayList<CommandI> resultStack = new ArrayList<CommandI>();
-		String lastprompt = (String)shell.get("prompt");
+		String lastprompt = shell.prompt();
 		if(lastprompt != null) line = line.replace(lastprompt,"").trim();
 			//Log.d(TAG,"parsing line : "+line);
 			//maybe this isnt needed as long as no command is found the help is called anyway TODO
 			if (line.matches("^help|^h$|^\\?"))
 			{ 
-			  //System.out.println(" = help " + line);
+			  Log.d(TAG," = help " + line);
 				help(); 
 				return(resultStack);
 			}
@@ -175,7 +178,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
    */
   public String help()
   {
-    String help = "";
+    String help = "help\n";
     for (Iterator<String> i = commands.keySet().iterator(); i.hasNext();)
     {
       String cmdName = i.next();

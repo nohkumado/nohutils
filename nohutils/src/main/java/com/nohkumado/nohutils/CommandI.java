@@ -36,7 +36,7 @@ package com.nohkumado.nohutils;
 import java.util.*;
 //import com.gnu.utils.*;
 
-public interface CommandI extends Cloneable
+public interface CommandI extends Cloneable, PipableI
 {
     /** 
      * name

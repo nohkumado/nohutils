@@ -38,6 +38,8 @@ import android.util.*;
 
 public class LsCommand extends Command implements Cloneable, CommandI
 {
+	public static final String TAG="LsCmd";
+
   protected String path = "";
   protected FilenameFilter filter;
   /**
@@ -68,9 +70,16 @@ public class LsCommand extends Command implements Cloneable, CommandI
    */
   public String execute()
   {
+		Log.d(TAG,"ls starting pwd: "+shell.get("pwd"));
+		
+		File testit = new File(""+shell.get("pwd"));
+		Log.d(TAG,"pwd: "+testit.exists()+" dir?"+testit.canRead());
+		
     String result = "";
 		CommandI pwdCmd = new PwdCommand(shell);
     String pwd = pwdCmd.execute();
+		Log.d(TAG,"from cmd pwd: "+pwd);
+		
     //if (pwd == null) pwd = System.getProperty("user.dir");
     //else if (pwd.length() <= 0) pwd = System.getProperty("user.dir");
 		//Log.d("LsCmd", "pwd = " + pwd);
@@ -81,52 +90,81 @@ public class LsCommand extends Command implements Cloneable, CommandI
     }// if(value != "")
     else path = pwd;
 		//Log.d("LsCmd", "path = " + path);
-		
+
     File theDir = new File(path);
+		if (!theDir.exists()) return(shell.msg(R.string.cd_does_not_exist));
+		if (!theDir.canRead()) return(shell.msg(R.string.ls_not_enough_rights));
+		
     if (theDir.exists() && theDir.isDirectory())
     {
-			//Log.d("LsCmd", "reading dir");
-      String[] choices = theDir.list(filter);
-			int maxlength = 1;
-			ArrayList<String> content = new ArrayList<String>();
-      for (String name : choices) 
-      {
-				File aFile = new File(path+sep+name);
-				if(aFile.exists())
-				{
-					if(name.length() > maxlength) maxlength = name.length();
-					if(aFile.isDirectory()) content.add(name+"/");
-					else if(aFile.isFile()) content.add(name+"*");
-					else content.add(name);
-				}
-				}//for(String name : choices)
-				int numOfchars = shell.getDisplayWidth();
-				
-			int numOfCols = numOfchars/maxlength;
-			if(numOfCols <1 ) numOfCols = 1;
-			Log.d("lscm","available chars: "+numOfchars+" malength: "+maxlength+" = "+numOfCols);
-			
-			ColumPrinter mp = new  ColumPrinter(numOfCols, 2, "-");
-			String    oneRow[] = new String [ 3 ];
-			int counter = 0;
-			for (String name : content)
+			result += theDir.getAbsolutePath();
+			if (theDir.isDirectory())
 			{
-				oneRow[counter] = name;
-				counter++;
-				if(counter%numOfCols == 0)
+
+				result += " :";
+				//Log.d("LsCmd", "reading dir");
+				String[] choices = theDir.list(filter);
+				int maxlength = 1;
+				ArrayList<String> content = new ArrayList<String>();
+				for (String name : choices) 
 				{
-					mp.add(oneRow);
-					counter = 0;
+					//Log.d(TAG, "name= " + name);
+					if (name == null) continue;
+					//Log.d(TAG, "2name= " + name);
+					File aFile = new File(path + sep + name);
+					try
+					{
+						if (aFile != null && aFile.exists())
+						{
+							Log.d(TAG, "file exists, adding to content: " + content + " n:" + name + " max:" + maxlength);
+
+							if (name != null && name.length() > maxlength) maxlength = name.length();
+							//Log.d(TAG,"2file exists, adding to content: "+content+" n:"+name+" max:"+maxlength);
+							if (name != null)
+							{
+								if (aFile.isDirectory()) content.add(name + "/");
+								else if (aFile.isFile()) content.add(name + "*");
+								else content.add(name + "");
+							}
+						}//if (aFile.exists())	
+					}
+					catch (NullPointerException e)
+					{  }
+
+				}//for(String name : choices)
+
+				int numOfchars = shell.getDisplayWidth();
+
+				int numOfCols = numOfchars / maxlength;
+				if (numOfCols < 1) numOfCols = 1;
+				//Log.d("lscm", "available chars: " + numOfchars + " malength: " + maxlength + " = " + numOfCols);
+
+				ColumPrinter mp = new  ColumPrinter(numOfCols, 2, "-");
+				String    oneRow[] = new String [ 3 ];
+				int counter = 0;
+				for (String name : content)
+				{
+					oneRow[counter] = name;
+					counter++;
+					if (counter % numOfCols == 0)
+					{
+						mp.add(oneRow);
+						counter = 0;
+					}
 				}
+				mp.print();
+				result += mp.toString();
 			}
-			mp.print();
-			result += mp.toString();
-      
+			else
+			{
+				if (theDir.isHidden()) result += "!";
+				result += "\n";
+			}
 			//Log.d("LsCmd", "read dir: "+result);
       return(result);
     }//if(theDir.exists() && theDir.isDirectory())
-		//else Log.d("LsCmd", "no such  dir");
-    return(result);
+		
+		return(result);
   }//end execute
 
   /** 

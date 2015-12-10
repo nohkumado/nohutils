@@ -31,11 +31,15 @@
 package com.nohkumado.nohutils;
 
 //import com.gnu.utils.*;
+import android.widget.*;
 import java.util.*;
-import java.util.prefs.*;
+import java.io.*;
 
-public interface ShellI 
+public interface ShellI extends PipableI 
 {
+
+	//public File getBaseDir();
+
 
 	/**
 
@@ -71,6 +75,7 @@ public interface ShellI
    */
   public String prompt();
   public void prompt(String p);
+	public void printOnCmdline(String prompt)
   /**
 
     exit
@@ -89,7 +94,8 @@ public interface ShellI
    * @param envname 
    * @param envname 
    */
-  public java.lang.Object ressource(String envname);
+  public String preference(String locname);
+  public String preference(String locname,Object res);
   
   /** 
    * local settings 
@@ -123,12 +129,12 @@ public interface ShellI
   /**
     issue a question and expect a return
    */
-  public String ask(String n);
-  public String ask(String question, String defaultValue);
-  public String ask(String question, HashMap<String,Object> options);
-  public String askNum(String n);
-  public String askNum(String question, String defaultValue);
-  public String askNum(String question, HashMap<String,Object> options);
+  public void ask(String n,CommandI asker);
+  public void ask(String question, String defaultValue,CommandI asker);
+  public void ask(String question, HashMap<String,Object> options,CommandI asker);
+  public void askNum(String n,CommandI asker);
+  public void askNum(String question, String defaultValue,CommandI asker);
+  public void askNum(String question, HashMap<String,Object> options,CommandI asker);
   /**
     retrieve a localized message
    */
@@ -158,6 +164,10 @@ public interface ShellI
     public HashMap<String,CommandI> feedCmds(HashMap<String,CommandI> cmds);
 
 	public int getDisplayWidth();
-
+	/** 
+	set the input editext and the output screen
+	*/
+	public void setInOut(EditText in, TextView out);
+	public InputStream open(String name)  throws IOException;
 	
 }//public class ShellI

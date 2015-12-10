@@ -1,3 +1,4 @@
+
 /** Id: Shell.java,v 1+4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
  *
  * NAME Shell 
@@ -30,15 +31,17 @@
 
 package com.nohkumado.nohutils;
 
-//import com.gnu.utils.*;
 import android.content.*;
 import android.content.res.*;
 import android.util.*;
 import android.view.*;
+import android.view.View.*;
 import android.widget.*;
 import android.widget.TextView.*;
 import java.io.*;
 import java.util.*;
+
+import android.view.View.OnKeyListener;
 
 /*
  TODO
@@ -47,9 +50,8 @@ import java.util.*;
  - delegate the command queue to a worker thread.... 
 
  */
-public class Shell implements Cloneable,ShellI,OnEditorActionListener
+public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListener
 {
-
 	protected HashMap<String,Object> localVars = new HashMap<String,Object>();
 	protected ArrayList<String> screenContent = null;
   protected CommandParserI cmdParser = null;
@@ -61,16 +63,22 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
   protected String scanType = null;
 
 	public static final String TAG="Shell";
-	Context context = null;
+	MsgR2StringI context = null;
 
 	private static final int MAXLINES = 100;
-	int maxLines;
+	int maxLines = 1024;
 
+	protected CommandI actQuestion = null;
+
+	protected ArrayList<String> history = new ArrayList<String>();
+
+	protected  int maxHistory = 1024;
+	protected int histNavigation = 0;
   /** CTOR
 
    */
   //public Shell(CmdLineParserI p)
-  public Shell(Context c, CommandParserI p)
+  public Shell(MsgR2StringI c, CommandParserI p)
   {
     super();
 		context = c;
@@ -79,7 +87,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
     cmdParser.shell(this);
     set("shell", this);
   }// public Shell()
-  public Shell(Context c)
+  public Shell(MsgR2StringI c)
   {
 		this(c, null);
   }// public Shell()
@@ -89,8 +97,13 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 		this.out = out;
 		this.in = in;
 		if (screenContent == null) screenContent = new ArrayList<String>();
-		if (in != null) in.setOnEditorActionListener(this);
+		if (in != null)
+		{
+			in.setOnEditorActionListener(this);
+			in.setOnKeyListener(this);
+		}
 		else Log.e(TAG, "couldn't set action listener");
+		if (out == null) Log.e(TAG, "no output screen....");
 	}
   /**
 
@@ -137,6 +150,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 				{
 					//System.out.println("abpout to exe: "+aCmd);
 					retVal = aCmd.execute();
+					//TODO pipe ahould interced e here 
 					if (retVal != "") print(retVal);
 					//System.out.println("retVal = "+retVal);
 				}//if(aCmd != null) 
@@ -223,14 +237,20 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
       if (pwd == null) pwd = System.getProperty("user.dir");
       prompt = prompt.replaceAll("\\\\w", pwd);
     }// if(prompt.matches(".*\\\\w.*")pp)
+		//TODO argh....
+		printOnCmdline(prompt);
+		set("prompt", prompt);
+		return(prompt);
+  }
+
+	public void printOnCmdline(String prompt)
+	{
 		if (in != null)
 		{
 			in.setText(prompt);
 			in.setSelection(prompt.length());			
 		}
-		set("prompt", prompt);
-		return(prompt);
-  }//end prompt
+	}//end prompt
   /** 
    * setter for promtp 
    * 
@@ -250,7 +270,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
   {
     rmRessource("pwd");
 		rmRessource("prompt");
-		
+
     running = false;
     //System.out.println("set running to false....");
   }//end exit
@@ -261,16 +281,28 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
    TODO check with the other projects here a confusion 
 	 between settings from config handler which are stored betweend 
 	 sessions and local vars that should be dropped::::
+	 changed now, be careful with other projects!! preferences is now called (instead of ressource) and it string only (will have to revert if necessary) and accesses shared prefs
    * 
    * @param envname 
    */
-  public String ressource(String envname)
+  public String preference(String envname)
   {
 		if (context == null) return envname;
 		SharedPreferences prefs = context.getSharedPreferences(
-      "com.nohkumado.autils", Context.MODE_PRIVATE);
-		return(prefs.getString(envname, envname)); 
+			context.getPackageName(), Context.MODE_PRIVATE);
+		String result = prefs.getString(envname, envname);	
+		return(result);
   }// public Object ressource(String envname)
+	@Override
+	public String preference(String locname, Object res)
+	{
+		if (context == null) return locname;
+		SharedPreferences prefs = context.getSharedPreferences(
+      context.getPackageName(), Context.MODE_PRIVATE);
+		if (res instanceof String) prefs.edit().putString(locname, (String)res).apply();
+		else if (res instanceof Integer) prefs.edit().putInt(locname, (Integer)res).apply();
+		return null;
+	}
   /** 
    * rmRessources 
    *
@@ -351,22 +383,23 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
   public String msg(String m)
   {
 		if (context == null) return m;
-		
+
 		try
 		{
 			int resourceId = context.getResources().getIdentifier(m, "strings", context.getPackageName());
 			return(context.getResources().getString(resourceId));
 		}
-	catch (Resources.NotFoundException e) { Log.e(TAG,"not found message : "+m);}
-	return(m);
+		catch (Resources.NotFoundException e)
+		{ Log.e(TAG, "not found message : " + m);}
+		return(m);
 	}// public String msg(String m)
 	/**
 	 executeCommands
-	 
+
 	 @param toWorkOf
-	 
+
 	 cycle over list and execute the stored commands, i think not thread safe...
- */
+	 */
 	private void executeCommands(ArrayList<CommandI> toWorkOf)
 	{
 		if (toWorkOf.size() > 0) 
@@ -393,7 +426,16 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
     //TODO at the moment we drop the batchfile func and drop the buggy Input Stream stuff
     /** now initialise the loop that will read from the inputStream until
      *exhaustion */
+		if (in == null)
+		{
+			Log.e(TAG, "oyoyoy??? no input field given....");
+			return "";
+		}
     String inputLine = "";
+		//TODO we can't wait here.... we should put the question in the prompt after saving a backup, 
+		//and notify the eventhandler callback that we are waiting for an answer....
+		//means asynchronous working... we have to store the next workflow until we get an answer...
+
     if (scanType != null && scanType.equals("numeric"))
     {
       print(msg(R.string.numeric_asked));
@@ -439,6 +481,12 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
     //print("read: scanner returned '"+inputLine+"'\n");
     return(inputLine);
   }//end private String ReadFile(FileInputStream a)
+	/**
+	 * onEditorAction
+	 * @param tw, the view the event happened
+	 * @param actionId, 
+	 * @param event
+	 */
 	@Override
 	public boolean onEditorAction(TextView tw, int actionId, KeyEvent event)
 	{
@@ -446,24 +494,100 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 
 		//if (tw != out) Log.d(TAG, "wrong source");
 		//else Log.d(TAG, "good source");
-		
+
 		//if (actionId == EditorInfo.IME_NULL		&&   
 		if (event.getAction() == KeyEvent.ACTION_DOWN) 
 		{
+			histNavigation = 0;
 			//Log.d(TAG, "hit the enter key... calling read");
 			String incoming = tw.getText().toString().trim();
+			//removing prompt from incoming line
+
+			String lastprompt = prompt();
+			if (lastprompt != null) incoming = incoming.replace(lastprompt.trim(), "").trim();
+
+			if (incoming.length() > 0)  history.add(incoming);
+			if (history.size() > maxHistory) 
+				while (history.size() > maxHistory) history.remove(0);
+			
 			//Log.d(TAG, "read extracted " + incoming);
-			String logEntry = prompt()+" "+incoming;
-			//Log.d(TAG,"should print out '"+incoming+"'");
-			print(incoming);
-			//Log.d(TAG,"proceeding to parse");
-			ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
-			executeCommands(toWorkOf);	
+			if (actQuestion != null)
+			{
+				CommandI toExe = actQuestion;
+				actQuestion = null;
+				//setting to 0 beforehand, since the parsing could arise new questions...
+				toExe.parse(incoming);
+				printOnCmdline(prompt());
+			}
+			else
+			{
+				String logEntry = prompt() + " " + incoming;
+				//Log.d(TAG,"should print out '"+incoming+"'");
+
+				print(incoming);
+				//Log.d(TAG,"proceeding to parse");
+
+				ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
+				executeCommands(toWorkOf);	
+			}
     }
 
 
 		return true;
 	}
+	/**------------------------------------------------------------------
+	 * onKey
+	 * @param tw, the view the event happened
+	 * @param actionId, 
+	 * @param event
+	 */
+
+	@Override
+	public boolean onKey(View v, int keyCode, KeyEvent event) 
+	{
+		//Log.d(TAG, "hit key :" + keyCode + " in?(" + KeyEvent.KEYCODE_DPAD_UP + "," + KeyEvent.KEYCODE_TAB + ")");
+		if (keyCode == KeyEvent.KEYCODE_DPAD_UP)
+		{
+			histNavigation++;
+			int actPost = history.size() - histNavigation;
+			if(actPost < 0)
+			{
+				context.playSound();
+				actPost = 0;
+				histNavigation = history.size();
+			}
+			//TODO beware, if there are expansion commands in the prompt what then??
+			printOnCmdline(prompt()+" "+history.get(actPost));
+		}
+		else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN)
+		{
+			histNavigation--;
+			int actPost = history.size() - histNavigation;
+			String content = "";
+			if(actPost >= history.size())
+			{
+				if(actPost == history.size()) {}
+				else 
+				{
+					context.playSound();
+					histNavigation = 0;	
+				}
+				content = "";
+			}
+			else content = history.get(actPost);
+			//TODO beware, if there are expansion commands in the prompt what then??
+			printOnCmdline(prompt()+" "+content);
+		}
+		
+		else if (keyCode == KeyEvent.KEYCODE_TAB)
+		{
+			print("hit tab key");
+		}
+		return false;
+	}
+
+
+
   //------------------------------------------------------------------
   public void fedThroughString(String aBatch)
   {
@@ -495,7 +619,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 		catch (FileNotFoundException e)
 		{
 			print("#The file couln't be found\n");
-			
+
 		}
   }//public void fedThroughFile(String aFile)
   //------------------------------------------------------------------
@@ -508,9 +632,13 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
   //------------------------------------------------------------------
   public void print(String something)
   {
+		if (something == null) something = "";
 		something = something.trim();
 		//Log.d(TAG,"print '"+something+"'");
-		screenContent.add(something);
+		if (screenContent == null)
+		{Log.e(TAG, "oyoyoy??? no screen to print " + something + "!!"); return; }
+		if (something.length() > 0)  screenContent.add(something);
+		//Log.d(TAG, "maxlines = " + maxLines);
 		if (screenContent.size() > maxLines) 
 			while (screenContent.size() > maxLines) screenContent.remove(0);
 		StringBuilder sb = new StringBuilder();
@@ -521,21 +649,28 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 			sb.append("\n");
 		}
 		//Log.d(TAG,"complete text '"+sb.toString()+"'");
-		out.setText(sb.toString());
-		
-		Object obj = out.getParent();
-		if(obj instanceof ScrollView)
+		if (out == null)
 		{
-			ScrollView scroll_view = (ScrollView) obj;
-			DownScroller scroll = new DownScroller(scroll_view);
-			scroll_view.post(scroll);
+			Log.e(TAG, sb.toString());
 		}
-		out.invalidate();
+		else 
+		{
+			out.setText(sb.toString());
+
+			Object obj = out.getParent();
+			if (obj instanceof ScrollView)
+			{
+				ScrollView scroll_view = (ScrollView) obj;
+				DownScroller scroll = new DownScroller(scroll_view);
+				scroll_view.post(scroll);
+			}
+			out.invalidate();
+		}
   }//protected void print(String something)
 	//------------------------------------------------------------------
   public void error(String aMessage) 
   {
-    Log.e(TAG,"Error:" + aMessage);
+    Log.e(TAG, "Error:" + aMessage);
   }//public void error(String aMessage) 
 	//------------------------------------------------------------------
 	public void exit(String aMessage)
@@ -549,10 +684,11 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 	}//public void die(String aMessag)
 	//------------------------------------------------------------------
 	/** in fact read a line...*/
-	public String ask(String question)
+	public void ask(String question, CommandI caller)
 	{
+		actQuestion = caller;
 		if (question.length() > 0) print(question + " ");
-		return(read());
+		//return(read());
 	}//public String ask()
 	/**
 	 * in fact read a line...
@@ -561,8 +697,10 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 	 * @param options more data, e.g. default value, a range selection, captions for range selection,  
 	 * @return 
 	 */
-	public String ask(String question, HashMap<String,Object> options) 
+	public void ask(String question, HashMap<String,Object> options, CommandI caller) 
 	{
+		actQuestion = caller;
+
 		//for(Iterator<String> i = ((List<String>) values.get("select")).iterator() ; i.hasNext();) console.print("debug: "+i.next()+"\n");
 		if (options.get("select") != null)
 		{
@@ -603,7 +741,9 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 			String answer = "";
 			do
 			{
-				answer = ask(question);
+				//TODO shall change this to asynchronous mode
+				//	answer = ask(question,actQuestion);
+				ask(question, actQuestion);
 				if (answer.equals(""))
 				{index = 0;}
 				else
@@ -621,35 +761,44 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 			}// do
 			while(index < 0  || index >= select.size()); 
 			answer = selectCopy.get(index) + "";
-			return(answer);
+			//return(answer);
 		}// if(options.get("select") != null)
 		else if (options.get("type") != null) scanType = options.get("type") + "";
 		else
 			System.out.println("need to do something with the options:" + options);
-		return(ask(question));
+		//return(ask(question));
 	}//public String ask(String question,HashMap<String,.Object> options) 
 	/** in fact read a line...*/
-	public String ask(String question, String defaultValue) 
+	public void ask(String question, String defaultValue, CommandI caller) 
 	{
-		String result = ask(question + "[" + defaultValue + "]");
-		if (result == null || result.equals("")) result = defaultValue;
-		return(result);
+		actQuestion = caller;
+		ask(question + "[" + defaultValue + "]", caller);
+		//if (result == null || result.equals("")) result = defaultValue;
+		//String result = ask(question + "[" + defaultValue + "]");
+		//if (result == null || result.equals("")) result = defaultValue;
+		//return(result);
 	}//public String ask(String question,HashMap<String,.Object> options) 
 	//the sames and forcing numerical reading
-	public String askNum(String question)
+	public void askNum(String question, CommandI caller)
 	{
+		actQuestion = caller;
     scanType = "numeric";
-    return(ask(question));
+    ask(question, caller);
+		//return(ask(question,caller));
 	}// public String askNum(String question)
-	public String askNum(String question, String defaultValue) 
+	public void askNum(String question, String defaultValue, CommandI caller) 
 	{
+		actQuestion = caller;
     scanType = "numeric";
-    return(ask(question, defaultValue));
+    ask(question, defaultValue, caller);
+		//return(ask(question, defaultValue),caller);
 	}// public String askNum(String question)
-	public String askNum(String question, HashMap<String,Object> options) 
+	public void askNum(String question, HashMap<String,Object> options, CommandI caller) 
 	{
+		actQuestion = caller;
     scanType = "numeric";
-    return(ask(question, options));
+    ask(question, options, caller);
+		//return(ask(question, options));
 	}// public String askNum(String question,HashMap<String,Object> options) 
   /** Load a filename, parse it and instantiate the correkt elements, using
    * the Member datastring MemberClassName for the instantiation, generic
@@ -690,12 +839,113 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener
 	public int getDisplayWidth()
 	{
 		int result = 20;
-		if(out != null)
+		if (out != null)
 		{
-			result = (int) (out.getWidth()/out.getTextSize());
+			result = (int) (out.getWidth() / out.getTextSize());
 		}
 		return result;
 	}
+	@Override
+	public boolean setOut(PipableI out)
+	{
+		// TODO: Implement this method
+		return false;
+	}
+	/*@Override
+	 public File getBaseDir()
+	 {
+	 return context.getExternalFilesDir(null);
+	 }*/
 
-	
+	@Override
+	public InputStream open(String name) throws IOException
+	{
+		/*
+		 open private file
+		 String FILENAME = "hello_file";
+		 String string = "hello world!";
+
+		 FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+		 fos.write(string.getBytes());
+		 fos.close();
+
+		 get public file:
+		 Manifest:
+		 <manifest ...>
+		 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+		 ...
+		 </manifest>
+		 // Checks if external storage is available for read and write 
+		 public boolean isExternalStorageWritable() {
+		 String state = Environment.getExternalStorageState();
+		 if (Environment.MEDIA_MOUNTED.equals(state)) {
+		 return true;
+		 }
+		 return false;
+		 }
+
+		 // Checks if external storage is available to at least read 
+		 public boolean isExternalStorageReadable() {
+		 String state = Environment.getExternalStorageState();
+		 if (Environment.MEDIA_MOUNTED.equals(state) ||
+		 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+		 return true;
+		 }
+		 return false;
+		 }
+		 public File getAlbumStorageDir(String albumName) {
+		 // Get the directory for the user's public pictures directory.
+		 File file = new File(Environment.getExternalStoragePublicDirectory(
+		 Environment.DIRECTORY_PICTURES), albumName);
+		 if (!file.mkdirs()) {
+		 Log.e(LOG_TAG, "Directory not created");
+		 }
+		 return file;
+		 }
+
+		 <manifest ...>
+		 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+		 android:maxSdkVersion="18" />
+		 ...
+		 </manifest>
+
+		 storageDir = context.getExternalFilesDir(null); 
+		 -
+		 */
+		//Log.d(TAG,"listing asset files");
+		//listAssetFiles(""); 
+		//Log.d(TAG,"trying to open asset "+name);
+		InputStream is = context.getResources().getAssets().open(name);
+		return is;
+	}
+	private boolean listAssetFiles(String path) 
+	{
+    String [] list;
+    try
+		{
+			list = context.getResources().getAssets().list(path);
+			if (list.length > 0) 
+			{
+				// This is a folder
+				for (String file : list) 
+				{
+					Log.d(TAG, "asset: " + path + "/" + file);
+					if (!listAssetFiles(path + "/" + file))
+						return false;
+				}
+			}
+			else
+			{
+				// This is a file
+				// TODO: add file name to an array list
+				//Log.d(TAG, "asset single file : " + path);
+			}
+    }
+		catch (IOException e)
+		{
+			return false;
+    }
+    return true; 
+	} 
+
 }//public class Shell

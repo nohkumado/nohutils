@@ -38,6 +38,8 @@ import android.util.*;
 
 public class CdCommand extends Command implements Cloneable, CommandI
 {
+	public static final String TAG="CdCmd";
+
   protected String path = "";
   /**
 	 CTOR
@@ -68,22 +70,31 @@ public class CdCommand extends Command implements Cloneable, CommandI
    */
   public String execute()
   {
+		Log.d(TAG,"cd exe ");
     String result = "";
     if (path != null && path.length() > 0)
     {
+			Log.d(TAG,"path valid: "+path);
       if (!path.startsWith("/"))
       {
-				String pwd = (String)shell.ressource("pwd");
+				Log.d(TAG,"no absolute path ");
+				String pwd = (String)shell.get("pwd");
+				Log.d(TAG,"shell tells us pwd is:  "+pwd);
 				if (pwd == null) pwd = System.getProperty("user.dir");
 				else if (pwd.length() <= 0) pwd = System.getProperty("user.dir");
-				shell.set("pwd", pwd);
-				path = pwd + System.getProperty("file.separator") + path;
+				Log.d(TAG,"consistency?  "+pwd);
+				
+				if (!(pwd.equals("/") && pwd.endsWith("/"))) pwd += System.getProperty("file.separator");
+				Log.d(TAG,"add missing /?:  "+pwd);
+				path = pwd +path;
+				Log.d(TAG,"no absolute path "+pwd);
       }// else
-
+			Log.d(TAG, "about to cd into " + path);
       File newDir = new File(path);
       if (newDir.exists())
       {
-				if (newDir.isDirectory()) shell.set("pwd", newDir.getAbsolutePath());
+				if (newDir.canRead()) result += shell.msg(R.string.cd_not_enough_rights);
+				else if (newDir.isDirectory()) shell.set("pwd", newDir.getAbsolutePath());
 				else result += shell.msg(R.string.cd_not_a_dir);
       }// if(newDir.exists())
       else result += shell.msg(R.string.cd_does_not_exist);
@@ -104,18 +115,23 @@ public class CdCommand extends Command implements Cloneable, CommandI
 	 */
 	public String parse(String line)
 	{
-		if (line.matches(".."))
+		Log.d(TAG, "parsing " + line);
+		if(line.length()<= 0) path = System.getProperty("user.dir");
+		else if (line.matches(".."))
 		{
 			String pwd = (String)shell.get("pwd");
+			Log.d(TAG,"got pwd from shell: "+pwd);
 			String[] result = pwd.split(System.getProperty("file.separator"));
 			if (result.length > 1)
 			{
 				pwd = "";
-				for (int x=0; x < result.length - 1; x++) pwd += result[x] + System.getProperty("file.separator");
+				for (int x=0; x < result.length - 1; x++) 
+					pwd += result[x] + System.getProperty("file.separator");
 			}// if(result.lenght > 1)
 			path = pwd;
 		}// if(line.matches(".."))
 		else path = line;
+		Log.d(TAG, "about to move into " + path);
 		return("");
 	}// public String parse(String line)
   /**

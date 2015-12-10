@@ -39,12 +39,13 @@ import java.util.*;
 public class Command 
 implements Cloneable, CommandI
 {
+
 	protected String type = null;
 	protected String name = null;
 	protected String group = "user";
 	protected ShellI shell = null;
 	protected HashMap<String,Object> parameter ;
-
+	protected PipableI stream = null;
 
 	/**
 	 CTOR
@@ -55,6 +56,7 @@ implements Cloneable, CommandI
 	public Command(ShellI s)
 	{
 		shell = s;
+		stream = shell;
 	}// public Command()
 
 	public Command(ShellI s, String n)
@@ -139,4 +141,21 @@ implements Cloneable, CommandI
 	 */
 	public void setParameters(HashMap<String,Object> parms)
 	{ parameter = parms;};
+	/** 
+	 * preparation for pipe command, redirect in and output 
+	 * @param MSG the stuff to send on to be printed out normally
+	 */
+	public void print(String msg)
+	{ stream.print(msg);};
+	/** 
+	 * preparation for pipe command, redirect in and output 
+	 * @param out the thing to send the output
+	 */
+	@Override
+	public boolean setOut(PipableI out)
+	{
+		stream = out;
+		if (stream != null) return true;
+		return false;
+	}
 }//public class Command
