@@ -549,7 +549,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 	{
 
 		Log.d(TAG, "hit key :" + keyCode + " stamp " + event.getEventTime());
-		if (keyCode == KeyEvent.KEYCODE_DPAD_UP)
+		if (keyCode == KeyEvent.KEYCODE_DPAD_UP && event.getAction() == KeyEvent.ACTION_DOWN)
 		{
 			histNavigation++;
 			int actPost = history.size() - histNavigation;
@@ -563,7 +563,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 			if (history.size() > actPost) printOnCmdline(prompt() + " " + history.get(actPost));
 			else printOnCmdline(prompt());
 		}
-		else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN)
+		else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == KeyEvent.ACTION_DOWN)
 		{
 			histNavigation--;
 			int actPost = history.size() - histNavigation;
@@ -583,13 +583,13 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 			//TODO beware, if there are expansion commands in the prompt what then??
 			printOnCmdline(prompt() + " " + content);
 		}
-		else if (keyCode == KeyEvent.KEYCODE_TAB)
+		else if (keyCode == KeyEvent.KEYCODE_TAB && event.getAction() == KeyEvent.ACTION_DOWN)
 		{
-			tabcount++;
+			//tabcount++;
 			print("hit tab key at " + event.getEventTime());
 
-			if (tabcount == 1)
-			{
+			//if (tabcount == 1)
+			//{
 				if (v instanceof EditText)
 				{
 					EditText tw = (EditText)v;
@@ -621,7 +621,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 				tabcount = 0;
 			}
 
-		}
+		//}
 		return false;
 	}
 

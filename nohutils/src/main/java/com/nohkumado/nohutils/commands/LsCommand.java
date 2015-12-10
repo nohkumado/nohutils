@@ -36,11 +36,10 @@ import java.util.regex.*;
 import com.nohkumado.nohutils.*;
 import android.util.*;
 
-public class LsCommand extends Command implements Cloneable, CommandI
+public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 {
 	public static final String TAG="LsCmd";
 
-  protected String path = "";
   protected FilenameFilter filter;
   /**
 	 CTOR

@@ -36,11 +36,9 @@ import java.util.regex.*;
 import com.nohkumado.nohutils.*;
 import android.util.*;
 
-public class CdCommand extends Command implements Cloneable, CommandI
+public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 {
 	public static final String TAG="CdCmd";
-
-  protected String path = "";
   /**
 	 CTOR
 
@@ -117,7 +115,12 @@ public class CdCommand extends Command implements Cloneable, CommandI
 	public String parse(String line)
 	{
 		Log.d(TAG, "parsing " + line);
-		if (line.length() <= 0) path = System.getProperty("user.dir");
+		if (line.length() <= 0)
+		{
+			if(shell.get("home") != null) path = shell.get("home").toString();
+			else path = System.getProperty("user.dir");
+		}
+	//	if (line.length() <= 0) 
 		else if (line.matches(".."))
 		{
 			String pwd = (String)shell.get("pwd");
@@ -133,6 +136,7 @@ public class CdCommand extends Command implements Cloneable, CommandI
 		}// if(line.matches(".."))
 		else path = line;
 		Log.d(TAG, "about to move into " + path);
+		Log.d(TAG, "locally " + this.path+" from parent '"+super.path+"'");
 		return("");
 	}// public String parse(String line)
   /**
@@ -160,6 +164,7 @@ public class CdCommand extends Command implements Cloneable, CommandI
     return cloned;
 	}//public Object clone()
 
+	/*
 	public String expand(String arg)
 	{
 		String actPath = path;
@@ -170,17 +175,26 @@ public class CdCommand extends Command implements Cloneable, CommandI
 		}
 		if (!path.startsWith("/")) actPath = shell.get("pwd") + "/" + actPath;
 
-		if (path.startsWith("/"))
+		if (actPath.startsWith("/"))
 		{
 			//its an absolute path.....
-			String[] splitted = actPath.split("/");
-			Log.d(TAG, "splitted the path: " + Arrays.toString(splitted));
-			String rest = splitted[splitted.length - 1];
-			StringBuilder temppath = new StringBuilder();
-			temppath.append("/");
-			for (int i = 0; i < splitted.length - 2; i++)	temppath.append(splitted[i] + "/");
-			actPath = temppath.toString();
+			int lastSlash = actPath.lastIndexOf("/");
+			//to keep the slash on the path side
+			lastSlash++;
+			Log.d(TAG,"casse "+actPath+" at "+lastSlash+" for total "+actPath.length());
+			String rest = actPath.substring(lastSlash);
+			actPath = actPath.substring(0,lastSlash);
+			
+			//String[] splitted = actPath.split("/");
+			//Log.d(TAG, "splitted the path: " + Arrays.toString(splitted));
+			//String rest = splitted[splitted.length - 1];
+			//StringBuilder temppath = new StringBuilder();
+			//temppath.append("/");
+			//for (int i = 0; i < splitted.length - 2; i++)	temppath.append(splitted[i] + "/");
+			//actPath = temppath.toString();
+			
 			Log.d(TAG, "separated into " + actPath + " and " + rest);
+			
 			actTry = new File(actPath);
 			if (actTry.exists() && actTry.isDirectory())
 			{
@@ -194,9 +208,18 @@ public class CdCommand extends Command implements Cloneable, CommandI
 				Log.d(TAG, "extracted choices "+choices);
 				
 				if (choices.size() <= 0) shell.beep();
-				else if (choices.size() == 1) return choices.get(0).substring(rest.length());
-				else
+				else if (choices.size() == 1)
 				{
+					String toReturn = choices.get(0).substring(rest.length());
+					actTry = new File(actPath+"/"+choices.get(0));
+					if (actTry.exists() && actTry.isDirectory()) toReturn +="/";
+					return toReturn;
+					
+				}
+					else
+				{
+					for(String fN: choices) shell.print(fN+"\n");
+					shell.beep();
 					Log.d(TAG, "several choices searching least common denominator ");
 					String start = choices.remove(0);
 					ArrayList<String> subMenge = new ArrayList<String>();
@@ -205,7 +228,7 @@ public class CdCommand extends Command implements Cloneable, CommandI
 						subMenge.add(greatestCommonPrefix(start,oneName));
 						int minLength = start.length();
 						for(String oneName: subMenge) if(oneName.length() < minLength) minLength = oneName.length();
-						return start.substring(0,minLength);
+						return start.substring(0,minLength).substring(rest.length());
 				}
 			}
 		}
@@ -220,4 +243,5 @@ public class CdCommand extends Command implements Cloneable, CommandI
     }
     return a.substring(0, minLength);
 	}
+	*/
 }//public class Command
