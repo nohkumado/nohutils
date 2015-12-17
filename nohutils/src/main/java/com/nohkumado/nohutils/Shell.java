@@ -1,4 +1,3 @@
-
 /** Id: Shell.java,v 1+4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
  *
  * NAME Shell 
@@ -36,12 +35,14 @@ import android.content.res.*;
 import android.util.*;
 import android.view.*;
 import android.view.View.*;
+import android.view.inputmethod.*;
 import android.widget.*;
 import android.widget.TextView.*;
 import java.io.*;
 import java.util.*;
 
 import android.view.View.OnKeyListener;
+import com.nohkumado.nohutils.foreign.*;
 
 /*
  TODO
@@ -63,7 +64,8 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
   protected String scanType = null;
 
 	public static final String TAG="Shell";
-	MsgR2StringI context = null;
+	protected MsgR2StringI context = null;
+	protected ShellTextWatcher watcher = null;
 
 	private static final int MAXLINES = 100;
 	int maxLines = 1024;
@@ -76,6 +78,8 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 	protected int histNavigation = 0;
 
 	private int tabcount;
+
+	private boolean overwrite = false;
   /** CTOR
 
    */
@@ -153,6 +157,8 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 					//System.out.println("abpout to exe: "+aCmd);
 					retVal = aCmd.execute();
 					//TODO pipe ahould interced e here 
+					Log.d(TAG, "res\n" + retVal);
+
 					if (retVal != "") print(retVal);
 					//System.out.println("retVal = "+retVal);
 				}//if(aCmd != null) 
@@ -179,6 +185,8 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
     {
       aCmd.setParameters(parm);
       retVal = aCmd.execute();
+			Log.d(TAG, "res2\n" + retVal);
+
     }//if(aCmd != null) 
     return(retVal);
   }//end process
@@ -245,14 +253,21 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 		return(prompt);
   }
 
-	public void printOnCmdline(String prompt)
+	public void printOnCmdline(String toPrint)
 	{
 		if (in != null)
 		{
-			in.setText(prompt);
-			in.setSelection(prompt.length());			
+			in.setText(toPrint);
+			in.setSelection(toPrint.length());
+			setEditTextFocus(in);
+			in.requestFocus();			
 		}
 	}//end prompt
+	public String getCmdline()
+	{
+		if (in != null) return in.getText().toString();
+		return("");
+	}
   /** 
    * setter for promtp 
    * 
@@ -412,6 +427,8 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 				{
 					//System.out.println("abpout to exe: "+aCmd);
 					String retVal = aCmd.execute();
+					Log.d(TAG, "res3\n" + retVal);
+
 					if (retVal != "") print(retVal);
 					//System.out.println("retVal = "+retVal);
 				}//if(aCmd != null) 
@@ -516,6 +533,11 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 			if (actQuestion != null)
 			{
 				CommandI toExe = actQuestion;
+				//TODO eventually her we should mitigate if its a keylistener we should rescind 
+				//from killing it, but we needa mechanism to tell that we don't need forwarding 
+				//anymore... maybe we should reask a dummy question.... in the lsitener.... 
+				//to reset the actquestion
+
 				actQuestion = null;
 				//setting to 0 beforehand, since the parsing could arise new questions...
 				toExe.parse(incoming);
@@ -547,8 +569,13 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) 
 	{
+		//sous traite l'evenement si pertinent
+		boolean result = false;
+		if (actQuestion != null && actQuestion instanceof KeyPressListener) 
+			result = ((KeyPressListener)actQuestion).onKey(v, keyCode, event);
+		if (result == true) return false;
 
-		Log.d(TAG, "hit key :" + keyCode + " stamp " + event.getEventTime());
+		//Log.d(TAG, "hit key :" + keyCode + " stamp " + event.getEventTime());
 		if (keyCode == KeyEvent.KEYCODE_DPAD_UP && event.getAction() == KeyEvent.ACTION_DOWN)
 		{
 			histNavigation++;
@@ -586,41 +613,47 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 		else if (keyCode == KeyEvent.KEYCODE_TAB && event.getAction() == KeyEvent.ACTION_DOWN)
 		{
 			//tabcount++;
-			print("hit tab key at " + event.getEventTime());
+			//print("hit tab key at " + event.getEventTime());
 
 			//if (tabcount == 1)
 			//{
-				if (v instanceof EditText)
+			if (v instanceof EditText)
+			{
+				EditText tw = (EditText)v;
+				String incoming = tw.getText().toString().trim();
+				String lastprompt = prompt();
+				if (lastprompt != null) incoming = incoming.replace(lastprompt.trim(), "").trim();
+
+
+				//print("tabkey, parsing: '" + incoming + "'");
+				ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
+				if (toWorkOf.size() > 0)
 				{
-					EditText tw = (EditText)v;
-					String incoming = tw.getText().toString().trim();
-					String lastprompt = prompt();
-					if (lastprompt != null) incoming = incoming.replace(lastprompt.trim(), "").trim();
-
-					
-					print("tabkey, parsing: '" + incoming + "'");
-					ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
-					if (toWorkOf.size() > 0)
-					{
-						CommandI lastCmd = toWorkOf.get(toWorkOf.size() - 1);
-						StringBuilder corrected = new StringBuilder();
-						corrected.append(prompt());
-						corrected.append(incoming);
-						corrected.append(lastCmd.expand(""));
-						Log.d(TAG,"changed line to "+corrected.toString());
-						printOnCmdline(corrected.toString());
-					}
-					else
-					{
-						print("couldn't parse " + incoming);
-					}
-
+					CommandI lastCmd = toWorkOf.get(toWorkOf.size() - 1);
+					StringBuilder corrected = new StringBuilder();
+					corrected.append(prompt());
+					corrected.append(incoming);
+					corrected.append(lastCmd.expand(""));
+					//Log.d(TAG,"changed line to "+corrected.toString());
+					printOnCmdline(corrected.toString());
 				}
 				else
-					print("uhm tab key but not from the edittext??");
-				tabcount = 0;
-			}
+				{
+					print("couldn't parse " + incoming);
+				}
 
+			}
+			else
+				print("uhm tab key but not from the edittext??");
+			tabcount = 0;
+		}
+		else if (keyCode == KeyEvent.KEYCODE_INSERT && event.getAction() == KeyEvent.ACTION_DOWN)
+		{
+			overwrite = !overwrite;
+			if(overwrite) print(msg(R.string.shell_changetooverwrite));
+			else  print(msg(R.string.shell_changetoinsert));
+ 			setInputMode(overwrite);
+		}
 		//}
 		return false;
 	}
@@ -672,12 +705,21 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
   public void print(String something)
   {
 		if (something == null) something = "";
+		//Log.d(TAG,"res\n"+something);
+
 		something = something.trim();
-		//Log.d(TAG,"print '"+something+"'");
+		//Log.d(TAG,"print after trim '"+something+"'");
 		if (screenContent == null)
 		{Log.e(TAG, "oyoyoy??? no screen to print " + something + "!!"); return; }
-		if (something.length() > 0)  screenContent.add(something);
-		//Log.d(TAG, "maxlines = " + maxLines);
+		if (something.length() > 0) 
+		{
+			String[] splitted = something.split("\n");
+			for (String line: splitted) 
+			{
+				screenContent.add(line);
+				//Log.d(TAG,"l:'"+line+"'");
+			}
+		}//Log.d(TAG, "maxlines = " + maxLines);
 		if (screenContent.size() > maxLines) 
 			while (screenContent.size() > maxLines) screenContent.remove(0);
 		StringBuilder sb = new StringBuilder();
@@ -687,13 +729,14 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 			sb.append(s);
 			sb.append("\n");
 		}
-		//Log.d(TAG,"complete text '"+sb.toString()+"'");
+		//Log.d(TAG, "complete text '" + sb.toString() + "'");
 		if (out == null)
 		{
 			Log.e(TAG, sb.toString());
 		}
 		else 
 		{
+			//out.setText(Html.fromHtml(sb.toString()));
 			out.setText(sb.toString());
 
 			Object obj = out.getParent();
@@ -702,10 +745,26 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 				ScrollView scroll_view = (ScrollView) obj;
 				DownScroller scroll = new DownScroller(scroll_view);
 				scroll_view.post(scroll);
+				scroll_view.fullScroll(View.FOCUS_DOWN);
 			}
 			out.invalidate();
 		}
   }//protected void print(String something)
+	//------------------------------------------------------------------
+  //public void setEditTextFocus(EditText searchEditText, boolean isFocused)
+	public void setEditTextFocus(EditText searchEditText)
+	{
+		boolean isFocused = true;
+    searchEditText.setCursorVisible(isFocused);
+    searchEditText.setFocusable(isFocused);
+    searchEditText.setFocusableInTouchMode(isFocused);
+    //if (isFocused) {
+			searchEditText.requestFocus();
+    //} else {
+		//	InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); 
+		//	inputManager.hideSoftInputFromWindow(searchEditText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS );
+    //}
+	} 
 	//------------------------------------------------------------------
   public void error(String aMessage) 
   {
@@ -992,4 +1051,18 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 		if (context != null)		context.playSound();
 	}
 
+	@Override
+	public void endQuestion()
+	{
+		actQuestion = null;
+	}
+	@Override
+	public void setInputMode(boolean overwrite)
+	{
+		if(watcher == null) watcher = new ShellTextWatcher();
+		watcher.setOverwrite(overwrite);
+		if(in != null) in.addTextChangedListener(watcher);
+	}
+
+	
 }//public class Shell

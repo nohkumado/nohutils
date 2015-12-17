@@ -38,6 +38,9 @@ import java.io.*;
 public interface ShellI extends PipableI 
 {
 
+	public void setInputMode(boolean p0);
+
+
 	//public File getBaseDir();
 
 
@@ -75,8 +78,9 @@ public interface ShellI extends PipableI
    */
   public String prompt();
   public void prompt(String p);
-	public void printOnCmdline(String prompt)
-  /**
+	public void printOnCmdline(String prompt);
+  public String getCmdline();
+	/**
 
     exit
 
@@ -170,4 +174,5 @@ public interface ShellI extends PipableI
 	public void setInOut(EditText in, TextView out);
 	public InputStream open(String name)  throws IOException;
 	public void beep();
+	public void endQuestion(); //stop forwarding keyevents to a question
 }//public class ShellI
