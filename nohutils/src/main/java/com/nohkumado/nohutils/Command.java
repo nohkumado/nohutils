@@ -34,6 +34,7 @@
  */
 package com.nohkumado.nohutils;
 import java.util.*;
+import java.util.regex.*;
 //import com.gnu.utils.*;
 
 public class Command 
@@ -112,12 +113,13 @@ implements Cloneable, CommandI
 	 * 
 	 * @return a copy of this object
 	 */
-	public Object clone()
+	public Command clone()
 	{
 		try
 		{
 			//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
 			Command cloned = (Command)super.clone();
+			cloned.parameter = null;
 			return(cloned);
 		}
 		catch (CloneNotSupportedException e)
@@ -163,6 +165,9 @@ implements Cloneable, CommandI
 		return "";
 	}
 
-
-	
+	@Override
+	public Pattern pattern()
+	{
+		return Pattern.compile("^(\\S+)\\s*$");
+	}
 }//public class Command

@@ -34,10 +34,14 @@
  */
 package com.nohkumado.nohutils;
 import java.util.*;
+import java.util.regex.*;
 //import com.gnu.utils.*;
 
-public interface CommandI extends Cloneable, PipableI
+public interface CommandI extends Cloneable,PipableI
 {
+
+	public Pattern pattern();
+
 	/** 
 	 * name
 	 *
@@ -90,6 +94,5 @@ public interface CommandI extends Cloneable, PipableI
 
 	 */
 	public String help();
-	public Object clone(); //?? should be added by the cloning interface??
 	public String expand(String actArg);
 }//public class CommandI

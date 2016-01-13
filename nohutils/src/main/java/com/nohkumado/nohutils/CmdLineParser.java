@@ -59,7 +59,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		for (String key: cmds.keySet())
 		{
 			//Log.d(TAG,"about to add command "+key);
-			
+
 			if (cmds.get(key) instanceof CommandI)
 			{
 	      CommandI aCmd = cmds.get(key);
@@ -82,71 +82,94 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 
 	 */
 	public ArrayList<CommandI> parse(String line)
-	{return parse(line,true);}
-	
-	public ArrayList<CommandI> parse(String line,boolean strictParse)
+	{return parse(line, true);}
+
+	public ArrayList<CommandI> parse(String line, boolean strictParse)
 	{
 		ArrayList<CommandI> resultStack = new ArrayList<CommandI>();
 		String lastprompt = shell.prompt();
-		if(lastprompt != null) line = line.replace(lastprompt,"").trim();
-			//Log.d(TAG,"parsing line : "+line);
-			//maybe this isnt needed as long as no command is found the help is called anyway TODO
-			if (line.matches("^help|^h$|^\\?"))
-			{ 
-			  Log.d(TAG," = help " + line);
-				help(); 
-				if(strictParse) return(resultStack);
-			}
-			//Log.d(TAG,"continuing parse");
-			/*TODO let see, we need to break up the line to extract a key or a subpart of the key of a command, containsKey(Object key) does the job for a complete key, but not for part of it, then we need to know what the separator is, easiet cas is space, but for the jrl editor we will have single char commands, vi style with eventual modifiers... usual modifiers are numerical, can there be textual modifiers? but then we can uppose/impose apostrophing them!
-			 */
-			//char to char test if in Strng ' or >"
-			//then test if ;
-			//then split in cmd args
-			//search cmd and clone cmds and feed args
-			//put into vector
-			String mode;
-			if (shell.get("parsing") != null) mode = shell.get("parsing").toString();
-			else mode = "tokenized";
-			if (mode.equals("parsing"))
-			{
-				shell.set("parsing", "tokenized");
-				mode = "tokenized";
-			}
-			//Log.d(TAG,"mode "+mode);
+		if (lastprompt != null) line = line.replace(lastprompt, "").trim();
+		//Log.d(TAG,"parsing line : "+line);
+		//maybe this isnt needed as long as no command is found the help is called anyway TODO
+		if (line.matches("^help|^h$|^\\?"))
+		{ 
+			Log.d(TAG, " = help " + line);
+			help(); 
+			if (strictParse) return(resultStack);
+		}
+		//Log.d(TAG,"continuing parse");
+		/*TODO let see, we need to break up the line to extract a key or a subpart of the key of a command, containsKey(Object key) does the job for a complete key, but not for part of it, then we need to know what the separator is, easiet cas is space, but for the jrl editor we will have single char commands, vi style with eventual modifiers... usual modifiers are numerical, can there be textual modifiers? but then we can uppose/impose apostrophing them!
+		 */
+		//char to char test if in Strng ' or >"
+		//then test if ;
+		//then split in cmd args
+		//search cmd and clone cmds and feed args
+		//put into vector
+		String mode;
+		if (shell.get("parsing") != null) mode = shell.get("parsing").toString();
+		else mode = "tokenized";
+		if (mode.equals("parsing"))
+		{
+			shell.set("parsing", "tokenized");
+			mode = "tokenized";
+		}
+		//Log.d(TAG,"mode "+mode);
 
-			if (mode == "tokenized")
+		if (mode == "tokenized")
+		{
+			TokenParser parser = new TokenParser(this);
+			if (strictParse && !parser.parse(line, resultStack))
 			{
-				TokenParser parser = new TokenParser(this);
-				if(strictParse && !parser.parse(line, resultStack))
+				if (parser.errorCode() == parser.UNPARSED_ARGS)
 				{
-					if(parser.errorCode() == parser.UNPARSED_ARGS)
-					{
-						StringBuilder sb = new StringBuilder();
-						sb.append(shell.msg(R.string.syntax_error));
-						sb.append(" ");
-						sb.append(shell.msg(R.string.cmd_command));
-						sb.append(" ");
-						sb.append(parser.errorCmd());
-						sb.append(" ");
-						sb.append(shell.msg(R.string.cmd_unparsed_args));
-						sb.append(" ");
-						sb.append(parser.errorMsg());
-						
-						shell.print(sb.toString());
-					}
+					StringBuilder sb = new StringBuilder();
+					sb.append(shell.msg(R.string.syntax_error));
+					sb.append(" ");
+					sb.append(shell.msg(R.string.cmd_command));
+					sb.append(" ");
+					sb.append(parser.errorCmd());
+					sb.append(" ");
+					sb.append(shell.msg(R.string.cmd_unparsed_args));
+					sb.append(" ");
+					sb.append(parser.errorMsg());
+
+					shell.print(sb.toString());
 				}
-			}//if(mode == null || mode == "tokenized")
-			else if (mode == "vilike")
+			}
+		}//if(mode == null || mode == "tokenized")
+		else if (mode == "char")
+		{
+			CharParser parser = new CharParser(this);
+			if (strictParse && !parser.parse(line, resultStack))
 			{
-				Log.d(TAG,"please provide an implementation for this parsing mode");
-			}//else if(mode == "vilike")
-			else
-			{
-				Log.e(TAG,"unsupported parsing mode");
-				help(); return(resultStack);
-			}//else
-	
+				if (parser.errorCode() == parser.UNPARSED_ARGS)
+				{
+					StringBuilder sb = new StringBuilder();
+					sb.append(shell.msg(R.string.syntax_error));
+					sb.append(" ");
+					sb.append(shell.msg(R.string.cmd_command));
+					sb.append(" ");
+					sb.append(parser.errorCmd());
+					sb.append(" ");
+					sb.append(shell.msg(R.string.cmd_unparsed_args));
+					sb.append(" ");
+					sb.append(parser.errorMsg());
+
+					shell.print(sb.toString());
+				}
+			}
+		}//if(mode == null || mode == "tokenized")
+		
+		else if (mode == "vilike")
+		{
+			Log.d(TAG, "please provide an implementation for this parsing mode");
+		}//else if(mode == "vilike")
+		else
+		{
+			Log.e(TAG, "unsupported parsing mode");
+			help(); return(resultStack);
+		}//else
+
 		if (strictParse && resultStack.size() <= 0)  shell.print(shell.msg(R.string.syntax_error));
 
 		return(resultStack);
@@ -223,4 +246,14 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		}//if(matchingKeys.size() > 1)
 		return(null);
 	}//protected CommandI findCmd(String token)
+	@Override
+	public void clearCmds()
+	{
+		commands.clear();
+	}
+	@Override
+	public void parseMode(String mode)
+	{
+		shell.set("parsing", mode);
+	}
 }//public class CmdLineParser

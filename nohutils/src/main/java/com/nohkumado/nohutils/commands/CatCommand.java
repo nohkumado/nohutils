@@ -116,10 +116,10 @@ public class CatCommand extends Command implements Cloneable, CommandI
 		return(shell.msg(R.string.cat_help) + "\n");
 	}//end help
 	//make a copy of this object
-	public Object clone()
+	public CatCommand clone()
 	{
 		//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
-		CdCommand cloned = (CdCommand)super.clone();
+		CatCommand cloned = (CatCommand)super.clone();
 		//  CdCommand cloned = new CdCommand(shell);
 		//cloned.type = type;
 		//cloned.name = name;

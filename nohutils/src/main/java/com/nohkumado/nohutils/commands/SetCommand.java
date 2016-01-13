@@ -143,7 +143,7 @@ public class SetCommand extends Command implements Cloneable, CommandI
     return(shell.msg(R.string.sethelp));
   }//end help
 	//make a copy of this object
-	public Object clone()
+	public SetCommand clone()
 	{
 		//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
 		SetCommand cloned = (SetCommand)super.clone();

@@ -87,7 +87,7 @@ public class PwdCommand extends Command implements Cloneable, CommandI
    * 
    * @return 
    */
-  public Object clone()
+  public PwdCommand clone()
   {
     //beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
     PwdCommand cloned = (PwdCommand)super.clone();

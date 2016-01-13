@@ -1,6 +1,8 @@
-/** Id: QuitCommand.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
+package com.nohkumado.nohutils.commands;
+
+/** Id: HelpCommand.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
  *
- * NAME QuitCommand 
+ * NAME HelpCommand 
  *
  * AUTHOR Bruno Boettcher <bboett at adlp.org> 
  *
@@ -17,7 +19,7 @@
  *
  *  Copyright (c) 2004 Bruno Boettcher
  *
- *  QuitCommand.java is free software; you can redistribute it and/or modify it under
+ *  HelpCommand.java is free software; you can redistribute it and/or modify it under
  *  the terms of the GNU General Public License as published by the Free Software
  *  Foundation; version 2 of the License.
  *
@@ -29,62 +31,59 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package com.nohkumado.nohutils.commands;
 import java.util.*;
 import com.nohkumado.nohutils.*;
 
-public class QuitCommand extends Command implements Cloneable, CommandI
+public class HelpCommand extends Command implements Cloneable, CommandI
 {
-  /**
+	/**
 	 CTOR
 
 	 Build up a reference
 
-   */
-  public QuitCommand(ShellI s)
-  {
-    super(s);
+	 */
+	public HelpCommand(ShellI s)
+	{
+		super(s);
 		if (s != null) name = s.msg(R.string.quit);
-  }// public Command()
+	}// public Command()
 
-  public QuitCommand(ShellI s, String n)
-  {
-    super(s, n);
-  }// public QuitCommand()
-  /**
+	public HelpCommand(ShellI s, String n)
+	{
+		super(s, n);
+	}// public HelpCommand()
+	/**
 
 	 execute
 
 	 activate this command
 
-   * @param line 
-   * @param heap 
-   * @return 
-   */
-  public String execute()
-  {
-    shell.exit(shell.msg(R.string.shell_exiting));
-		
-    return(shell.msg(R.string.shell_exiting) + "\n");
-  }//end execute
-  /**
+	 * @param line 
+	 * @param heap 
+	 * @return 
+	 */
+	public String execute()
+	{
+		return(shell.help());
+	}//end execute
+	/**
 
 	 help
 
 	 issue the help message associated with this command
 
-   */
-  public String help()
-  {
-    return(shell.msg(R.string.quit_help) + "\n");
-  }//end help
+	 */
+	public String help()
+	{
+		return(shell.msg(R.string.shell_help) + "\n");
+	}//end help
 	/**
 	 make a copy of this object
 	 */
-	public QuitCommand clone()
+	public HelpCommand clone()
 	{
 		//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
-		QuitCommand cloned = (QuitCommand)super.clone();
-    return cloned;
+		HelpCommand cloned = (HelpCommand)super.clone();
+		return cloned;
 	}//public Object clone()
 }//public class Command

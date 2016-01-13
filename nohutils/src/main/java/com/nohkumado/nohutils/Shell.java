@@ -43,6 +43,7 @@ import java.util.*;
 
 import android.view.View.OnKeyListener;
 import com.nohkumado.nohutils.foreign.*;
+import android.os.*;
 
 /*
  TODO
@@ -51,17 +52,17 @@ import com.nohkumado.nohutils.foreign.*;
  - delegate the command queue to a worker thread.... 
 
  */
-public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListener
+public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 {
 	protected HashMap<String,Object> localVars = new HashMap<String,Object>();
 	protected ArrayList<String> screenContent = null;
-  protected CommandParserI cmdParser = null;
-  protected  TextView out = null;
-  protected  EditText in = null;
+	protected CommandParserI cmdParser = null;
+	protected  TextView out = null;
+	protected  EditText in = null;
 
-  protected boolean batchMode = false;
-  protected boolean running = true;
-  protected String scanType = null;
+	protected boolean batchMode = false;
+	//protected boolean running = true;
+	protected String scanType = null;
 
 	public static final String TAG="Shell";
 	protected MsgR2StringI context = null;
@@ -80,26 +81,36 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 	private int tabcount;
 
 	private boolean overwrite = false;
-  /** CTOR
 
-   */
-  //public Shell(CmdLineParserI p)
-  public Shell(MsgR2StringI c, CommandParserI p)
-  {
-    super();
+	protected ShellI parentShell, childShell = null;
+	/** CTOR
+
+	 */
+	//public Shell(CmdLineParserI p)
+	public Shell(MsgR2StringI c, CommandParserI p)
+	{
+		super();
 		context = c;
-    if (p == null) cmdParser = new CmdLineParser();
-    else cmdParser = p;
-    cmdParser.shell(this);
-    set("shell", this);
-  }// public Shell()
-  public Shell(MsgR2StringI c)
-  {
+		if (p == null) cmdParser = new CmdLineParser();
+		else cmdParser = p;
+		cmdParser.shell(this);
+		set("shell", this);
+	}// public Shell()
+	public Shell(MsgR2StringI c)
+	{
 		this(c, null);
-  }// public Shell()
+	}
+
+	@Override
+	public ShellI cpyCtor()
+	{
+		Shell cpy = new Shell(context, null);
+		return cpy;
+	}// public Shell()
 
 	public void setInOut(EditText in, TextView out)
 	{
+
 		this.out = out;
 		this.in = in;
 		if (screenContent == null) screenContent = new ArrayList<String>();
@@ -107,20 +118,28 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 		{
 			in.setOnEditorActionListener(this);
 			in.setOnKeyListener(this);
+			/* seems i can't remove the listener....
+			 if(parentShell != null)
+			 {
+			 in.remove
+			 in.rmOnEditorActionListener(parentShell);
+			 in.rmOnKeyListener(parentShell);
+			 }*/
+
 		}
 		else Log.e(TAG, "couldn't set action listener");
 		if (out == null) Log.e(TAG, "no output screen....");
 	}
-  /**
+	/**
 
 	 init
 
 	 after instantiation initialisation
 
-   */
-  public boolean init()
-  {
-	  if (get("maxlines") == null) set("maxlines", MAXLINES);
+	 */
+	public boolean init()
+	{
+		if (get("maxlines") == null) set("maxlines", MAXLINES);
 		try
 		{
 			maxLines = Integer.parseInt(get("maxlines").toString());	
@@ -132,21 +151,21 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 
 		//Log.d(TAG, "init printing start message");
 		print(msg(R.string.start));
-    prompt();
-    return(true);
-  }//public void init
-  /**
+		prompt();
+		return(true);
+	}//public void init
+	/**
 
 	 process
 
 	 this Method is the one that catches the commands and interprets them
 	 should copy some parts of nSim:lineShell concerning batches!
 
-   */
-  public String process(String line)
-  {
-    //TODO check if shell is allready running otherwise push into a TODO stack
-    String retVal = "";
+	 */
+	public String process(String line)
+	{
+		//TODO check if shell is allready running otherwise push into a TODO stack
+		String retVal = "";
 		ArrayList<CommandI> toWorkOf = cmdParser.parse(line);
 		if (toWorkOf.size() > 0) 
 			for (Iterator<CommandI> i = toWorkOf.iterator(); i.hasNext();)
@@ -165,9 +184,9 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 				else
 					retVal = "cmd was null??";
 			}//for(Iterator<CommandI> i = toWorkOf.iterator(); i.hasNext();)
-    return(retVal);
-  }//end process
-  /**
+		return(retVal);
+	}//end process
+	/**
 
 	 process
 
@@ -175,22 +194,22 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 	 should copy some parts of nSim:lineShellI concerning batches!
 
 	 this one is for internal use, when invoking commands through the shell programmately, so no command parsing is needed, parameters are in a hastable
-   */
-  public String process(String line, HashMap<String,Object> parm)
-  {
-    //TODO check if shell is allready running otherwise push into a TODO stack
-    String retVal = "";
-    CommandI aCmd = cmdParser.findCmd(line);
-    if (aCmd != null) 
-    {
-      aCmd.setParameters(parm);
-      retVal = aCmd.execute();
+	 */
+	public String process(String line, HashMap<String,Object> parm)
+	{
+		//TODO check if shell is allready running otherwise push into a TODO stack
+		String retVal = "";
+		CommandI aCmd = cmdParser.findCmd(line);
+		if (aCmd != null) 
+		{
+			aCmd.setParameters(parm);
+			retVal = aCmd.execute();
 			Log.d(TAG, "res2\n" + retVal);
 
-    }//if(aCmd != null) 
-    return(retVal);
-  }//end process
-  /**
+		}//if(aCmd != null) 
+		return(retVal);
+	}//end process
+	/**
 
 	 prompt
 
@@ -231,27 +250,27 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 
 
 
-   */
-  public String prompt()
-  {
-    String prompt = "";
-    if (get("prompt") == null) 
-    {
-      prompt = "> ";
+	 */
+	public String prompt()
+	{
+		String prompt = "";
+		if (get("prompt") == null) 
+		{
+			prompt = "> ";
 			set("prompt", prompt);
-    }// if(prompt == null)
+		}// if(prompt == null)
 		else prompt = get("prompt").toString();
-    if (prompt.matches(".*(\\w).*"))
-    {
-      String pwd = (String)get("pwd");
-      if (pwd == null) pwd = System.getProperty("user.dir");
-      prompt = prompt.replaceAll("\\\\w", pwd);
-    }// if(prompt.matches(".*\\\\w.*")pp)
+		if (prompt.matches(".*(\\w).*"))
+		{
+			String pwd = (String)get("pwd");
+			if (pwd == null) pwd = System.getProperty("user.dir");
+			prompt = prompt.replaceAll("\\\\w", pwd);
+		}// if(prompt.matches(".*\\\\w.*")pp)
 		//TODO argh....
 		printOnCmdline(prompt);
 		set("prompt", prompt);
 		return(prompt);
-  }
+	}
 
 	public void printOnCmdline(String toPrint)
 	{
@@ -268,137 +287,145 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 		if (in != null) return in.getText().toString();
 		return("");
 	}
-  /** 
-   * setter for promtp 
-   * 
-   * @param p 
-   */
-  public void prompt(String p)
+	/** 
+	 * setter for promtp 
+	 * 
+	 * @param p 
+	 */
+	public void prompt(String p)
 	{ set("prompt", p); }
-  /**
+	/**
 
 	 exit
 
 	 quit ans close the shell
 
 
-   */
-  public void exit()
-  {
-    rmRessource("pwd");
-		rmRessource("prompt");
+	 */
+	public void exit()
+	{
+		if (parentShell != null)
+		{
+			parentShell.rmChild();
+			parentShell = null;
+		}
+		else
+		{
+			rmRessource("pwd");
+			rmRessource("prompt");
 
-    running = false;
-    //System.out.println("set running to false....");
-  }//end exit
-  /** 
-   * ressources 
-   *
-   * equivalent to the environment variables of a shell....
-   TODO check with the other projects here a confusion 
+		}
+		//running = false;
+		//System.out.println("set running to false....");
+	}//end exit
+	/** 
+	 * ressources 
+	 *
+	 * equivalent to the environment variables of a shell....
+	 TODO check with the other projects here a confusion 
 	 between settings from config handler which are stored betweend 
 	 sessions and local vars that should be dropped::::
 	 changed now, be careful with other projects!! preferences is now called (instead of ressource) and it string only (will have to revert if necessary) and accesses shared prefs
-   * 
-   * @param envname 
-   */
-  public String preference(String envname)
-  {
+	 * 
+	 * @param envname 
+	 */
+	public String preference(String envname)
+	{
 		if (context == null) return envname;
 		SharedPreferences prefs = context.getSharedPreferences(
 			context.getPackageName(), Context.MODE_PRIVATE);
 		String result = prefs.getString(envname, envname);	
 		return(result);
-  }// public Object ressource(String envname)
+	}// public Object ressource(String envname)
 	@Override
 	public String preference(String locname, Object res)
 	{
 		if (context == null) return locname;
 		SharedPreferences prefs = context.getSharedPreferences(
-      context.getPackageName(), Context.MODE_PRIVATE);
+			context.getPackageName(), Context.MODE_PRIVATE);
 		if (res instanceof String) prefs.edit().putString(locname, (String)res).apply();
 		else if (res instanceof Integer) prefs.edit().putInt(locname, (Integer)res).apply();
 		return null;
 	}
-  /** 
-   * rmRessources 
-   *
-   * equivalent to the rm environment variables of a shell....
-   * 
-   * @param envname 
-   */
-  public java.lang.Object rmRessource(String envname)
-  {
-    Object result = null;
-    if (localVars.containsKey(envname)) result = localVars.remove(envname);
-    return(result);
+	/** 
+	 * rmRessources 
+	 *
+	 * equivalent to the rm environment variables of a shell....
+	 * 
+	 * @param envname 
+	 */
+	public java.lang.Object rmRessource(String envname)
+	{
+		Object result = null;
+		if (localVars.containsKey(envname)) result = localVars.remove(envname);
+		return(result);
 		/* TODO when we switch over to android library
 		 SharedPreferences mySPrefs =PreferenceManager.getDefaultSharedPreferences(this);
 		 SharedPreferences.Editor editor = mySPrefs.edit();
 		 editor.remove(String key);
 		 editor.apply();
 		 */
-  }// public Object rmRessource(String envname)
-  /** 
-   * get 
-   *
-   * equivalent to the environment variables of a shell....
-   * 
-   * @param envname 
-   * @param envname 
-   * @return the objet of the setting to get
-   */
+	}// public Object rmRessource(String envname)
+	/** 
+	 * get 
+	 *
+	 * equivalent to the environment variables of a shell....
+	 * 
+	 * @param envname 
+	 * @param envname 
+	 * @return the objet of the setting to get
+	 */
 	public Object get(String varname)
 	{
-    return(localVars.get(varname));
+		return(localVars.get(varname));
 	}
 	public Map<String,Object> getAll()
 	{
-    return(localVars);
+		return(localVars);
 	}
 
 	/** 
-   * ressources 
-   *
-   * equivalent to the environment variables of a shell....
-   * 
-   * @param envname 
-   * @param envname 
-   */
+	 * ressources 
+	 *
+	 * equivalent to the environment variables of a shell....
+	 * 
+	 * @param envname 
+	 * @param envname 
+	 */
 	public Object set(String varname, Object value)
 	{
 		if (varname == null) return(value);
-    return(localVars.put(varname, value));
+		return(localVars.put(varname, value));
 	}
 	/** 
-   * prototype for a help function 
-   * 
-   * @return 
-   */
-  public String help()
-  {
+	 * prototype for a help function 
+	 * 
+	 * @return 
+	 */
+	public String help()
+	{
 
-    return("");
-  }//end help
-  /** 
-   * returns the message associated with a token
-   * 
-   * @param  resourceId
-   * @return 
-   */
-  public String msg(int resourceId)
-  {
+		return(cmdParser.help());
+	}//end help
+	/** 
+	 * returns the message associated with a token
+	 * 
+	 * @param  resourceId
+	 * @return 
+	 */
+	public String msg(int resourceId)
+	{
 		if (context == null) return "no context";
 		return(context.getResources().getString(resourceId));
-  }// public String msg(String m)
-  /** 
-   * returns the message associated with a token
-   * 
-   * @param m 
-   * @return 
-   */
-  public String msg(String m)
-  {
+	}// public String msg(String m)
+	/** 
+	 * returns the message associated with a token
+	 * 
+	 * @param m 
+	 * @return 
+	 */
+	public String msg(String m)
+	{
 		if (context == null) return m;
 
 		try
@@ -436,31 +463,31 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 					System.out.println("cmd was null??");
 			}
 	}//public void run()
-  /**
+	/**
 	 read: 
 	 read a line of commands
-   */
-  public String read()
-  {
-    //TODO at the moment we drop the batchfile func and drop the buggy Input Stream stuff
-    /** now initialise the loop that will read from the inputStream until
-     *exhaustion */
+	 */
+	public String read()
+	{
+		//TODO at the moment we drop the batchfile func and drop the buggy Input Stream stuff
+		/** now initialise the loop that will read from the inputStream until
+		 *exhaustion */
 		if (in == null)
 		{
 			Log.e(TAG, "oyoyoy??? no input field given....");
 			return "";
 		}
-    String inputLine = "";
+		String inputLine = "";
 		//TODO we can't wait here.... we should put the question in the prompt after saving a backup, 
 		//and notify the eventhandler callback that we are waiting for an answer....
 		//means asynchronous working... we have to store the next workflow until we get an answer...
 
-    if (scanType != null && scanType.equals("numeric"))
-    {
-      print(msg(R.string.numeric_asked));
-      boolean isNumeric = false;
-      do
-      {
+		if (scanType != null && scanType.equals("numeric"))
+		{
+			print(msg(R.string.numeric_asked));
+			boolean isNumeric = false;
+			do
+			{
 				try
 				{
 					inputLine = Double.parseDouble(in.getText().toString()) + "";
@@ -471,16 +498,16 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 					print(msg(R.string.not_a_numeric) + "\n>");
 					isNumeric = false;
 				}// catch(InputMismatchException e)
-      }
-      while(isNumeric == false);
-      scanType = null;
-    }// if(scanType != null && scanType.equals("numeric"))
-    else if (scanType != null && scanType.equals("int"))
-    {
-      print(msg(R.string.question_is_int));
-      boolean isNumeric = false;
-      do
-      {
+			}
+			while(isNumeric == false);
+			scanType = null;
+		}// if(scanType != null && scanType.equals("numeric"))
+		else if (scanType != null && scanType.equals("int"))
+		{
+			print(msg(R.string.question_is_int));
+			boolean isNumeric = false;
+			do
+			{
 				try
 				{
 					inputLine = Integer.parseInt(in.getText().toString()) + "";
@@ -491,15 +518,15 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 					print(msg("not_a_int") + "\n>");
 					isNumeric = false;
 				}// catch(InputMismatchException e)
-      }
-      while(isNumeric == false);
-      scanType = null;
-    }// if(scanType != null && scanType.equals("numeric"))
-    else
-      inputLine = in.getText().toString();
-    //print("read: scanner returned '"+inputLine+"'\n");
-    return(inputLine);
-  }//end private String ReadFile(FileInputStream a)
+			}
+			while(isNumeric == false);
+			scanType = null;
+		}// if(scanType != null && scanType.equals("numeric"))
+		else
+			inputLine = in.getText().toString();
+		//print("read: scanner returned '"+inputLine+"'\n");
+		return(inputLine);
+	}//end private String ReadFile(FileInputStream a)
 	/**
 	 * onEditorAction
 	 * @param tw, the view the event happened
@@ -554,8 +581,7 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 				ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
 				executeCommands(toWorkOf);	
 			}
-    }
-
+		}
 
 		return true;
 	}
@@ -571,6 +597,8 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 	{
 		//sous traite l'evenement si pertinent
 		boolean result = false;
+		if (actQuestion != null && actQuestion instanceof KeyPressListener) 
+			Log.d(TAG, "forwarding keyevent");
 		if (actQuestion != null && actQuestion instanceof KeyPressListener) 
 			result = ((KeyPressListener)actQuestion).onKey(v, keyCode, event);
 		if (result == true) return false;
@@ -641,7 +669,6 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 				{
 					print("couldn't parse " + incoming);
 				}
-
 			}
 			else
 				print("uhm tab key but not from the edittext??");
@@ -650,37 +677,34 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 		else if (keyCode == KeyEvent.KEYCODE_INSERT && event.getAction() == KeyEvent.ACTION_DOWN)
 		{
 			overwrite = !overwrite;
-			if(overwrite) print(msg(R.string.shell_changetooverwrite));
+			if (overwrite) print(msg(R.string.shell_changetooverwrite));
 			else  print(msg(R.string.shell_changetoinsert));
  			setInputMode(overwrite);
 		}
 		//}
 		return false;
 	}
-
-
-
-  //------------------------------------------------------------------
-  public void fedThroughString(String aBatch)
-  {
+	//------------------------------------------------------------------
+	public void fedThroughString(String aBatch)
+	{
 		//TODO implement later...
 
 		ArrayList<CommandI> toWorkOf = cmdParser.parse(aBatch);
 
 		executeCommands(toWorkOf);
 		//for(It
-    //in = new StringBufferInputStream(aBatch);
-    //  catch (IOException e)
-    //  {
-    //     print("#OpenFile : " + e+"\n");
-    //     exit(0);
-    //  }//end catch (IOException e)
-    batchMode = true;
-  }//public void fedThroughFile(String aFile)
-  //------------------------------------------------------------------
-  public void fedThroughFile(String aFile)
-  {
-    batchMode = true;
+		//in = new StringBufferInputStream(aBatch);
+		//  catch (IOException e)
+		//  {
+		//     print("#OpenFile : " + e+"\n");
+		//     exit(0);
+		//  }//end catch (IOException e)
+		batchMode = true;
+	}//public void fedThroughFile(String aFile)
+	//------------------------------------------------------------------
+	public void fedThroughFile(String aFile)
+	{
+		batchMode = true;
 		try
 		{
 			String content = new Scanner(new File(aFile)).useDelimiter("\\Z").next();
@@ -693,17 +717,17 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 			print("#The file couln't be found\n");
 
 		}
-  }//public void fedThroughFile(String aFile)
-  //------------------------------------------------------------------
+	}//public void fedThroughFile(String aFile)
+	//------------------------------------------------------------------
 
-  //------------------------------------------------------------------
-  protected void print(Object something)
-  {
+	//------------------------------------------------------------------
+	protected void print(Object something)
+	{
 		print(something.toString());
-  }//protected void print(String something)
-  //------------------------------------------------------------------
-  public void print(String something)
-  {
+	}//protected void print(String something)
+	//------------------------------------------------------------------
+	public void print(String something)
+	{
 		if (something == null) something = "";
 		//Log.d(TAG,"res\n"+something);
 
@@ -749,27 +773,27 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 			}
 			out.invalidate();
 		}
-  }//protected void print(String something)
+	}//protected void print(String something)
 	//------------------------------------------------------------------
-  //public void setEditTextFocus(EditText searchEditText, boolean isFocused)
+	//public void setEditTextFocus(EditText searchEditText, boolean isFocused)
 	public void setEditTextFocus(EditText searchEditText)
 	{
 		boolean isFocused = true;
-    searchEditText.setCursorVisible(isFocused);
-    searchEditText.setFocusable(isFocused);
-    searchEditText.setFocusableInTouchMode(isFocused);
-    //if (isFocused) {
-			searchEditText.requestFocus();
-    //} else {
+		searchEditText.setCursorVisible(isFocused);
+		searchEditText.setFocusable(isFocused);
+		searchEditText.setFocusableInTouchMode(isFocused);
+		//if (isFocused) {
+		searchEditText.requestFocus();
+		//} else {
 		//	InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE); 
 		//	inputManager.hideSoftInputFromWindow(searchEditText.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS );
-    //}
+		//}
 	} 
 	//------------------------------------------------------------------
-  public void error(String aMessage) 
-  {
-    Log.e(TAG, "Error:" + aMessage);
-  }//public void error(String aMessage) 
+	public void error(String aMessage) 
+	{
+		Log.e(TAG, "Error:" + aMessage);
+	}//public void error(String aMessage) 
 	//------------------------------------------------------------------
 	public void exit(String aMessage)
 	{
@@ -880,42 +904,42 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 	public void askNum(String question, CommandI caller)
 	{
 		actQuestion = caller;
-    scanType = "numeric";
-    ask(question, caller);
+		scanType = "numeric";
+		ask(question, caller);
 		//return(ask(question,caller));
 	}// public String askNum(String question)
 	public void askNum(String question, String defaultValue, CommandI caller) 
 	{
 		actQuestion = caller;
-    scanType = "numeric";
-    ask(question, defaultValue, caller);
+		scanType = "numeric";
+		ask(question, defaultValue, caller);
 		//return(ask(question, defaultValue),caller);
 	}// public String askNum(String question)
 	public void askNum(String question, HashMap<String,Object> options, CommandI caller) 
 	{
 		actQuestion = caller;
-    scanType = "numeric";
-    ask(question, options, caller);
+		scanType = "numeric";
+		ask(question, options, caller);
 		//return(ask(question, options));
 	}// public String askNum(String question,HashMap<String,Object> options) 
-  /** Load a filename, parse it and instantiate the correkt elements, using
-   * the Member datastring MemberClassName for the instantiation, generic
-   * code that is able to load JournalEintrag, as well as KontoEintrag or
-   * Currencies...
-   * 
-   * @param baseName 
-   */
-  public void load(String baseName)
-  {
-  }//public boolean load(String baseName)
-  public void load()
-  {
-  }//public boolean load(String baseName)
-  public void save()
-  {
-  }// public void save()
-	public boolean isRunning()
-	{ return(running);}
+	/** Load a filename, parse it and instantiate the correkt elements, using
+	 * the Member datastring MemberClassName for the instantiation, generic
+	 * code that is able to load JournalEintrag, as well as KontoEintrag or
+	 * Currencies...
+	 * 
+	 * @param baseName 
+	 */
+	public void load(String baseName)
+	{
+	}//public boolean load(String baseName)
+	public void load()
+	{
+	}//public boolean load(String baseName)
+	public void save()
+	{
+	}// public void save()
+	//public boolean isRunning()
+	//{ return(running);}
 	/**
 	 *
 	 *  feedCmds
@@ -1018,8 +1042,8 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 	}
 	private boolean listAssetFiles(String path) 
 	{
-    String [] list;
-    try
+		String [] list;
+		try
 		{
 			list = context.getResources().getAssets().list(path);
 			if (list.length > 0) 
@@ -1038,12 +1062,12 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 				// TODO: add file name to an array list
 				//Log.d(TAG, "asset single file : " + path);
 			}
-    }
+		}
 		catch (IOException e)
 		{
 			return false;
-    }
-    return true; 
+		}
+		return true; 
 	} 
 
 	public void beep()
@@ -1055,14 +1079,131 @@ public class Shell implements Cloneable,ShellI,OnEditorActionListener,OnKeyListe
 	public void endQuestion()
 	{
 		actQuestion = null;
+		Log.d(TAG, "stopping forwarding");
 	}
 	@Override
 	public void setInputMode(boolean overwrite)
 	{
-		if(watcher == null) watcher = new ShellTextWatcher();
+		if (watcher == null) watcher = new ShellTextWatcher();
 		watcher.setOverwrite(overwrite);
-		if(in != null) in.addTextChangedListener(watcher);
+		if (in != null) in.addTextChangedListener(watcher);
+	}
+	@Override
+	public void restoreState(Bundle savedInstanceState)
+	{
+		Log.d(TAG, "restoring state");		
+		if (savedInstanceState == null)
+		{
+			Log.e(TAG, "no bundle to restore from");
+			return;
+		}
+		scanType = savedInstanceState.getString("scanType");
+		batchMode = savedInstanceState.getBoolean("batchMode");
+		//running = savedInstanceState.getBoolean("running");
+		overwrite = savedInstanceState.getBoolean("overwrite");
+		maxLines = savedInstanceState.getInt("maxLines");
+		maxHistory = savedInstanceState.getInt("maxHistory");
+		histNavigation = savedInstanceState.getInt("histNavigation");
+		screenContent = savedInstanceState.getStringArrayList("screenContent");
+		history = savedInstanceState.getStringArrayList("history");
+		ArrayList<String> varnames = savedInstanceState.getStringArrayList("localVarNames");
+		ArrayList<String> varval = savedInstanceState.getStringArrayList("localVarValues");
+
+		if (localVars == null)
+		{
+			Log.e(TAG, "no localVars to restore to....");
+			return;
+		}
+		int index = 0;
+		for (String name : varnames)
+		{
+			localVars.put(name, varval.get(index));
+			index++;
+		}
+		print("restored");
 	}
 
-	
+	@Override
+	public void saveState(Bundle savedInstanceState)
+	{
+		Log.d(TAG, "saving state");
+		if (savedInstanceState == null)
+		{
+			Log.e(TAG, "no bundle to save to");
+			return;
+		}
+		savedInstanceState.putString("scanType", scanType);
+		savedInstanceState.putBoolean("batchMode", batchMode);
+		//savedInstanceState.putBoolean("running", running);
+		savedInstanceState.putBoolean("overwrite", overwrite);
+		savedInstanceState.putBoolean("overwrite", overwrite);
+		savedInstanceState.putInt("maxLines", maxLines);
+		savedInstanceState.putInt("maxHistory", maxHistory);
+		savedInstanceState.putInt("histNavigation", histNavigation);
+		savedInstanceState.putStringArrayList("screenContent", screenContent);
+		savedInstanceState.putStringArrayList("history", history);
+		ArrayList<String> varnames = new ArrayList<String>();
+		ArrayList<String> varval = new ArrayList<String>();
+		for (String name : localVars.keySet())
+		{
+			if (localVars.get(name) instanceof String)
+			{
+				varnames.add(name);
+				varval.add((String)localVars.get(name));
+			}
+		}
+		savedInstanceState.putStringArrayList("localVarNames", varnames);
+		savedInstanceState.putStringArrayList("localVarValues", varval);
+	}
+	@Override
+	public void setContext(MsgR2StringI c)
+	{
+		context = c;
+	}
+	@Override
+	public void clearCmds()
+	{
+		cmdParser.clearCmds();
+	}
+	@Override
+	public void parseMode(String p0)
+	{
+		cmdParser.parseMode(p0);
+	}
+	@Override
+	public void setChild(ShellI actShell)
+	{
+		// seems no need for this if (childShell != null) childShell.setInOut(null, null);
+
+    childShell = actShell;
+		if (childShell != null) childShell.setInOut(in, out);
+	}
+	/**
+	 destroy the reference to the child shell, and re-establish the listeners, 
+	 responsible for the event loop of the shell to this one
+
+	 */
+	@Override
+	public ShellI rmChild()
+	{
+		ShellI result = childShell;
+		//seems there's no need to remove the listener if (childShell != null) childShell.setInOut(null, null);
+		childShell = null;
+		if (in != null)
+		{
+			in.setOnEditorActionListener(this);
+			in.setOnKeyListener(this);
+		}
+		return result;
+	}
+
+	@Override
+	public void setParent(ShellI s)
+	{
+		parentShell = s;
+		if (parentShell != null) parentShell.setChild(this);
+	}
+
+
+
 }//public class Shell

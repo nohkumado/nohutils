@@ -31,6 +31,12 @@ package com.nohkumado.nohutils;
 import java.util.*;
 public  interface CommandParserI //extends com.gnu.jtrader.EventGeneratorI
 {
+
+	public void parseMode(String p0);
+
+
+	public void clearCmds();
+
   /** -------------------------- init --------------------------
    *
    */
