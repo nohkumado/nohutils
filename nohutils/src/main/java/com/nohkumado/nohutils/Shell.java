@@ -105,6 +105,19 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public ShellI cpyCtor()
 	{
 		Shell cpy = new Shell(context, null);
+		for(String key: localVars.keySet())
+		{
+			Object value = localVars.get(key);
+			//if(value instanceof Cloneable)
+			//cpy.set(key,((Cloneable)value).clone());
+			//else 
+				cpy.set(key,value);
+			
+		}
+		cpy.set("prompt", "$");
+		
+		set("shell", this);
+		
 		return cpy;
 	}// public Shell()
 

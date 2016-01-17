@@ -40,6 +40,9 @@ import java.util.regex.*;
 public interface CommandI extends Cloneable,PipableI
 {
 
+	public CommandI clone();
+
+
 	public Pattern pattern();
 
 	/** 

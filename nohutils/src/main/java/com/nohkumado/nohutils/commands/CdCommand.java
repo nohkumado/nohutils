@@ -151,7 +151,7 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
     return(shell.msg(R.string.cd_help) + "\n");
   }//end help
 	//make a copy of this object
-	public Object clone()
+	public CdCommand clone()
 	{
 		//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
 		CdCommand cloned = (CdCommand)super.clone();
