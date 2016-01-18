@@ -8,7 +8,7 @@ import com.nohkumado.nohutils.*;
 import java.util.*;
 import com.nohkumado.nohutils.commands.*;
 
-public class MainActivity extends Activity 
+public class MainActivity extends Msg2RString
 {
 	protected Shell shell = null;
 	private final static String TAG ="MA";

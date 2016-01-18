@@ -1,1 +1,5 @@
 include ':app'
+
+project(':nohutils').projectDir = new File(rootProject.projectDir, '../UtilsApp/nohutils')
+include ':nohutils'   
+
