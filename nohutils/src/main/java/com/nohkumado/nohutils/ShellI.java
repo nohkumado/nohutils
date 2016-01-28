@@ -49,6 +49,7 @@ public ShellI cpyCtor();
 	public void parseMode(String mode);
 	public void clearCmds();
 	public void setContext(MsgR2StringI context);
+	public MsgR2StringI getContext();
 	public void restoreState(Bundle savedInstanceState);
 	public void saveState(Bundle savedInstanceState);
 	public void setInputMode(boolean p0);

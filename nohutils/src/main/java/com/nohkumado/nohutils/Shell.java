@@ -32,18 +32,18 @@ package com.nohkumado.nohutils;
 
 import android.content.*;
 import android.content.res.*;
+import android.os.*;
+import android.text.*;
 import android.util.*;
 import android.view.*;
 import android.view.View.*;
-import android.view.inputmethod.*;
 import android.widget.*;
 import android.widget.TextView.*;
+import com.nohkumado.nohutils.foreign.*;
 import java.io.*;
 import java.util.*;
 
 import android.view.View.OnKeyListener;
-import com.nohkumado.nohutils.foreign.*;
-import android.os.*;
 
 /*
  TODO
@@ -759,9 +759,31 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		}//Log.d(TAG, "maxlines = " + maxLines);
 		if (screenContent.size() > maxLines) 
 			while (screenContent.size() > maxLines) screenContent.remove(0);
+		//determine visible part of screen
+		int height    = out.getHeight();
+		int scrollY   = out.getScrollY();
+		Layout layout = out.getLayout();
+
+		int firstVisibleLineNumber = layout.getLineForVertical(scrollY);
+		int lastVisibleLineNumber  = layout.getLineForVertical(scrollY+height);
+		
+		Log.d(TAG,"first visinble : "+firstVisibleLineNumber+" last visible "+lastVisibleLineNumber);
+		
+		
+		//encheck for lines
+		
 		StringBuilder sb = new StringBuilder();
+		
+		if(height > maxLines)
 		for (String s : screenContent)
 		{
+			//Log.d(TAG,"adding line '"+s+"'");
+			sb.append(s);
+			sb.append("\n");
+		}
+		else for(int i = Math.max(screenContent.size() - height,0); i < screenContent.size(); i++)
+		{
+			String s = screenContent.get(i);
 			//Log.d(TAG,"adding line '"+s+"'");
 			sb.append(s);
 			sb.append("\n");
@@ -1172,6 +1194,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public void setContext(MsgR2StringI c)
 	{
 		context = c;
+	}
+	public MsgR2StringI getContext()
+	{
+		return context;
 	}
 	@Override
 	public void clearCmds()

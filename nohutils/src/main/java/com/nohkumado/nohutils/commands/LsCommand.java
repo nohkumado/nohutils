@@ -224,7 +224,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
   public LsCommand clone()
   {
     LsCommand cloned = (LsCommand)super.clone();
-		cloned.filter = new PatternFileFilter(filter.toString());
+		if(filter != null) cloned.filter = new PatternFileFilter(filter.toString());
 		
     return cloned;
   }//public Object clone()

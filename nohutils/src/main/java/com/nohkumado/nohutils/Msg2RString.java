@@ -4,6 +4,7 @@ import android.app.*;
 import android.content.res.*;
 import android.media.*;
 import android.util.*;
+import android.webkit.*;
 
 public class Msg2RString extends Activity implements MsgR2StringI
 {
@@ -80,5 +81,13 @@ public class Msg2RString extends Activity implements MsgR2StringI
 		 {Log.e(TAG, "io ex: " + ia);}
 		 */
 	}
+	
+	@Override
+	public void display(String path, String type)
+	{
+		Log.e(TAG,"don't know how to display "+type+" for "+path);
+	}
+
+
 	
 }

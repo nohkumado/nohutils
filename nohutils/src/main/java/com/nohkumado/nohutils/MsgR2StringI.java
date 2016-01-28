@@ -6,6 +6,9 @@ import java.io.*;
 
 public interface MsgR2StringI
 {
+
+	public void display(String path, String type);
+
 	public String msg(int stringid);
 	public String msg(String stringid);
 	//from Context...
