@@ -767,7 +767,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		int firstVisibleLineNumber = layout.getLineForVertical(scrollY);
 		int lastVisibleLineNumber  = layout.getLineForVertical(scrollY+height);
 		
-		Log.d(TAG,"first visinble : "+firstVisibleLineNumber+" last visible "+lastVisibleLineNumber);
+		//Log.d(TAG,"first visinble : "+firstVisibleLineNumber+" last visible "+lastVisibleLineNumber);
 		
 		
 		//encheck for lines
