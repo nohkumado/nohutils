@@ -119,9 +119,24 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 		{
 			if(shell.get("home") != null) path = shell.get("home").toString();
 			else path = System.getProperty("user.dir");
+			return("");
 		}
-	//	if (line.length() <= 0) 
-		else if (line.matches(".."))
+	//	if (line.length() <= 0)
+		File newpos;
+		if (!path.startsWith("/")) newpos = new File((String)shell.get("pwd"),line);
+		else newpos = new File(line);
+		
+		try
+		{
+			path = newpos.getCanonicalPath();
+		}
+		catch (IOException e)
+		{
+			Log.e(TAG,"no such path :"+newpos.getAbsolutePath());
+			shell.print("no such path :"+newpos.getAbsolutePath());
+		}
+
+		/*if (line.matches(".."))
 		{
 			String pwd = (String)shell.get("pwd");
 			Log.d(TAG, "got pwd from shell: " + pwd);
@@ -135,6 +150,7 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 			path = pwd;
 		}// if(line.matches(".."))
 		else path = line;
+		*/
 		Log.d(TAG, "about to move into " + path);
 		Log.d(TAG, "locally " + this.path+" from parent '"+super.path+"'");
 		return("");

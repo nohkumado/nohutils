@@ -52,8 +52,11 @@ public abstract class NTreeAtom<E>
 
 	public E getContent()
 	{
+		// TODO: Implement this method
 		return null;
 	}
+
+	
 	public NTreeAtom remove(String path)
 	{
 		Log.e(TAG,"we shouldn't be calling remove on a leave...");

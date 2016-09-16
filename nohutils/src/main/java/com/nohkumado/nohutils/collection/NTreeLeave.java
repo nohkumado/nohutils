@@ -27,15 +27,8 @@ package com.nohkumado.nohutils.collection;
 */
 public class NTreeLeave<E> extends NTreeAtom<E> 
 {
-
 	protected E content;
-
-
-	public void setE(E e)
-	{
-		this.content = e;
-	}
-
+	
 	public E getE()
 	{
 		return content;
@@ -48,6 +41,11 @@ public class NTreeLeave<E> extends NTreeAtom<E>
 		return this;
 	}
 
+	@Override
+	public E getContent()
+	{
+		return content;
+	}
 
 	@Override
 	public String toString(String indent)

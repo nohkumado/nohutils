@@ -32,7 +32,7 @@ import java.util.regex.*;
  */
 public class NTreeNode<E>  extends NTreeAtom<E> 
 {
-	protected HashMap<String, NTreeAtom> childs = new HashMap<String, NTreeAtom>();
+	protected HashMap<String, NTreeAtom<E>> childs = new HashMap<String, NTreeAtom<E>>();
 	protected Pattern slash = Pattern.compile("/");
 	public static final String TAG = "NTN";
 
@@ -40,7 +40,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 	 * remove a subtree
 	 */
 	@Override
-	public NTreeAtom remove(String path)
+	public NTreeAtom<E> remove(String path)
 	{
 		Matcher match = slash.matcher(path);
 		//String[] splitted = path.split("/");
@@ -49,7 +49,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			int excise = path.indexOf("/");
 			String localKey = path.substring(0, excise);
 
-			NTreeAtom child = childs.get(localKey);
+			NTreeAtom<E> child = childs.get(localKey);
 			if (child != null)
 			{
 				return child.remove(path.substring(excise + 1));
@@ -63,9 +63,9 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 	 * get an atom, use a / separated path to navigate in the tree
 	 */
 	@Override
-	public NTreeAtom get(String path)
+	public NTreeAtom<E> get(String path)
 	{
-		Log.d(TAG, "asked for " + path);
+		//Log.d(TAG, "asked for " + path);
 		if (path.equals("")) return  this;
 
 		//String[] splitted = path.split("/");
@@ -75,18 +75,18 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			int excise = path.indexOf("/");
 			String localKey = path.substring(0, excise);
 			String restPath = path.substring(excise + 1);
-			Log.d(TAG, "extracted local key: " + localKey + " / " + restPath);
+			//Log.d(TAG, "extracted local key: " + localKey + " / " + restPath);
 
-			NTreeAtom child = childs.get(localKey);
+			NTreeAtom<E> child = childs.get(localKey);
 			if (child != null)
 			{
 				return child.get(restPath);
 			}
-			Log.d(TAG, "nothing found under this path..");
-			Log.d(TAG, "this node... " + this);
+			//Log.d(TAG, "nothing found under this path..");
+			//Log.d(TAG, "this node... " + this);
 			return null;
 		}
-		Log.d(TAG, "returning leave " + path);
+		//Log.d(TAG, "returning leave " + path);
 		return childs.get(path);
 	}
 
@@ -117,10 +117,10 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 	 * create intermediary nodes if necessary
 	 */
 	@Override
-	public NTreeAtom set(E aProfile, String path)
+	public NTreeAtom<E> set(E aProfile, String path)
 	{
-		NTreeAtom child = null;
-		Log.d(TAG, "setting profile in node " + path);
+		NTreeAtom<E> child = null;
+		//Log.d(TAG, "setting profile in node " + path);
 		String localKey = path;
 		String restPath = "";
 
@@ -130,10 +130,10 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			int excise = path.indexOf("/");
 			localKey = path.substring(0, excise);
 			restPath = path.substring(excise + 1);
-			Log.d(TAG, "set extracted local key: " + localKey + " rest " + restPath);
+			//Log.d(TAG, "set extracted local key: " + localKey + " rest " + restPath);
 		}
 
-		Log.d(TAG, "splitted path into " + localKey + " / " + restPath);
+		//Log.d(TAG, "splitted path into " + localKey + " / " + restPath);
 
 
 		if (restPath != null && restPath.length() > 0)
@@ -141,22 +141,21 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			child = childs.get(localKey);
 			if (child == null)
 			{
-				Log.d(TAG, "creating new node " + localKey);
-				child = new NTreeNode();
+				//Log.d(TAG, "creating new node " + localKey);
+				child = new NTreeNode<E>();
 				childs.put(localKey, child);
 			}
 			child = child.set(aProfile, restPath);
 		}
 		else
 		{
-			Log.d(TAG, "am leave ");
+			//Log.d(TAG, "am leave ");
 
 			child = childs.get(path);
 			if (child == null)
 			{
-				Log.d(TAG, "creating leave " + path);
-
-				child = new NTreeLeave();
+				//Log.d(TAG, "creating leave " + path);
+				child = new NTreeLeave<E>();
 				childs.put(path, child);
 			}
 			child.setContent(aProfile);
@@ -164,7 +163,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 		return child;
 	}
 
-	public NTreeAtom set(E aProfile, String path, String name)
+	public NTreeAtom<E> set(E aProfile, String path, String name)
 	{
 		if (path != null && path.length() > 0) path += "/" + name;
 		else path = name;
