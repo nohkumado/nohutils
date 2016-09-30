@@ -55,7 +55,7 @@ import android.view.View.OnKeyListener;
 public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 {
 	protected HashMap<String,Object> localVars = new HashMap<String,Object>();
-	protected ArrayList<String> screenContent = null;
+	protected ArrayList<String> screenContent = new ArrayList<String>();
 	protected CommandParserI cmdParser = null;
 	protected  TextView out = null;
 	protected  EditText in = null;
@@ -742,7 +742,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public void print(String something)
 	{
 		if (something == null) something = "";
-		//Log.d(TAG,"res\n"+something);
+		//Log.d(TAG,"print:"+something);
 
 		something = something.trim();
 		//Log.d(TAG,"print after trim '"+something+"'");
@@ -756,7 +756,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				screenContent.add(line);
 				//Log.d(TAG,"l:'"+line+"'");
 			}
-		}//Log.d(TAG, "maxlines = " + maxLines);
+		}
+		//Log.d(TAG, "maxlines = " + maxLines);
 		if (screenContent.size() > maxLines) 
 			while (screenContent.size() > maxLines) screenContent.remove(0);
 		//determine visible part of screen
@@ -770,16 +771,18 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		{
 			firstVisibleLineNumber = layout.getLineForVertical(scrollY);
 			lastVisibleLineNumber  = layout.getLineForVertical(scrollY+height);
+			//Log.d(TAG,"first visinble : "+firstVisibleLineNumber+" last visible "+lastVisibleLineNumber);
 		}
+		//else Log.d(TAG,"no layout to determine size.... ");
 		
-		//Log.d(TAG,"first visinble : "+firstVisibleLineNumber+" last visible "+lastVisibleLineNumber);
+		//Log.d(TAG,"height : "+height);
 		
 		
 		//encheck for lines
 		
 		StringBuilder sb = new StringBuilder();
 		
-		if(height > maxLines)
+		if(height > maxLines || height == 0)
 		for (String s : screenContent)
 		{
 			//Log.d(TAG,"adding line '"+s+"'");
