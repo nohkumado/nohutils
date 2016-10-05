@@ -48,7 +48,7 @@ public class SetCommand extends Command implements Cloneable, CommandI
   public SetCommand(ShellI s)
   {
     super(s);
-		if(s != null) name = s.msg(R.string.set);
+		if (s != null) name = s.msg(R.string.set);
   }// public Command()
 
   public SetCommand(ShellI s, String n)
@@ -83,14 +83,11 @@ public class SetCommand extends Command implements Cloneable, CommandI
       HashMap<String,Object> environment = (HashMap<String, Object>) shell.getAll();
       for (Iterator<String> e = environment.keySet().iterator(); e.hasNext();)
       {
+
 				String argName = e.next();
-				result += argName + " : " + environment.get(argName) + "\n";
-      }// for(Iterator<String> e = environment.keySet().iterator(); e.hasNext();)
-      result += shell.msg(R.string.variables) + "\n";
-      Map<String,Object> locenvironment = (Map<String,Object>)shell.getAll();
-			for (Map.Entry<String, Object> entry : locenvironment.entrySet())
-      {
-				result += entry.getKey() + " : " + entry.getValue() + "\n";
+				//TODO put this into a hiddenVars array....
+				if (!(argName.equals("shell") ||  argName.equals("msger") ||  argName.equals("Fibu")))
+					result += argName + " : " + environment.get(argName) + "\n";
       }// for(Iterator<String> e = environment.keySet().iterator(); e.hasNext();)
       result += shell.msg(R.string.endlist) + "\n";
     }// else

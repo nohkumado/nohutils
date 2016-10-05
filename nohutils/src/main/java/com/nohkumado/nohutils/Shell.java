@@ -33,6 +33,7 @@ package com.nohkumado.nohutils;
 import android.content.*;
 import android.content.res.*;
 import android.os.*;
+import android.preference.*;
 import android.text.*;
 import android.util.*;
 import android.view.*;
@@ -345,8 +346,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public String preference(String envname)
 	{
 		if (context == null) return envname;
-		SharedPreferences prefs = context.getSharedPreferences(
-			context.getPackageName(), Context.MODE_PRIVATE);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences((Context)context);
+		
+		//SharedPreferences prefs = context.getSharedPreferences(
+		//	context.getPackageName(), Context.MODE_PRIVATE);
 		String result = prefs.getString(envname, envname);	
 		return(result);
 	}// public Object ressource(String envname)
@@ -354,8 +357,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public String preference(String locname, Object res)
 	{
 		if (context == null) return locname;
-		SharedPreferences prefs = context.getSharedPreferences(
-			context.getPackageName(), Context.MODE_PRIVATE);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences((Context)context);
+		
+		//SharedPreferences prefs = context.getSharedPreferences(
+		//	context.getPackageName(), Context.MODE_PRIVATE);
 		if (res instanceof String) prefs.edit().putString(locname, (String)res).apply();
 		else if (res instanceof Integer) prefs.edit().putInt(locname, (Integer)res).apply();
 		return null;
