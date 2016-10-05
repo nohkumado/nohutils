@@ -84,6 +84,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	private boolean overwrite = false;
 
 	protected ShellI parentShell, childShell = null;
+	
+	protected Stack<String> promptStack = new Stack<String>();
+	
 	/** CTOR
 
 	 */
@@ -577,6 +580,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			//Log.d(TAG, "read extracted " + incoming);
 			if (actQuestion != null)
 			{
+				prompt(promptStack.pop());
 				CommandI toExe = actQuestion;
 				//TODO eventually her we should mitigate if its a keylistener we should rescind 
 				//from killing it, but we needa mechanism to tell that we don't need forwarding 
@@ -857,8 +861,19 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public void ask(String question, CommandI caller)
 	{
 		actQuestion = caller;
-		if (question.length() > 0) print(question + " ");
+		//print("should ask : "+question+", p:"+prompt());
+		
+		if (question.length() > 0) pushPrompt(question + " ");
+		prompt();
+		//print("prompt now "+prompt());
+			//print(question + " ");
 		//return(read());
+	}
+
+	private void pushPrompt(String question)
+	{
+		promptStack.push(prompt());
+		prompt(question);
 	}//public String ask()
 	/**
 	 * in fact read a line...
