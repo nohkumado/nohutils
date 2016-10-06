@@ -3,6 +3,7 @@ package com.nohkumado.nohutils;
 import android.content.*;
 import android.content.res.*;
 import java.io.*;
+import java.util.*;
 
 public interface MsgR2StringI
 {
@@ -18,4 +19,5 @@ public interface MsgR2StringI
 	public void startActivity (Intent intent);
 	public File getExternalFilesDir(String type);
 	public void playSound();
+	public String callback(String name, HashMap<String,Object> args);
 }

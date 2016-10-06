@@ -5,9 +5,18 @@ import android.content.res.*;
 import android.media.*;
 import android.util.*;
 import android.webkit.*;
+import java.util.*;
 
 public class Msg2RString extends Activity implements MsgR2StringI
 {
+
+	@Override
+	public String callback(String name, HashMap<String, Object> args)
+	{
+		// TODO: Implement this method
+		return null;
+	}
+	
 
 	public static final String TAG = "msg2Str";
 	

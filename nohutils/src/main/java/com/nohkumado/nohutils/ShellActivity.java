@@ -156,4 +156,12 @@ public class ShellActivity extends Activity implements MsgR2StringI
 	{
 		return shell;
 	}
+
+	@Override
+	public String callback(String name, HashMap<String, Object> args)
+	{
+		// TODO: Implement this method
+		return null;
+	}
+	
 }
