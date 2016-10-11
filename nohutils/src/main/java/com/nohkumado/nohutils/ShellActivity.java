@@ -80,6 +80,12 @@ public class ShellActivity extends Activity implements MsgR2StringI
 		int resourceId = getResources().getIdentifier(stringid, "strings", getPackageName());
 		return msg(resourceId);
 	}
+	@Override
+	public String[] msgArr(int resourceId)
+	{
+		return getResources().getStringArray(resourceId);
+	}
+	
 	/**
 	 */
 	public void playSound()

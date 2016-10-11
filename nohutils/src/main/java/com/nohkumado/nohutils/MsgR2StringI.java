@@ -8,6 +8,9 @@ import java.util.*;
 public interface MsgR2StringI
 {
 
+	public String[] msgArr(int resourceId);
+
+
 	public void display(String path, String type);
 
 	public String msg(int stringid);

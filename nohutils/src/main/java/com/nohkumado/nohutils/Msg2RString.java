@@ -9,7 +9,6 @@ import java.util.*;
 
 public class Msg2RString extends Activity implements MsgR2StringI
 {
-
 	@Override
 	public String callback(String name, HashMap<String, Object> args)
 	{
@@ -33,6 +32,15 @@ public class Msg2RString extends Activity implements MsgR2StringI
 		return("MSGNOTFOUND");
 	}
 
+	@Override
+	public String[] msgArr(int resourceId)
+	{
+		return(getResources().getStringArray(resourceId));
+	}
+
+
+	
+	
 	@Override
 	public String msg(String stringid)
 	{
