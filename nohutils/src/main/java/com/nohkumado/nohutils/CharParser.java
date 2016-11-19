@@ -30,6 +30,7 @@ public class CharParser
 		for (CommandI aCmd : parentParser.commands.values())
 		{
 			patterns.add(aCmd.pattern());
+      //Log.d(TAG,"added pattern "+aCmd.pattern());
 		}
 	}
 
@@ -38,7 +39,10 @@ public class CharParser
 		boolean  result = true;
 		errorMsg = errorCmd = "";
 		errorCode = 0;
-
+    line = line.trim();
+    
+    //Log.d(TAG,"char parsing  '"+line+"'");
+    
 		Matcher matcher;
 		int lineLength = 1;
 		do
@@ -51,22 +55,40 @@ public class CharParser
 				//seems irrelevant... especially since we can't be sure to get the right pattern for all commands...
 				if ((matcher = cmdPat.matcher(line)).find())
 				{
-					line = line.trim();
+          /*StringBuilder sb = new StringBuilder();
+          sb.append(cmdPat).append(" match '").append(line).append("'").append("\n");
+          sb.append("groups:");
+          for(int i = 0; i <= matcher.groupCount();i++)
+          {
+            sb.append(" group").append(i).append(" ").append(matcher.group(i));
+          }
+          Log.d(TAG,sb.toString());
+          */
+          String cmdPart = line.substring(0,matcher.start(1)); 
+          String argPart = matcher.group(1);
+          line = line.substring(matcher.end(1),line.length());
+          //Log.d(TAG," split into  '"+cmdPart+"' and '"+argPart+"' rest '"+line+"'");
+					
 					//dont forget to call the parse method of the command  
 					//need to split it up 
 					//TODO BTW here we add the parsing ehm... 
 					//since the Commands hold the shell, they dont need to get the heap 
 					//explicitely, no?
-					CommandI aCmd = parentParser.findCmd(line);
+					CommandI aCmd = parentParser.findCmd(cmdPart);
 					if (aCmd != null) 
 					{
-						line = aCmd.parse(line);
+						aCmd.parse(argPart);
 						resultStack.add(aCmd);
+            //Log.d(TAG," cmd '"+aCmd+"' added");
 					}
-					else result &= false;
+					else
+          {
+            //Log.d(TAG," cmd '"+line+"' not found");
+            result &= false;
+          }
 					continue;
 				}//if(line.matches("^(\\S+)\\s*$"))
-
+        //else Log.d(TAG,cmdPat+" fail '"+line+"'");
 			}//for(Pattern cmPat : patterns)
 			if (!result || cmd_count == resultStack.size())
 			{

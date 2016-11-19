@@ -46,13 +46,13 @@ public class ShellTextWatcher implements TextWatcher
 			if (mStart >= 0)
 			{
 				formatting = true;
-				Log.d(TAG, "afterTextChanged s " + mStart);
-				Log.d(TAG, "afterTextChanged e " + mEnd);
+				//Log.d(TAG, "afterTextChanged s " + mStart);
+				//Log.d(TAG, "afterTextChanged e " + mEnd);
 				s.replace(mStart, mEnd, "");
 				formatting = false;
 			}
 		}
-		else Log.d(TAG,"no formatting needed");
+		//else Log.d(TAG,"no formatting needed");
 	}
 	public void setOverwrite(boolean overwrite)
 	{

@@ -568,7 +568,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			histNavigation = 0;
 			//Log.d(TAG, "hit the enter key... calling read");
 			String incoming = tw.getText().toString().trim();
-			Log.d(TAG, "hit the enter key... got " + incoming);
+			//Log.d(TAG, "hit the enter key... got " + incoming);
 			//removing prompt from incoming line
 
 			String lastprompt = prompt();
@@ -578,10 +578,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			if (history.size() > maxHistory) 
 				while (history.size() > maxHistory) history.remove(0);
 
-			Log.d(TAG, "read extracted " + incoming);
+			//Log.d(TAG, "read extracted " + incoming);
 			if (actQuestion != null)
 			{
-        Log.d(TAG, "diverting to actquestion " + actQuestion);
+        //Log.d(TAG, "diverting to actquestion " + actQuestion);
 				if (!promptStack.empty()) prompt(promptStack.pop());
 				CommandI toExe = actQuestion;
 				//TODO eventually her we should mitigate if its a keylistener we should rescind 
@@ -600,10 +600,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				//Log.d(TAG,"should print out '"+incoming+"'");
 
 				print(incoming);
-				Log.d(TAG, "proceeding to parse");
+				//Log.d(TAG, "proceeding to parse");
 
 				ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
-        Log.d(TAG, "cmd list " + toWorkOf);
+        //Log.d(TAG, "cmd list " + toWorkOf);
         executeCommands(toWorkOf);	
 			}
 		}
