@@ -2,11 +2,15 @@ package com.nohkumado.nohutils;
 
 import android.content.*;
 import android.content.res.*;
+import android.database.sqlite.*;
 import java.io.*;
 import java.util.*;
 
 public interface MsgR2StringI
 {
+
+  public SQLiteOpenHelper getDbHelper();
+
 
 	public String[] msgArr(int resourceId);
 
@@ -23,4 +27,5 @@ public interface MsgR2StringI
 	public File getExternalFilesDir(String type);
 	public void playSound();
 	public String callback(String name, HashMap<String,Object> args);
+  public void runOnUiThread (Runnable action);
 }

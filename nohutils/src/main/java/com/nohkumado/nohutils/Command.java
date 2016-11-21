@@ -168,6 +168,6 @@ implements Cloneable, CommandI
 	@Override
 	public Pattern pattern()
 	{
-		return Pattern.compile("^(\\S+)\\s*$");
+		return Pattern.compile("^"+name+"\\s*$");
 	}
 }//public class Command

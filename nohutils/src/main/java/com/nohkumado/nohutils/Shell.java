@@ -816,17 +816,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		else 
 		{
 			//out.setText(Html.fromHtml(sb.toString()));
-			out.setText(sb.toString());
+      getContext().runOnUiThread(new PrintOnTextView(out,sb));
 
-			Object obj = out.getParent();
-			if (obj instanceof ScrollView)
-			{
-				ScrollView scroll_view = (ScrollView) obj;
-				DownScroller scroll = new DownScroller(scroll_view);
-				scroll_view.post(scroll);
-				scroll_view.fullScroll(View.FOCUS_DOWN);
-			}
-			out.invalidate();
 		}
 	}//protected void print(String something)
 	//------------------------------------------------------------------

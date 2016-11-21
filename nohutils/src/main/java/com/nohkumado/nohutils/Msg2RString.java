@@ -6,9 +6,20 @@ import android.media.*;
 import android.util.*;
 import android.webkit.*;
 import java.util.*;
+import android.database.sqlite.*;
 
 public class Msg2RString extends Activity implements MsgR2StringI
 {
+
+  @Override
+  public SQLiteOpenHelper getDbHelper()
+  {
+    // TODO: Implement this method
+    return null;
+  }
+
+
+
 	@Override
 	public String callback(String name, HashMap<String, Object> args)
 	{

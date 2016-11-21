@@ -9,9 +9,20 @@ import android.util.*;
 import android.widget.*;
 import com.nohkumado.nohutils.commands.*;
 import java.util.*;
+import android.database.sqlite.*;
 
 public class ShellActivity extends Activity implements MsgR2StringI
 {
+
+  @Override
+  public SQLiteOpenHelper getDbHelper()
+  {
+    // TODO: Implement this method
+    return null;
+  }
+
+
+
 	transient protected ShellI shell = null;
 	protected int textOut, textIn;
 	public static final String TAG="SA";
