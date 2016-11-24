@@ -144,8 +144,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			 }*/
 
 		}
-		else Log.e(TAG, "couldn't set action listener");
-		if (out == null) Log.e(TAG, "no output screen....");
+		else error("couldn't set action listener");
+		if (out == null) error("no output screen....");
     else prompt();
 	}
 	/**
@@ -167,7 +167,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			maxLines = MAXLINES;
 		}
 
-		//Log.d(TAG, "init printing start message");
+		//debug( "init printing start message");
 		print(msg(R.string.start));
 		prompt();
 		return(true);
@@ -194,7 +194,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 					//System.out.println("abpout to exe: "+aCmd);
 					retVal = aCmd.execute();
 					//TODO pipe ahould interced e here 
-					//Log.d(TAG, "res\n" + retVal);
+					//debug( "res\n" + retVal);
 
 					if (retVal != "") print(retVal);
 					//System.out.println("retVal = "+retVal);
@@ -222,7 +222,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		{
 			aCmd.setParameters(parm);
 			retVal = aCmd.execute();
-			Log.d(TAG, "res2\n" + retVal);
+			//debug( "res2\n" + retVal);
 
 		}//if(aCmd != null) 
 		return(retVal);
@@ -286,7 +286,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		}// if(prompt.matches(".*\\\\w.*")pp)
 		//TODO argh....
 		printOnCmdline(prompt);
-		set("prompt", prompt);
+		//set("prompt", prompt);
 		return(prompt);
 	}
 
@@ -455,7 +455,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			return(context.getResources().getString(resourceId));
 		}
 		catch (Resources.NotFoundException e)
-		{ Log.e(TAG, "not found message : " + m);}
+		{ error("not found message : " + m);}
 		return(m);
 	}// public String msg(String m)
 	/**
@@ -475,7 +475,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				{
 					//System.out.println("abpout to exe: "+aCmd);
 					String retVal = aCmd.execute();
-					//Log.d(TAG, "res3\n" + retVal);
+					//debug( "res3\n" + retVal);
 
 					if (retVal != "") print(retVal);
 					//System.out.println("retVal = "+retVal);
@@ -495,7 +495,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		 *exhaustion */
 		if (in == null)
 		{
-			Log.e(TAG, "oyoyoy??? no input field given....");
+			error( "oyoyoy??? no input field given....");
 			return "";
 		}
 		String inputLine = "";
@@ -557,18 +557,18 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	@Override
 	public boolean onEditorAction(TextView tw, int actionId, KeyEvent event)
 	{
-		//Log.d(TAG, "editoraction id : "+actionId+" ev "+event);
+		//debug( "editoraction["+tw.getText()+"] id : "+actionId+" ev "+event);
 
-		//if (tw != out) Log.d(TAG, "wrong source");
-		//else Log.d(TAG, "good source");
+		//if (tw != out) debug( "wrong source");
+		//else debug( "good source");
 
 		//if (actionId == EditorInfo.IME_NULL		&&   
 		if (event.getAction() == KeyEvent.ACTION_DOWN) 
 		{
 			histNavigation = 0;
-			//Log.d(TAG, "hit the enter key... calling read");
+			//debug( "hit the enter key... calling read");
 			String incoming = tw.getText().toString().trim();
-			//Log.d(TAG, "hit the enter key... got " + incoming);
+			//debug( "hit the enter key... got " + incoming);
 			//removing prompt from incoming line
 
 			String lastprompt = prompt();
@@ -578,11 +578,17 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			if (history.size() > maxHistory) 
 				while (history.size() > maxHistory) history.remove(0);
 
-			//Log.d(TAG, "read extracted " + incoming);
+			//debug( "read extracted " + incoming);
 			if (actQuestion != null)
 			{
-        //Log.d(TAG, "diverting to actquestion " + actQuestion);
-				if (!promptStack.empty()) prompt(promptStack.pop());
+        /*StringBuilder sb = new StringBuilder();
+        sb.append("diverting to actquestion ").append(actQuestion);
+        sb.append(" actp:"+get("prompt"));
+				*/
+        if (!promptStack.empty()) prompt(promptStack.pop());
+        //sb.append(" newp:"+get("prompt"));
+        //debug( sb.toString());
+				
 				CommandI toExe = actQuestion;
 				//TODO eventually her we should mitigate if its a keylistener we should rescind 
 				//from killing it, but we needa mechanism to tell that we don't need forwarding 
@@ -592,18 +598,19 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				actQuestion = null;
 				//setting to 0 beforehand, since the parsing could arise new questions...
 				toExe.parse(incoming);
+        toExe.execute();
 				printOnCmdline(prompt());
 			}
 			else
 			{
 				String logEntry = prompt() + " " + incoming;
-				//Log.d(TAG,"should print out '"+incoming+"'");
+				//debug("should print out '"+incoming+"'");
 
 				print(incoming);
-				//Log.d(TAG, "proceeding to parse");
+				//debug( "proceeding to parse");
 
 				ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
-        //Log.d(TAG, "cmd list " + toWorkOf);
+        //debug( "cmd list " + toWorkOf);
         executeCommands(toWorkOf);	
 			}
 		}
@@ -622,13 +629,12 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	{
 		//sous traite l'evenement si pertinent
 		boolean result = false;
-		if (actQuestion != null && actQuestion instanceof KeyPressListener) 
-			Log.d(TAG, "forwarding keyevent");
+		//if (actQuestion != null && actQuestion instanceof KeyPressListener) debug( "forwarding keyevent");
 		if (actQuestion != null && actQuestion instanceof KeyPressListener) 
 			result = ((KeyPressListener)actQuestion).onKey(v, keyCode, event);
 		if (result == true) return false;
 
-		//Log.d(TAG, "hit key :" + keyCode + " stamp " + event.getEventTime());
+		//debug( "hit key :" + keyCode + " stamp " + event.getEventTime());
 		if (keyCode == KeyEvent.KEYCODE_DPAD_UP && event.getAction() == KeyEvent.ACTION_DOWN)
 		{
 			histNavigation++;
@@ -687,7 +693,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 					corrected.append(prompt());
 					corrected.append(incoming);
 					corrected.append(lastCmd.expand(""));
-					//Log.d(TAG,"changed line to "+corrected.toString());
+					//debug("changed line to "+corrected.toString());
 					printOnCmdline(corrected.toString());
 				}
 				else
@@ -754,22 +760,22 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public void print(String something)
 	{
 		if (something == null) something = "";
-		//Log.d(TAG,"print:"+something);
+		//debug("print:"+something);
 
 		something = something.trim();
-		//Log.d(TAG,"print after trim '"+something+"'");
+		//debug("print after trim '"+something+"'");
 		if (screenContent == null)
-		{Log.e(TAG, "oyoyoy??? no screen to print " + something + "!!"); return; }
+		{error( "oyoyoy??? no screen to print " + something + "!!"); return; }
 		if (something.length() > 0) 
 		{
 			String[] splitted = something.split("\n");
 			for (String line: splitted) 
 			{
 				screenContent.add(line);
-				//Log.d(TAG,"l:'"+line+"'");
+				//debug("l:'"+line+"'");
 			}
 		}
-		//Log.d(TAG, "maxlines = " + maxLines);
+		//debug( "maxlines = " + maxLines);
 		if (screenContent.size() > maxLines) 
 			while (screenContent.size() > maxLines) screenContent.remove(0);
 		//determine visible part of screen
@@ -783,11 +789,11 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		{
 			firstVisibleLineNumber = layout.getLineForVertical(scrollY);
 			lastVisibleLineNumber  = layout.getLineForVertical(scrollY + height);
-			//Log.d(TAG,"first visinble : "+firstVisibleLineNumber+" last visible "+lastVisibleLineNumber);
+			//debug("first visinble : "+firstVisibleLineNumber+" last visible "+lastVisibleLineNumber);
 		}
-		//else Log.d(TAG,"no layout to determine size.... ");
+		//else debug("no layout to determine size.... ");
 
-		//Log.d(TAG,"height : "+height);
+		//debug("height : "+height);
 
 
 		//encheck for lines
@@ -797,21 +803,21 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		if (height > maxLines || height == 0)
       for (String s : screenContent)
       {
-        //Log.d(TAG,"adding line '"+s+"'");
+        //debug("adding line '"+s+"'");
         sb.append(s);
         sb.append("\n");
       }
 		else for (int i = Math.max(screenContent.size() - height, 0); i < screenContent.size(); i++)
       {
         String s = screenContent.get(i);
-        //Log.d(TAG,"adding line '"+s+"'");
+        //debug("adding line '"+s+"'");
         sb.append(s);
         sb.append("\n");
       }
-		//Log.d(TAG, "complete text '" + sb.toString() + "'");
+		//debug( "complete text '" + sb.toString() + "'");
 		if (out == null)
 		{
-			Log.e(TAG, sb.toString());
+			error( sb.toString());
 		}
 		else 
 		{
@@ -856,7 +862,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	{
 		actQuestion = caller;
 		//print("should ask : "+question+", p:"+prompt());
-
+    //debug("should ask : "+question+", p:"+prompt());
+    
 		if (question.length() > 0) pushPrompt(question + " ");
 		prompt();
 		//print("prompt now "+prompt());
@@ -866,6 +873,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 	private void pushPrompt(String question)
 	{
+    debug("pushing "+get("prompt")+ " in favour of "+question);
 		promptStack.push(prompt());
 		prompt(question);
 	}//public String ask()
@@ -1091,9 +1099,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		 storageDir = context.getExternalFilesDir(null); 
 		 -
 		 */
-		//Log.d(TAG,"listing asset files");
+		//debug("listing asset files");
 		//listAssetFiles(""); 
-		//Log.d(TAG,"trying to open asset "+name);
+		//debug("trying to open asset "+name);
 		InputStream is = context.getResources().getAssets().open(name);
 		return is;
 	}
@@ -1108,7 +1116,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				// This is a folder
 				for (String file : list) 
 				{
-					Log.d(TAG, "asset: " + path + "/" + file);
+					debug("asset: " + path + "/" + file);
 					if (!listAssetFiles(path + "/" + file))
 						return false;
 				}
@@ -1117,7 +1125,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			{
 				// This is a file
 				// TODO: add file name to an array list
-				//Log.d(TAG, "asset single file : " + path);
+				//debug( "asset single file : " + path);
 			}
 		}
 		catch (IOException e)
@@ -1136,7 +1144,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public void endQuestion()
 	{
 		actQuestion = null;
-		Log.d(TAG, "stopping forwarding");
+		//debug("stopping forwarding");
 	}
 	@Override
 	public void setInputMode(boolean overwrite)
@@ -1148,10 +1156,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	@Override
 	public void restoreState(Bundle savedInstanceState)
 	{
-		Log.d(TAG, "restoring state");		
+		//debug("restoring state");		
 		if (savedInstanceState == null)
 		{
-			Log.e(TAG, "no bundle to restore from");
+			error("no bundle to restore from");
 			return;
 		}
 		scanType = savedInstanceState.getString("scanType");
@@ -1168,7 +1176,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 		if (localVars == null)
 		{
-			Log.e(TAG, "no localVars to restore to....");
+			error("no localVars to restore to....");
 			return;
 		}
 		int index = 0;
@@ -1183,10 +1191,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	@Override
 	public void saveState(Bundle savedInstanceState)
 	{
-		Log.d(TAG, "saving state");
+		//debug("saving state");
 		if (savedInstanceState == null)
 		{
-			Log.e(TAG, "no bundle to save to");
+			error("no bundle to save to");
 			return;
 		}
 		savedInstanceState.putString("scanType", scanType);
@@ -1239,7 +1247,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
     childShell = actShell;
 		if (childShell != null) 
     {
-      Log.d(TAG, "diverting in out ot childshell");
+      debug( "diverting in out ot childshell");
       childShell.setInOut(in, out); 
     }
 	}
@@ -1272,7 +1280,4 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
       parentShell.setChild(this);
     }
 	}
-
-
-
 }//public class Shell
