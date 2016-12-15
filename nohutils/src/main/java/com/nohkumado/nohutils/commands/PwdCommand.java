@@ -65,8 +65,8 @@ public class PwdCommand extends Command implements Cloneable, CommandI
   {
     String result = "";
     String pwd = (String)shell.get("pwd");
-    if(pwd == null ) pwd = System.getProperty("user.dir");
-    else if(pwd.length() <= 0 ) pwd = System.getProperty("user.dir");
+    if(pwd == null ) pwd = System.getProperty("user.dir")+"sdcard";
+    else if(pwd.length() <= 0 ) pwd = System.getProperty("user.dir"+"sdcard");
     shell.set("pwd",pwd);
 		//shell.print(pwd);
     return(pwd);

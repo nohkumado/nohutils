@@ -69,15 +69,16 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
    */
   public String execute()
   {
-		Log.d(TAG,"ls starting pwd: "+shell.get("pwd"));
+		//Log.d(TAG,"ls starting pwd: "+shell.get("pwd"));
 		
-		File testit = new File(""+shell.get("pwd"));
-		Log.d(TAG,"pwd: "+testit.exists()+" dir?"+testit.canRead());
+		//File testit = new File(""+shell.get("pwd"));
+    
+		//Log.d(TAG,"pwd: "+testit.exists()+" dir?"+testit.canRead());
 		
     String result = "";
 		CommandI pwdCmd = new PwdCommand(shell);
     String pwd = pwdCmd.execute();
-		Log.d(TAG,"from cmd pwd: "+pwd);
+		//Log.d(TAG,"from cmd pwd: "+pwd);
 		
     //if (pwd == null) pwd = System.getProperty("user.dir");
     //else if (pwd.length() <= 0) pwd = System.getProperty("user.dir");
@@ -92,7 +93,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 
     File theDir = new File(path);
 		if (!theDir.exists()) return(shell.msg(R.string.cd_does_not_exist));
-		if (!theDir.canRead()) return(shell.msg(R.string.ls_not_enough_rights));
+		if (!theDir.canRead()) return(shell.msg(R.string.ls_not_enough_rights)+" "+theDir);
 		
     if (theDir.exists() && theDir.isDirectory())
     {
@@ -115,7 +116,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 					{
 						if (aFile != null && aFile.exists())
 						{
-							Log.d(TAG, "file exists, adding to content: " + content + " n:" + name + " max:" + maxlength);
+							//Log.d(TAG, "file exists, adding to content: " + content + " n:" + name + " max:" + maxlength);
 
 							if (name != null && name.length() > maxlength) maxlength = name.length();
 							//Log.d(TAG,"2file exists, adding to content: "+content+" n:"+name+" max:"+maxlength);
