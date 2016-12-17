@@ -241,7 +241,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		if (matchingKeys.size() > 1)
 		{
 			CommandI aCmd = new Command(shell); // dummy command to avoid the help output
-			shell.print(shell.msg("need specifying") + " " + matchingKeys.toString());
+			shell.print(shell.msg(R.string.need_specifying) + " " + matchingKeys.toString());
 			return(aCmd);
 		}//if(matchingKeys.size() > 1)
 		return(null);

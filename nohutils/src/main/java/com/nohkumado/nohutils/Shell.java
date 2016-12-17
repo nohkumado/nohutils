@@ -194,7 +194,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 					//System.out.println("abpout to exe: "+aCmd);
 					retVal = aCmd.execute();
 					//TODO pipe ahould interced e here 
-					//debug( "res\n" + retVal);
+					debug( "res\n" + retVal);
 
 					if (retVal != "") print(retVal);
 					//System.out.println("retVal = "+retVal);
@@ -437,8 +437,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public String msg(int resourceId)
 	{
 		if (context == null) return "no context";
+  
 		return(context.getResources().getString(resourceId));
-	}// public String msg(String m)
+    	}// public String msg(String m)
 	/** 
 	 * returns the message associated with a token
 	 * 
@@ -447,16 +448,28 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	 */
 	public String msg(String m)
 	{
-		if (context == null) return m;
+		if (context == null)
+    {
+      print("no context.... returning "+m+" litterally");
+      return m; 
+    }
 
+    String result = context.msg(m);
+    
+    /*  
+     if(m.equals(result))
+     {
+     
 		try
 		{
-			int resourceId = context.getResources().getIdentifier(m, "strings", context.getPackageName());
+			int resourceId = context.getResources().getIdentifier(m, "strings", "com.nohkumado.nohutils");
 			return(context.getResources().getString(resourceId));
 		}
 		catch (Resources.NotFoundException e)
 		{ error("not found message : " + m);}
-		return(m);
+    }
+    */
+		return(result);
 	}// public String msg(String m)
 	/**
 	 executeCommands
@@ -536,7 +549,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				}// try
 				catch (InputMismatchException e)
 				{
-					print(msg("not_a_int") + "\n>");
+					print(msg(R.string.not_a_int) + "\n>");
 					isNumeric = false;
 				}// catch(InputMismatchException e)
 			}

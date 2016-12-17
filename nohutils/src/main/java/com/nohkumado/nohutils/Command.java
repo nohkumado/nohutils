@@ -105,7 +105,7 @@ implements Cloneable, CommandI
 	 */
 	public String help()
 	{
-		return(shell.msg("no help") + "\n");
+		return(shell.msg(R.string.no_help) + "\n");
 	}//end help
 	/** 
 	 * clone this command 

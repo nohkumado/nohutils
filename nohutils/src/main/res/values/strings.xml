@@ -38,4 +38,8 @@
 		<string name="shell_changetooverwrite">change to overwrite</string>
 		<string name="shell_changetoinsert">change to insert</string>
 		<string name="shell_help">issue help</string>
+    <string name="no_help">no help</string>
+    <string name="not_a_int">not a int</string>
+    <string name="need_specifying">need specifying</string>
+    
 		</resources>
