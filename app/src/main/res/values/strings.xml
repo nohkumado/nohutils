@@ -2,5 +2,6 @@
 <resources>
     <string name="app_name">Test utility for the library</string>
 		 <string name="hello_world">Welcome!</string>
-		
+		<string name="testhelp">run this command to make the tests on the nohutils</string>
+    <string name="test_cmd">test</string>
 </resources>

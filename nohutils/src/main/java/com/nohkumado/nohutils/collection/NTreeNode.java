@@ -1,6 +1,5 @@
 package com.nohkumado.nohutils.collection;
-/* $Id: NTreeNode.java 2016 bboett Exp $ -*- java -*-
- * Copyright (C) 2016 Bruno Böttcher
+/* Copyright (C) 2016 Bruno Böttcher
  * nohkumado@gmail.com
  * https://sites.google.com/site/nokumado/
  *

@@ -7,6 +7,7 @@ import android.widget.*;
 import com.nohkumado.nohutils.*;
 import java.util.*;
 import com.nohkumado.nohutils.commands.*;
+import com.nohkumado.utilsapp.commands.*;
 
 public class MainActivity extends Msg2RString
 {
@@ -26,7 +27,8 @@ public class MainActivity extends Msg2RString
 			new QuitCommand(shell),
 			new PwdCommand(shell),
 			new LsCommand(shell),
-			new CdCommand(shell)
+			new CdCommand(shell),
+      new TestCmd(shell)
 		};
 	  HashMap<String,CommandI> availableCmds = new HashMap<String,CommandI>();
 		for(int i = 0; i < cmds.length; i++) availableCmds.put(cmds[i].name(),cmds[i]);

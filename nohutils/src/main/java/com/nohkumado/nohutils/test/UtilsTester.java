@@ -6,6 +6,7 @@ package com.nohkumado.nohutils.test;
 import com.nohkumado.nohutils.*;
 import java.math.*;
 import java.util.*;
+import android.util.*;
 
 /**
  * @author bboett
@@ -13,44 +14,59 @@ import java.util.*;
  */
 public class UtilsTester
 {
-    protected static String testName = "UtilsTester";
-    /** 
-     * 
-     * 
-     * @param toCheck 
-     */
-    public static boolean doTrans(boolean result, String msg)
+  private final static String TAG ="UT";
+  protected StringBuilder log = new StringBuilder();
+  protected boolean immediate = false;
+
+  protected static String testName = "UtilsTester";
+  /** 
+   * 
+   * 
+   * @param toCheck 
+   */
+  public boolean doTrans(boolean result, String msg)
+  {
+    if (result == true)
     {
-        if(result == true)
-        {
-            if(msg == null || msg.equals(""))
-            {
-            System.out.println(testName+" ERROR");
-            }// if(msg != null || !msg.equals(""))
-            else
-            {
-                System.out.println(testName+" ERROR:"+msg);
-            }// else
-        }//# if(toCheck.status())
-        return(!result);
-    }// public void doTrans(Item toCheck)
-    /** 
-     * 
-     * 
-     * @param toCheck 
-     */
-    public static boolean doTrans(ReturnValue status)
-    {
-        return doTrans(!status.status(), status.report());
-    }// public void doTrans(Item toCheck)
-    /** 
-     * 
-     * 
-     * @param m 
-     */
-    public static void print(String m)
-    {
-        System.out.println(m);
-    }// public void print(String m)
+      if (msg == null || msg.equals(""))
+      {
+        error(testName);
+      }// if(msg != null || !msg.equals(""))
+      else
+      {
+        error(testName + " " + msg);
+      }// else
+    }//# if(toCheck.status())
+    return(!result);
+  }// public void doTrans(Item toCheck)
+  /** 
+   * 
+   * 
+   * @param toCheck 
+   */
+  public boolean doTrans(ReturnValue status)
+  {
+    return doTrans(!status.status(), status.report());
+  }// public void doTrans(Item toCheck)
+  /** 
+   * print 
+   * 
+   * @param m 
+   */
+  public void print(String m)
+  {
+    if (immediate) Log.d(TAG, m);
+    else log.append(m).append("\n");
+  }// public void print(String m)
+  /** 
+   * error 
+   * 
+   * @param m 
+   */
+  public void error(String m)
+  {
+    if (immediate) Log.e(TAG, m);
+    else log.append("ERROR:").append(m).append("\n");
+  }// public void print(String m)
 
 }// public class UtilsTester
