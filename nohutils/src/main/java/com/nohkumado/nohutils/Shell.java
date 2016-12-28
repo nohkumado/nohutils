@@ -778,7 +778,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		something = something.trim();
 		//debug("print after trim '"+something+"'");
 		if (screenContent == null)
-		{error( "oyoyoy??? no screen to print " + something + "!!"); return; }
+		{error( "oyoyoy??? no history to print " + something + "!!"); return; }
 		if (something.length() > 0) 
 		{
 			String[] splitted = something.split("\n");
@@ -791,7 +791,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		//debug( "maxlines = " + maxLines);
 		if (screenContent.size() > maxLines) 
 			while (screenContent.size() > maxLines) screenContent.remove(0);
-		//determine visible part of screen
+    if (out == null)
+    {error( "oyoyoy??? no screen to print " + something + "!!"); return; }
+    //determine visible part of screen
 		int height    = out.getHeight();
 		int scrollY   = out.getScrollY();
 		Layout layout = out.getLayout();

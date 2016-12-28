@@ -219,7 +219,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 	 */
 	public CommandI findCmd(String token)
 	{
-		//System.out.println("find command "+token);
+		System.out.println("find command "+token);
 
 		if (commands.containsKey(token)) 
 		{
@@ -235,7 +235,9 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			{
 				key = actKey;
 				matchingKeys.add(actKey);
+        Log.d(TAG,"key matches "+key);
 			}//if(actKey.matches("^"+token))
+      else Log.d(TAG,"no key matches "+actKey);
 		}//for(Iterator<String> e = commands.keySet().iterator(); e.hasNext();)
 		if (matchingKeys.size() == 1) return((CommandI)commands.get(key).clone());
 		if (matchingKeys.size() > 1)
