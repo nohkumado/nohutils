@@ -92,5 +92,40 @@ public class TreeMapTable<E,G> implements Iterable
     return rows.keySet().iterator();
   }
 
+  public TreeMapTable<E,G> insert(TreeMapTable<E,G> toCopy)
+  {
+    for (Map.Entry<E,ArrayMap<E,G>> row: toCopy.rows.entrySet())
+    {
+      E rowkey = row.getKey();
+
+      ArrayMap<E,G> aRow = row.getValue();
+      for (Map.Entry<E,G> rowData: aRow.entrySet())
+      {
+        E col = rowData.getKey();
+        
+        set(rowkey, col, rowData.getValue());
+      }
+    }
+    return this;
+  }
+  /**
+  * remove a whole line
+  */
+  public ArrayMap<E,G> remove(String line)
+  {
+    return rows.remove(line);
+  }
+  /**
+   * remove a field
+   */
+  public G remove(String line, String col)
+  {
+    if(rows.get(line) != null)
+    {
+      ArrayMap<E,G> lineMap = rows.get(line); 
+      return lineMap.remove(col);  
+    }
+    return null;
+  }
   
 }
