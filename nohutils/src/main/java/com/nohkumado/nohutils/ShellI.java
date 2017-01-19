@@ -31,10 +31,11 @@
 package com.nohkumado.nohutils;
 
 //import com.gnu.utils.*;
-import android.widget.*;
-import java.util.*;
-import java.io.*;
 import android.os.*;
+import android.widget.*;
+import com.nohkumado.nohutils.view.*;
+import java.io.*;
+import java.util.*;
 
 public interface ShellI extends PipableI 
 {
@@ -174,7 +175,8 @@ public ShellI cpyCtor();
 	/** 
 	 set the input editext and the output screen
 	 */
-	public void setInOut(EditText in, TextView out);
+  //public void setInOut(EditText in, TextView out);
+	public void setInOut(EditText in, LoggerFrag out);
 	public InputStream open(String name)  throws IOException;
 	public void beep();
 	public void endQuestion(); //stop forwarding keyevents to a question

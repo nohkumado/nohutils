@@ -8,6 +8,7 @@ import com.nohkumado.nohutils.*;
 import java.util.*;
 import com.nohkumado.nohutils.commands.*;
 import com.nohkumado.utilsapp.commands.*;
+import com.nohkumado.nohutils.view.*;
 
 public class MainActivity extends Msg2RString
 {
@@ -37,9 +38,11 @@ public class MainActivity extends Msg2RString
 	
 		
 		setContentView(R.layout.main);
-		TextView screen = (TextView) findViewById(R.id.textOut);
+		//TextView screen = (TextView) findViewById(R.id.textOut);
 		EditText cmdLine = (EditText) findViewById(R.id.TextIn);
-		shell.setInOut(cmdLine, screen);
+    LoggerFrag logger = (LoggerFrag)getFragmentManager().findFragmentById(R.id.textOut);
+		shell.setInOut(cmdLine, logger);
 		shell.init();
+    shell.print("Welcome ");
 	}
 }

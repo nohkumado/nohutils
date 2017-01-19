@@ -31,7 +31,6 @@
 package com.nohkumado.nohutils;
 
 import android.content.*;
-import android.content.res.*;
 import android.os.*;
 import android.preference.*;
 import android.text.*;
@@ -41,6 +40,7 @@ import android.view.View.*;
 import android.widget.*;
 import android.widget.TextView.*;
 import com.nohkumado.nohutils.foreign.*;
+import com.nohkumado.nohutils.view.*;
 import java.io.*;
 import java.util.*;
 
@@ -58,7 +58,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	protected HashMap<String,Object> localVars = new HashMap<String,Object>();
 	protected ArrayList<String> screenContent = new ArrayList<String>();
 	protected CommandParserI cmdParser = null;
-	protected  TextView out = null;
+	//protected  TextView out = null;
+  protected  LoggerFrag out = null;
 	protected  EditText in = null;
 
 	protected boolean batchMode = false;
@@ -125,12 +126,21 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		return cpy;
 	}// public Shell()
 
-	public void setInOut(EditText in, TextView out)
+  //public void setInOut(EditText in, TextView out)
+	public void setInOut(EditText in, LoggerFrag out)
 	{
 
 		this.out = out;
 		this.in = in;
-		if (screenContent == null) screenContent = new ArrayList<String>();
+		if (out == null) screenContent = new ArrayList<String>();
+    else
+    {
+      if (screenContent != null)
+      {
+        for (String line: screenContent) out.add(line);
+        screenContent = null;
+      }
+    }
 		if (in != null)
 		{
 			in.setOnEditorActionListener(this);
@@ -194,7 +204,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 					//System.out.println("abpout to exe: "+aCmd);
 					retVal = aCmd.execute();
 					//TODO pipe ahould interced e here 
-					debug( "res\n" + retVal);
+					debug("res\n" + retVal);
 
 					if (retVal != "") print(retVal);
 					//System.out.println("retVal = "+retVal);
@@ -437,9 +447,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public String msg(int resourceId)
 	{
 		if (context == null) return "no context";
-  
+
 		return(context.getResources().getString(resourceId));
-    	}// public String msg(String m)
+  }// public String msg(String m)
 	/** 
 	 * returns the message associated with a token
 	 * 
@@ -450,25 +460,25 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	{
 		if (context == null)
     {
-      print("no context.... returning "+m+" litterally");
+      print("no context.... returning " + m + " litterally");
       return m; 
     }
 
     String result = context.msg(m);
-    
+
     /*  
      if(m.equals(result))
      {
-     
-		try
-		{
-			int resourceId = context.getResources().getIdentifier(m, "strings", "com.nohkumado.nohutils");
-			return(context.getResources().getString(resourceId));
-		}
-		catch (Resources.NotFoundException e)
-		{ error("not found message : " + m);}
-    }
-    */
+
+     try
+     {
+     int resourceId = context.getResources().getIdentifier(m, "strings", "com.nohkumado.nohutils");
+     return(context.getResources().getString(resourceId));
+     }
+     catch (Resources.NotFoundException e)
+     { error("not found message : " + m);}
+     }
+     */
 		return(result);
 	}// public String msg(String m)
 	/**
@@ -508,7 +518,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		 *exhaustion */
 		if (in == null)
 		{
-			error( "oyoyoy??? no input field given....");
+			error("oyoyoy??? no input field given....");
 			return "";
 		}
 		String inputLine = "";
@@ -595,13 +605,13 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			if (actQuestion != null)
 			{
         /*StringBuilder sb = new StringBuilder();
-        sb.append("diverting to actquestion ").append(actQuestion);
-        sb.append(" actp:"+get("prompt"));
-				*/
+         sb.append("diverting to actquestion ").append(actQuestion);
+         sb.append(" actp:"+get("prompt"));
+         */
         if (!promptStack.empty()) prompt(promptStack.pop());
         //sb.append(" newp:"+get("prompt"));
         //debug( sb.toString());
-				
+
 				CommandI toExe = actQuestion;
 				//TODO eventually her we should mitigate if its a keylistener we should rescind 
 				//from killing it, but we needa mechanism to tell that we don't need forwarding 
@@ -777,69 +787,87 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 		something = something.trim();
 		//debug("print after trim '"+something+"'");
-		if (screenContent == null)
-		{error( "oyoyoy??? no history to print " + something + "!!"); return; }
-		if (something.length() > 0) 
-		{
-			String[] splitted = something.split("\n");
-			for (String line: splitted) 
-			{
-				screenContent.add(line);
-				//debug("l:'"+line+"'");
-			}
+
+    /*if (screenContent == null)
+     {error( "oyoyoy??? no history to print " + something + "!!"); return; }
+     if (something.length() > 0) 
+     {
+     String[] splitted = something.split("\n");
+     for (String line: splitted) 
+     {
+     screenContent.add(line);
+     //debug("l:'"+line+"'");
+     }
+     }
+     //debug( "maxlines = " + maxLines);
+     if (screenContent.size() > maxLines) 
+     while (screenContent.size() > maxLines) screenContent.remove(0);
+     */
+    if (something.length() > 0) 
+    {
+      String[] splitted = something.split("\n");
+      for (String line: splitted) 
+      {
+        if (out == null) 
+        {
+          error("oyoyoy??? no screen to print " + line + "!!");
+          screenContent.add(line);
+        }
+        else
+          out.add(line);
+        //debug("l:'"+line+"'");
+      }
 		}
-		//debug( "maxlines = " + maxLines);
-		if (screenContent.size() > maxLines) 
-			while (screenContent.size() > maxLines) screenContent.remove(0);
-    if (out == null)
-    {error( "oyoyoy??? no screen to print " + something + "!!"); return; }
     //determine visible part of screen
-		int height    = out.getHeight();
-		int scrollY   = out.getScrollY();
-		Layout layout = out.getLayout();
+		/*int height    = out.getHeight();
+     int scrollY   = out.getScrollY();
+     Layout layout = out.getLayout();
 
-		int firstVisibleLineNumber = 0;
-		int lastVisibleLineNumber  = 0;
-		if (layout != null)
-		{
-			firstVisibleLineNumber = layout.getLineForVertical(scrollY);
-			lastVisibleLineNumber  = layout.getLineForVertical(scrollY + height);
-			//debug("first visinble : "+firstVisibleLineNumber+" last visible "+lastVisibleLineNumber);
-		}
-		//else debug("no layout to determine size.... ");
+     int firstVisibleLineNumber = 0;
+     int lastVisibleLineNumber  = 0;
+     if (layout != null)
+     {
+     firstVisibleLineNumber = layout.getLineForVertical(scrollY);
+     lastVisibleLineNumber  = layout.getLineForVertical(scrollY + height);
+     //debug("first visinble : "+firstVisibleLineNumber+" last visible "+lastVisibleLineNumber);
+     }
+     //else debug("no layout to determine size.... ");
 
-		//debug("height : "+height);
+     //debug("height : "+height);
 
 
-		//encheck for lines
+     //encheck for lines
 
-		StringBuilder sb = new StringBuilder();
+     StringBuilder sb = new StringBuilder();
 
-		if (height > maxLines || height == 0)
-      for (String s : screenContent)
-      {
-        //debug("adding line '"+s+"'");
-        sb.append(s);
-        sb.append("\n");
-      }
-		else for (int i = Math.max(screenContent.size() - height, 0); i < screenContent.size(); i++)
-      {
-        String s = screenContent.get(i);
-        //debug("adding line '"+s+"'");
-        sb.append(s);
-        sb.append("\n");
-      }
-		//debug( "complete text '" + sb.toString() + "'");
-		if (out == null)
-		{
-			error( sb.toString());
-		}
-		else 
-		{
-			//out.setText(Html.fromHtml(sb.toString()));
-      getContext().runOnUiThread(new PrintOnTextView(out,sb));
+     if (height > maxLines || height == 0)
+     for (String s : screenContent)
+     {
+     //debug("adding line '"+s+"'");
+     sb.append(s);
+     sb.append("\n");
+     }
+     else for (int i = Math.max(screenContent.size() - height, 0); i < screenContent.size(); i++)
+     {
+     String s = screenContent.get(i);
+     //debug("adding line '"+s+"'");
+     sb.append(s);
+     sb.append("\n");
+     }
+     //debug( "complete text '" + sb.toString() + "'");
+     if (out == null)
+     {
+     error( sb.toString());
+     }
+     else 
+     {
+     Log.d(TAG,"called add on out with "+sb);
+     out.add(sb.toString());
+     //out.setText(Html.fromHtml(sb.toString()));
+     //getContext().runOnUiThread(new PrintOnTextView(out,sb));
 
-		}
+     }
+     */
 	}//protected void print(String something)
 	//------------------------------------------------------------------
 	//public void setEditTextFocus(EditText searchEditText, boolean isFocused)
@@ -878,7 +906,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		actQuestion = caller;
 		//print("should ask : "+question+", p:"+prompt());
     //debug("should ask : "+question+", p:"+prompt());
-    
+
 		if (question.length() > 0) pushPrompt(question + " ");
 		prompt();
 		//print("prompt now "+prompt());
@@ -888,7 +916,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 	private void pushPrompt(String question)
 	{
-    debug("pushing "+get("prompt")+ " in favour of "+question);
+    debug("pushing " + get("prompt") + " in favour of " + question);
 		promptStack.push(prompt());
 		prompt(question);
 	}//public String ask()
@@ -1043,7 +1071,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		int result = 20;
 		if (out != null)
 		{
-			result = (int) (out.getWidth() / out.getTextSize());
+			//result = (int) (out.getWidth() / out.getTextSize());
+      result = out.getDisplayWidth();
 		}
 		return result;
 	}
@@ -1184,7 +1213,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		maxLines = savedInstanceState.getInt("maxLines");
 		maxHistory = savedInstanceState.getInt("maxHistory");
 		histNavigation = savedInstanceState.getInt("histNavigation");
-		screenContent = savedInstanceState.getStringArrayList("screenContent");
+		//screenContent = savedInstanceState.getStringArrayList("screenContent");
 		history = savedInstanceState.getStringArrayList("history");
 		ArrayList<String> varnames = savedInstanceState.getStringArrayList("localVarNames");
 		ArrayList<String> varval = savedInstanceState.getStringArrayList("localVarValues");
@@ -1220,7 +1249,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		savedInstanceState.putInt("maxLines", maxLines);
 		savedInstanceState.putInt("maxHistory", maxHistory);
 		savedInstanceState.putInt("histNavigation", histNavigation);
-		savedInstanceState.putStringArrayList("screenContent", screenContent);
+		//savedInstanceState.putStringArrayList("screenContent", screenContent);
 		savedInstanceState.putStringArrayList("history", history);
 		ArrayList<String> varnames = new ArrayList<String>();
 		ArrayList<String> varval = new ArrayList<String>();
@@ -1262,7 +1291,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
     childShell = actShell;
 		if (childShell != null) 
     {
-      debug( "diverting in out ot childshell");
+      debug("diverting in out ot childshell");
       childShell.setInOut(in, out); 
     }
 	}

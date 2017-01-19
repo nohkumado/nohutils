@@ -2,13 +2,14 @@ package com.nohkumado.nohutils;
 
 import android.view.*;
 import android.widget.*;
+import com.nohkumado.nohutils.view.*;
 
 public class PrintOnTextView implements Runnable
 {
-  TextView out;
+  LoggerFrag out;
   StringBuilder sb;
 
-  public PrintOnTextView(TextView o, StringBuilder s)
+  public PrintOnTextView(LoggerFrag o, StringBuilder s)
   {
     out = o;
     sb = s;
@@ -17,17 +18,18 @@ public class PrintOnTextView implements Runnable
   @Override
   public void run()
   {
-    out.setText(sb.toString());
+    out.add(sb.toString());
 
-    Object obj = out.getParent();
+    ViewParent obj = out.getParent();
     if (obj instanceof ScrollView)
     {
       ScrollView scroll_view = (ScrollView) obj;
+      
       DownScroller scroll = new DownScroller(scroll_view);
       scroll_view.post(scroll);
       scroll_view.fullScroll(View.FOCUS_DOWN);
     }
-    out.invalidate();
+    //out.invalidate();
   }
   
 }

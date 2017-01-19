@@ -10,6 +10,7 @@ import android.widget.*;
 import com.nohkumado.nohutils.commands.*;
 import java.util.*;
 import android.database.sqlite.*;
+import com.nohkumado.nohutils.view.*;
 
 public class ShellActivity extends Activity implements MsgR2StringI
 {
@@ -46,7 +47,13 @@ public class ShellActivity extends Activity implements MsgR2StringI
 
 		if (textOut != 0)
 		{
-			TextView screen = (TextView) findViewById(textOut);
+			//TextView screen = (TextView) findViewById(textOut);
+			LoggerFrag screen = (LoggerFrag) getFragmentManager().findFragmentById(textOut);
+      if(screen == null)
+      {
+        screen = new LoggerFrag();
+        getFragmentManager().beginTransaction().replace(textOut,screen).commit();
+      }
 			screen.setTypeface(Typeface.MONOSPACE); 
 			EditText cmdLine = (EditText) findViewById(textIn);
 			if (shell != null) shell.setInOut(cmdLine, screen);
