@@ -6,9 +6,11 @@ import android.text.*;
 import android.text.method.*;
 import android.util.*;
 import android.view.*;
+import android.view.ViewTreeObserver.*;
 import android.widget.*;
 import com.nohkumado.nohutils.*;
 import java.util.*;
+import android.view.ViewGroup.*;
 
 public class LoggerFrag extends Fragment
 {
@@ -22,39 +24,63 @@ public class LoggerFrag extends Fragment
 
   private int lastLines;
 
+  public void setTextView(TextView alternate)
+  {
+    textFrame = alternate;
+    refresh();
+  }
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
   {
     setRetainInstance(true);
     viewContainer = super.onCreateView(inflater, container, savedInstanceState);
+
     if (viewContainer == null)
     {
-      viewContainer = inflater.inflate(com.nohkumado.nohutils.R.layout.loggerfrag, null);
+      viewContainer = inflater.inflate(com.nohkumado.nohutils.R.layout.loggerfrag, container);
     }
+    Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
     textFrame = (TextView) viewContainer.findViewById(R.id.loggerview);
+
     textFrame.setText("starting up");
     if (max_lines > 0) textFrame.setMaxLines(max_lines);
-    if(max_lines <= 0)
+    if (max_lines <= 0)
     {
       StringBuilder sb = new StringBuilder();
-      for(int i= 0; i < 256; i++)
+      for (int i= 0; i < 256; i++)
       {
         sb.append("\n");
       }
       textFrame.setText(sb.toString());
+      Log.d(TAG, "extracted frame " + textFrame + " " + textFrame.getWidth() + ":" + textFrame.getHeight());
+
+/*
+      textFrame.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+          @Override
+          public void onGlobalLayout()
+          {
+            final int fragmentWidth = viewContainer.findViewById(R.id.logc).getWidth();
+            if (fragmentWidth != 0)
+            {
+              viewContainer.findViewById(R.id.loggerview).getLayoutParams().width = fragmentWidth;
+            }
+          }
+        });
+*/
+
     }
     /*
-    ViewTreeObserver vto = this.textFrame.getViewTreeObserver();
-    vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+     ViewTreeObserver vto = this.textFrame.getViewTreeObserver();
+     vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 
-        public void onGlobalLayout() {
-          ViewTreeObserver obs = textFrame.getViewTreeObserver();
-          obs.removeGlobalOnLayoutListener(this);
-          Log.d(TAG,"#######Line Count is : " + textFrame.getLineCount());
+     public void onGlobalLayout() {
+     ViewTreeObserver obs = textFrame.getViewTreeObserver();
+     obs.removeGlobalOnLayoutListener(this);
+     Log.d(TAG,"#######Line Count is : " + textFrame.getLineCount());
 
-        }
-      });
-      */
+     }
+     });
+     */
     return viewContainer;
   }
 
@@ -90,24 +116,24 @@ public class LoggerFrag extends Fragment
   }
 
   /**
-  
-  */
+
+   */
   private void refresh()
   {
     int height    = textFrame.getHeight();
     int scrollY   = textFrame.getScrollY();
     Layout layout = textFrame.getLayout();
 
-    if(layout != null)
+    if (layout != null)
     {
       int firstVisibleLineNumber = layout.getLineForVertical(scrollY);
-      int lastVisibleLineNumber  = layout.getLineForVertical(scrollY+height);
+      int lastVisibleLineNumber  = layout.getLineForVertical(scrollY + height);
       int totalLines = lastVisibleLineNumber - firstVisibleLineNumber;
-      
-      Log.d(TAG,"data:"+content.size()+"vis lin = "+totalLines+" vs lc:"+textFrame.getLayout().getLineCount());
-      
-      
-      if((totalLines == lastLines) && totalLines < content.size())
+
+      //Log.d(TAG,"data:"+content.size()+"vis lin = "+totalLines+" vs lc:"+textFrame.getLayout().getLineCount());
+
+
+      if ((totalLines == lastLines) && totalLines < content.size())
       {
         textFrame.setMaxLines(lastLines);
         textFrame.setScrollContainer(true);
@@ -117,18 +143,18 @@ public class LoggerFrag extends Fragment
       }
       lastLines = totalLines;
     }
-    
-    
-    
+
+
+
     final StringBuilder sb = new StringBuilder();
     for (String line : content) sb.append(line).append("\n");
-    StringBuilder debug = new StringBuilder();
-    debug.append("refresh about to print ");
+    //StringBuilder debug = new StringBuilder();
+    //debug.append("refresh about to print ");
     //.append(sb).append(" ")
-    debug.append(content.size()).append("/");
-    if(textFrame.getLayout() == null) debug.append("unknown");
-    else debug.append(textFrame.getLayout().getLineCount());
-    Log.d(TAG, debug.toString());
+    //debug.append(content.size()).append("/");
+    //if(textFrame.getLayout() == null) debug.append("unknown");
+    //else debug.append(textFrame.getLayout().getLineCount());
+    //Log.d(TAG, debug.toString());
     getActivity().runOnUiThread(new Runnable()
       {
         @Override
@@ -136,6 +162,8 @@ public class LoggerFrag extends Fragment
         {
           textFrame.setText(sb.toString());
           textFrame.invalidate();
+          if(textFrame.getHeight() == 0) textFrame.setHeight(LayoutParams.FILL_PARENT);
+          if(textFrame.getWidth() == 0) textFrame.setWidth(LayoutParams.FILL_PARENT);
           //Log.d(TAG, "set screen to  " + sb);
 
           ViewParent obj = viewContainer.getParent();
@@ -149,31 +177,31 @@ public class LoggerFrag extends Fragment
           else
           {
             //fixed size window....
-            
-            Log.d(TAG,"chekcing size\n");
+
+            //Log.d(TAG,"chekcing size\n");
           }
-          
+
         }
       });
   }
 
   /*public Layout getLayout()
-  {
-    if (textFrame != null) return textFrame.getLayout();
-    return null;
-  }
+   {
+   if (textFrame != null) return textFrame.getLayout();
+   return null;
+   }
 
-  public int getScrollY()
-  {    if (textFrame != null) return textFrame.getScrollY();
+   public int getScrollY()
+   {    if (textFrame != null) return textFrame.getScrollY();
 
-    return 0;
-  }
+   return 0;
+   }
 
-  public int getHeight()
-  {
-    if (textFrame != null) return textFrame.getHeight();
-    return 0;
-  }*/
+   public int getHeight()
+   {
+   if (textFrame != null) return textFrame.getHeight();
+   return 0;
+   }*/
   public int getDisplayWidth()
   {
     int result = 20;
@@ -194,5 +222,20 @@ public class LoggerFrag extends Fragment
     if (textFrame != null) textFrame.setTypeface(chosenFont);
   }
 
+ /* public void setChildLayoutParams(ViewGroup.LayoutParams layout)
+  {
+    if(textFrame != null)
+    {
+      textFrame.setLayoutParams(layout);
+      Log.d(TAG,"set the params of textviiew to "+layout);
+    }
+    // TODO: Implement this method
+  }*/
+
+  public int getTextHeight()
+  {
+    if (textFrame != null) return textFrame.getHeight();
+    return 0;
+  }
 
 }//class

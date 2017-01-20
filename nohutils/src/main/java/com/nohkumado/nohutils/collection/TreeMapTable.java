@@ -7,7 +7,7 @@ public class TreeMapTable<E,G> implements Iterable
   TreeMap<E,ArrayMap<E,G>> rows = new TreeMap<>();
   TreeMap<Integer,E> colNames =   new TreeMap<>();
 
-  public G set(E row, E col, G val)
+  public synchronized G set(E row, E col, G val)
   {
     ArrayMap<E,G> aRow = rows.get(row);
     if (aRow == null)
@@ -87,7 +87,7 @@ public class TreeMapTable<E,G> implements Iterable
   }
 
   @Override
-  public Iterator iterator()
+  public synchronized Iterator iterator()
   {
     return rows.keySet().iterator();
   }
