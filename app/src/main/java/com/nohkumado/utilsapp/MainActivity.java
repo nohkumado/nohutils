@@ -41,6 +41,12 @@ public class MainActivity extends Msg2RString
 		//TextView screen = (TextView) findViewById(R.id.textOut);
 		EditText cmdLine = (EditText) findViewById(R.id.TextIn);
     LoggerFrag logger = (LoggerFrag)getFragmentManager().findFragmentById(R.id.textOut);
+    if(logger == null)
+    {
+      logger = (LoggerFrag)getFragmentManager().findFragmentByTag("screen");
+      if(logger == null) logger = new LoggerFrag(); //well everything failed....
+      getFragmentManager().beginTransaction().replace(R.id.textOut,logger,"screen").commit();
+    }
 		shell.setInOut(cmdLine, logger);
 		shell.init();
     shell.print("Welcome ");
