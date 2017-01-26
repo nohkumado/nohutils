@@ -7,6 +7,8 @@ public class TreeMapTable<E,G> implements Iterable
   TreeMap<E,ArrayMap<E,G>> rows = new TreeMap<>();
   TreeMap<Integer,E> colNames =   new TreeMap<>();
 
+  
+
   public synchronized G set(E row, E col, G val)
   {
     ArrayMap<E,G> aRow = rows.get(row);
@@ -127,5 +129,28 @@ public class TreeMapTable<E,G> implements Iterable
     }
     return null;
   }
-  
+  /**
+  * return the header
+  */
+  public TreeMap<Integer,E> header()
+  {
+    return colNames; 
+  }
+  /**
+  * add a new column
+  */
+  public void addCol(E col)
+  {
+    colNames.put(colNames.size(), col);
+  }
+  /**
+   *
+   * hasCol
+   * check if a column exists
+   */
+  public boolean hasCol(E column)
+  {
+    if(colNames.containsValue(column)) return true;
+    return false;
+  }//public boolean hasCol(E column)
 }
