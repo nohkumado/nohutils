@@ -93,7 +93,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		//maybe this isnt needed as long as no command is found the help is called anyway TODO
 		if (line.matches("^help|^h$|^\\?"))
 		{ 
-			Log.d(TAG, " = help " + line);
+			//Log.d(TAG, " = help " + line);
 			help(); 
 			if (strictParse) return(resultStack);
 		}

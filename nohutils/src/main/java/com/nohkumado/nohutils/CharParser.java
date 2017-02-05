@@ -41,7 +41,7 @@ public class CharParser
 		errorCode = 0;
     line = line.trim();
     
-    Log.d(TAG,"char parsing  '"+line+"'");
+    //Log.d(TAG,"char parsing  '"+line+"'");
     
 		Matcher matcher;
 		int lineLength = 1;
@@ -67,7 +67,7 @@ public class CharParser
           String cmdPart,argPart;
           if(matcher.groupCount()>0)
           {
-            Log.d(TAG,"num of groups  '"+matcher.groupCount()+"' for "+cmdPat);
+            //Log.d(TAG,"num of groups  '"+matcher.groupCount()+"' for "+cmdPat);
             
             cmdPart = line.substring(0,matcher.start(1)); 
             argPart = matcher.group(1);
@@ -75,12 +75,12 @@ public class CharParser
           }
           else
           {
-            Log.d(TAG,"no arg cmd "+matcher.group()+" in line "+line);
+            //Log.d(TAG,"no arg cmd "+matcher.group()+" in line "+line);
             cmdPart = line;
             argPart = "";
           }
           
-          Log.d(TAG," split into  '"+cmdPart+"' and '"+argPart+"' rest '"+line+"'");
+          //Log.d(TAG," split into  '"+cmdPart+"' and '"+argPart+"' rest '"+line+"'");
 					
 					//dont forget to call the parse method of the command  
 					//need to split it up 
@@ -92,11 +92,11 @@ public class CharParser
 					{
 						aCmd.parse(argPart);
 						resultStack.add(aCmd);
-            Log.d(TAG," cmd '"+aCmd+"' added");
+            //Log.d(TAG," cmd '"+aCmd+"' added");
 					}
 					else
           {
-            Log.d(TAG," cmd '"+line+"' not found");
+            //Log.d(TAG," cmd '"+line+"' not found");
             result &= false;
           }
 					continue;

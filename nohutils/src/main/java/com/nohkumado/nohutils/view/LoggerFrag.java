@@ -39,7 +39,7 @@ public class LoggerFrag extends Fragment
     {
       viewContainer = inflater.inflate(com.nohkumado.nohutils.R.layout.loggerfrag, container);
     }
-    Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
+    //Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
     textFrame = (TextView) viewContainer.findViewById(R.id.loggerview);
 
     textFrame.setText("starting up");
@@ -52,7 +52,7 @@ public class LoggerFrag extends Fragment
         sb.append("\n");
       }
       textFrame.setText(sb.toString());
-      Log.d(TAG, "extracted frame " + textFrame + " " + textFrame.getWidth() + ":" + textFrame.getHeight());
+      //Log.d(TAG, "extracted frame " + textFrame + " " + textFrame.getWidth() + ":" + textFrame.getHeight());
 
 /*
       textFrame.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {

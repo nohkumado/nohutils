@@ -7,7 +7,8 @@ public class TreeMapTable<E,G> implements Iterable
   TreeMap<E,ArrayMap<E,G>> rows = new TreeMap<>();
   TreeMap<Integer,E> colNames =   new TreeMap<>();
 
-  
+
+
 
   public synchronized G set(E row, E col, G val)
   {
@@ -104,15 +105,15 @@ public class TreeMapTable<E,G> implements Iterable
       for (Map.Entry<E,G> rowData: aRow.entrySet())
       {
         E col = rowData.getKey();
-        
+
         set(rowkey, col, rowData.getValue());
       }
     }
     return this;
   }
   /**
-  * remove a whole line
-  */
+   * remove a whole line
+   */
   public ArrayMap<E,G> remove(String line)
   {
     return rows.remove(line);
@@ -122,7 +123,7 @@ public class TreeMapTable<E,G> implements Iterable
    */
   public G remove(String line, String col)
   {
-    if(rows.get(line) != null)
+    if (rows.get(line) != null)
     {
       ArrayMap<E,G> lineMap = rows.get(line); 
       return lineMap.remove(col);  
@@ -130,15 +131,15 @@ public class TreeMapTable<E,G> implements Iterable
     return null;
   }
   /**
-  * return the header
-  */
+   * return the header
+   */
   public TreeMap<Integer,E> header()
   {
     return colNames; 
   }
   /**
-  * add a new column
-  */
+   * add a new column
+   */
   public void addCol(E col)
   {
     colNames.put(colNames.size(), col);
@@ -150,7 +151,12 @@ public class TreeMapTable<E,G> implements Iterable
    */
   public boolean hasCol(E column)
   {
-    if(colNames.containsValue(column)) return true;
+    if (colNames.containsValue(column)) return true;
     return false;
   }//public boolean hasCol(E column)
+  public void clear()
+  {
+    rows.clear();
+    colNames.clear();
+  }
 }
