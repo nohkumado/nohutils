@@ -24,7 +24,6 @@ import com.nohkumado.utilsapp.*;
 import java.util.*;
 import java.util.regex.*;
 
-import com.nohkumado.utilsapp.R;
 import com.nohkumado.utilsapp.test.*;
 
 public class TestCmd extends Command implements Cloneable, CommandI

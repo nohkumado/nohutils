@@ -30,11 +30,9 @@ package com.nohkumado.nohutils.commands;
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-import java.io.*;
-import java.util.*;
-import java.util.regex.*;
-import com.nohkumado.nohutils.*;
 import android.util.*;
+import com.nohkumado.nohutils.*;
+import java.io.*;
 
 public class CatCommand extends Command implements Cloneable, CommandI
 {
@@ -50,7 +48,7 @@ public class CatCommand extends Command implements Cloneable, CommandI
 	public CatCommand(ShellI s)
 	{
 		super(s);
-		name = shell.msg(R.string.cd);
+		name = shell.msg(com.nohkumado.nohutils.R.string.cd);
 		//Log.d("CD","cd cmd: "+shell.msg(R.string.cd));
 	}// public Command()
 
@@ -80,9 +78,9 @@ public class CatCommand extends Command implements Cloneable, CommandI
 			{
 					shell.set("pwd", fileToEcho.getAbsolutePath());
 			}// if(newDir.exists())
-			else result += shell.msg(R.string.cat_not_file);
+			else result += shell.msg(com.nohkumado.nohutils.R.string.cat_not_file);
 		}// if(line != null && line.length() > 0)
-		else result += shell.msg(R.string.cd_provide_a_dir_to_enter);
+		else result += shell.msg(com.nohkumado.nohutils.R.string.cd_provide_a_dir_to_enter);
 
 		return(result);
 	}//end execute

@@ -37,7 +37,7 @@ public class LoggerFrag extends Fragment
 
     if (viewContainer == null)
     {
-      viewContainer = inflater.inflate(com.nohkumado.nohutils.R.layout.loggerfrag, container);
+      viewContainer = inflater.inflate(R.layout.loggerfrag, container);
     }
     //Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
     textFrame = (TextView) viewContainer.findViewById(R.id.loggerview);

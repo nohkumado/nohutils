@@ -30,10 +30,10 @@
 
 package com.nohkumado.nohutils;
 
+import android.*;
 import android.content.*;
 import android.os.*;
 import android.preference.*;
-import android.text.*;
 import android.util.*;
 import android.view.*;
 import android.view.View.*;
@@ -178,7 +178,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		}
 
 		//debug( "init printing start message");
-		print(msg(R.string.start));
+		print(msg(com.nohkumado.nohutils.R.string.start));
 		prompt();
 		return(true);
 	}//public void init

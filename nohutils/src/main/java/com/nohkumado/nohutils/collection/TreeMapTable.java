@@ -7,6 +7,11 @@ public class TreeMapTable<E,G> implements Iterable
   TreeMap<E,ArrayMap<E,G>> rows = new TreeMap<>();
   TreeMap<Integer,E> colNames =   new TreeMap<>();
 
+  public TreeMapTable()
+  {
+    if(rows == null) rows = new TreeMap<>();
+    if(colNames == null)  colNames =   new TreeMap<>();
+  }//CTOR zenfone problem search....
 
 
 

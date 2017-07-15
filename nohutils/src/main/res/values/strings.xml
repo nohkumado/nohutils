@@ -41,5 +41,5 @@
     <string name="no_help">no help</string>
     <string name="not_a_int">not a int</string>
     <string name="need_specifying">need specifying</string>
-    
+    <string name="addNewPathSeg">add new path</string>
 		</resources>
