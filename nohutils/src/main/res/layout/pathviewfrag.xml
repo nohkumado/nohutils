@@ -1,48 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="wrap_content"
-	android:layout_width="wrap_content"
-	android:orientation="horizontal"
-	>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:orientation="horizontal"
+    android:divider="?android:dividerVertical"
+    android:showDividers="middle"
+		
 
+>
+    <!--
+    android:background="@drawable/slash"
+    android:divider="@drawable/slash"
+    android:divider="?android:dividerVertical"
+    android:dividerPadding="50dip"
+    style="?android:buttonBarStyle"-->
     <LinearLayout
         android:id="@+id/treeselector"
+        android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:orientation="horizontal"
-        android:divider="@drawable/slash"/>
-        
-	<EditText
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:ems="10"
-		android:id="@+id/NewOrgaField"
-		android:selectAllOnFocus="true"
-		android:text="@string/addNewPathSeg"/>
+    
+        android:divider="@drawable/slash"
+        android:showDividers="middle"
+		/>
 
-	<ImageButton
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:src="@drawable/ic_done_white_48dp"
-		android:id="@+id/path_ok"/>
+    <EditText
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:ems="10"
+        android:id="@+id/NewOrgaField"
+        android:selectAllOnFocus="true"
+        android:text="@string/addNewPathSeg"/>
 
-	<ImageButton
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:src="@drawable/ic_chevron_left_white_48dp"
-		android:id="@+id/upButton"/>
+    <ImageButton
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_done_white_48dp"
+        android:id="@+id/path_ok"/>
 
-	<ImageButton
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:src="@drawable/ic_home_white_48dp"
-      android:id="@+id/homeButton"/>
+    <ImageButton
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_chevron_left_white_48dp"
+        android:id="@+id/upButton"/>
 
-	<View
-		android:layout_width="0dp"
-		android:layout_height="0dp"
-		android:layout_weight="1"/>
+    <ImageButton
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_home_white_48dp"
+        android:id="@+id/homeButton"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 </LinearLayout>
 
