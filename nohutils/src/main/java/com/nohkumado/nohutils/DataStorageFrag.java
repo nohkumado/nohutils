@@ -21,7 +21,7 @@ public interface DataStorageFrag<E>
   public void setItem(E actItem, int pos);
   public void setItem(E get);
 
-  //public int pathSize();
+  public int pathSize();
 
   public BaseAdapter getAdapter(int pos);
   public E extractData(Object selectedItem, int selectedItemPosition);

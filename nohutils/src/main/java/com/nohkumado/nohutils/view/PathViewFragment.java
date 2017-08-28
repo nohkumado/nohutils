@@ -14,7 +14,7 @@ import java.util.*;
 
 import android.view.View.OnClickListener;
 
-public class PathViewFragment<E> extends Fragment implements OnClickListener//,OnItemSelectedListener
+public class PathViewFragment<E> extends Fragment implements OnClickListener,OnItemSelectedListener
 {
   public final static String TAG = "PVF";
   private ArrayList<Integer> addLater = new ArrayList<>();
@@ -24,7 +24,7 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener//,O
   private LinearLayout viewContainer;
 
   private ImageButton pathChangeBut;
-  //protected int lastSpinnerTouched = 0;
+  protected int lastSpinnerTouched = -1;
 
   private DataStorageFrag<E> dataFrag;
 
@@ -59,7 +59,7 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener//,O
         //Log.d(TAG, "created new spinner");
         //v.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //lastSpinnerCreation = new Date().getTime();
-        //v.setOnItemSelectedListener(this);
+        v.setOnItemSelectedListener(this);
         v.setAdapter(sAdapter);
         //Log.d(TAG, "check container : " + viewContainer);
         if (viewContainer != null)
@@ -94,9 +94,18 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener//,O
   /**
    setter for the datafrag
    */
-  public void setStorage(DataStorageFrag dataFrag)
+  public void setStorage(DataStorageFrag dF)
   {
-    this.dataFrag =  dataFrag;
+    this.dataFrag = dF;
+    if (dF.pathSize() == 0)
+    {
+      createSpinnerForPath(0);
+    }//if (dataFrag.pathSize() == 0)
+    else 
+      for (int n = 0; n < dF.pathSize(); n++)
+      {
+        createSpinnerForPath(n);
+      }//for(int n= 0; n< dataFrag.pathSize(); n++)
   }///public void setStorage(DataStorageFrag dataFrag)
 
   /**
@@ -141,35 +150,36 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener//,O
     {
       int lastIndex = spinViews.size() - 1;
       E actIt = dataFrag.extractData(spinViews.get(lastIndex).getSelectedItem(), spinViews.get(lastIndex).getSelectedItemPosition());
-      
+
       remove(lastIndex);
       dataFrag.remove(lastIndex);
     }//else if (knopf == pathUpBut) 
     else if (knopf == pathHomeBut)
     {
-      Log.d(TAG,"######about to go home! ");
-      
+      Log.d(TAG, "######about to go home! ");
+
       for (int lastIndex = spinViews.size() - 1; lastIndex > 0; lastIndex--)
       {
         remove(lastIndex);
         dataFrag.remove(lastIndex);  
       }//for(int lastIndex = spinViews.size() -1; lastIndex > 0; lastIndex--)
     }//else if (knopf == pathHomeBut)
-
   }//public void onClick(View knopf)
 
   private void changePath()
   {
-    //Log.d(TAG, "##############entering changePath with " + lastSpinnerTouched);
+    Log.d(TAG, "##############entering changePath with " + lastSpinnerTouched);
     //if (lastSpinnerTouched < 0)
     //{
-      //no spinner changed, touched etc...
-      //Log.d(TAG, "no spinner touched, change path invalid, bailing");
-      //return;
+    //no spinner changed, touched etc...
+    //Log.d(TAG, "no spinner touched, change path invalid, bailing");
+    //return;
     //}//if (lastSpinnerTouched < 0)
+    int actPos = spinViews.size() - 1;
+    if (lastSpinnerTouched >= 0 && lastSpinnerTouched <= actPos) actPos = lastSpinnerTouched;
 
-    E storedIt = dataFrag.getItem(spinViews.size()-1);
-    Spinner actSpin = spinViews.get(spinViews.size()-1);
+    E storedIt = dataFrag.getItem(actPos);
+    Spinner actSpin = spinViews.get(actPos);
     E selectedIt = dataFrag.extractData(actSpin.getSelectedItem(), actSpin.getSelectedItemPosition());
 //    if (!selectedIt.equals(storedIt))    
 //    {
@@ -182,18 +192,18 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener//,O
 //      //Log.d(TAG, "just doodled with the spinner..."); 
 //      dataFrag.setItem(selectedIt, lastSpinnerTouched);
 //    }
-    dataFrag.setItem(selectedIt, spinViews.size()-1);
-    
+   
 
-  /*  for (int index = spinViews.size() - 1; index > lastSpinnerTouched; index--)
+
+    for (int index = spinViews.size() - 1; index > lastSpinnerTouched; index--)
     {
       //Log.d(TAG, "reducing path at index " + index);
-      
       remove(index);
-      
       dataFrag.remove(index);
     }//for(int index = spinViews.size() -1; index > lastSpinnerTouched; index-- )
-    */
+    
+    dataFrag.setItem(selectedIt, actPos);
+    
     if (viewContainer != null)  viewContainer.invalidate();
     if (viewContainer != null)  viewContainer.refreshDrawableState();
     //Log.e(TAG, "ehm selected inexistend spinner item?? " + adapterPos);
@@ -202,8 +212,8 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener//,O
     //Log.d(TAG, "------ end set last touched " + lastSpinnerTouched);
   }//private void changePath()
   /**
-  remove
-  */
+   remove
+   */
   public void remove(int index)
   {
     if (index <= 0)
@@ -213,7 +223,7 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener//,O
     }
     //if (index > 0)lastSpinnerTouched = index - 1;
     //else lastSpinnerTouched = 0;
-    
+
     Spinner spin = spinViews.remove(index);
     //E actIt = dataFrag.extractData(spin.getSelectedItem(), spin.getSelectedItemPosition());
     spin.setAdapter(null);
@@ -224,29 +234,28 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener//,O
       parent.invalidate();
       parent.refreshDrawableState();
     }//if (parent != null) 
-    
+
   }//public void remove(int index)
 
-  /*
-   @Override
-   public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
-   {
 
-   if (view == null) return; //startup! just ignore this buggy implementation
-
-   lastSpinnerTouched = spinViews.indexOf(parent);
-   Log.d(TAG, "set touched to " + lastSpinnerTouched + " from pos " + pos + " of " + view);
-   }//public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
-
+  @Override
+  public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
+  {
+    if (view == null) return; //startup! just ignore this buggy implementation
+    TextView nameField = (TextView)view;
+    lastSpinnerTouched = spinViews.indexOf(parent);
+    //Log.d(TAG, "###### set touched to " + lastSpinnerTouched + " from pos " + pos + " of " + nameField.getText());
+  }//public void onItemSelected(AdapterView<?> parent, View view, int pos, long id)
 
 
-   @Override
-   public void onNothingSelected(AdapterView<?> parent)
-   {
-   lastSpinnerTouched = -1;
-   Log.d(TAG, "reset touched to " + lastSpinnerTouched);
-   }//public void onNothingSelected(AdapterView<?> parent)
-   */
+
+  @Override
+  public void onNothingSelected(AdapterView<?> parent)
+  {
+    lastSpinnerTouched = -1;
+    //Log.d(TAG, "######reset touched to " + lastSpinnerTouched);
+  }//public void onNothingSelected(AdapterView<?> parent)
+
   public void redrawPathView()
   {
     if (viewContainer != null)  
@@ -267,7 +276,5 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener//,O
       viewContainer.invalidate();
       viewContainer.refreshDrawableState();
     }//if (viewContainer != null)  
-
   }//public void redrawPathView()
-
 }//public class PathViewFragment extends Fragment

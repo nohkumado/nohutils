@@ -43,15 +43,42 @@ public class SelectAgainSpinner extends Spinner
   public SelectAgainSpinner(Context context, AttributeSet attrs, int defStyle)
   { super(context, attrs, defStyle); }
 
-  @Override
-  protected void onLayout(boolean changed, int l, int t, int r, int b)
-  {
-    if (this.lastSelected == this.getSelectedItemPosition() && getOnItemSelectedListener() != null)
-      getOnItemSelectedListener().onItemSelected(this, getSelectedView(), this.getSelectedItemPosition(), getSelectedItemId());
-    if (!changed)
-      lastSelected = this.getSelectedItemPosition();
+  /*@Override
+   protected void onLayout(boolean changed, int l, int t, int r, int b)
+   {
+   if (this.lastSelected == this.getSelectedItemPosition() && getOnItemSelectedListener() != null)
+   getOnItemSelectedListener().onItemSelected(this, getSelectedView(), this.getSelectedItemPosition(), getSelectedItemId());
+   if (!changed)
+   lastSelected = this.getSelectedItemPosition();
 
-    super.onLayout(changed, l, t, r, b);
-  }//protected void onLayout(boolean changed, int l, int t, int r, int b)
+   super.onLayout(changed, l, t, r, b);
+   }//protected void onLayout(boolean changed, int l, int t, int r, int b)
+   */
+  
+  @Override 
+  public void setSelection(int position, boolean animate)
+  {
+    boolean sameSelected = position == getSelectedItemPosition();
+    super.setSelection(position, animate);
+    if (sameSelected)
+    {
+      // Spinner does not call the OnItemSelectedListener if the same item is selected, so do it manually now
+      getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());
+    }//if (sameSelected)
+  }// public void setSelection(int position, boolean animate)
+  
+
+  @Override
+  public void setSelection(int position)
+  {
+    boolean sameSelected = position == getSelectedItemPosition();
+    super.setSelection(position);
+    if (sameSelected)
+    {
+      // Spinner does not call the OnItemSelectedListener if the same item is selected, so do it manually now
+      getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());
+    }//if (sameSelected)
+    
+  }//public void setSelection(int position)
 }//public class SelectAgainSpinner extends Spinner
 
