@@ -39,7 +39,7 @@ public class LoggerFrag extends Fragment
     {
       viewContainer = inflater.inflate(R.layout.loggerfrag, container);
     }
-    //Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
+    Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
     textFrame = (TextView) viewContainer.findViewById(R.id.loggerview);
 
     textFrame.setText("starting up");
@@ -52,7 +52,7 @@ public class LoggerFrag extends Fragment
         sb.append("\n");
       }
       textFrame.setText(sb.toString());
-      //Log.d(TAG, "extracted frame " + textFrame + " " + textFrame.getWidth() + ":" + textFrame.getHeight());
+      Log.d(TAG, "extracted frame " + textFrame + " " + textFrame.getWidth() + ":" + textFrame.getHeight());
 
 /*
       textFrame.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -135,11 +135,20 @@ public class LoggerFrag extends Fragment
 
       if ((totalLines == lastLines) && totalLines < content.size())
       {
-        textFrame.setMaxLines(lastLines);
-        textFrame.setScrollContainer(true);
-        textFrame.setMovementMethod(new ScrollingMovementMethod());
-        textFrame.setGravity(Gravity.BOTTOM);
-        //while(totalLines < content.size()) content.remove(0);
+        getActivity().runOnUiThread(
+        new Runnable()
+          {
+
+            @Override
+            public void run()
+            {
+              textFrame.setMaxLines(lastLines);
+              textFrame.setScrollContainer(true);
+              textFrame.setMovementMethod(new ScrollingMovementMethod());
+              textFrame.setGravity(Gravity.BOTTOM);
+            }//public void run()
+        });
+                //while(totalLines < content.size()) content.remove(0);
       }
       lastLines = totalLines;
     }

@@ -47,8 +47,6 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
   {
     //Log.d(TAG, "createspinnerfor " + ".... " + pos);
 
-    //dataFrag.setItem(actItem, pos);
-
     BaseAdapter sAdapter = dataFrag.getAdapter(pos);
     if (sAdapter != null) 
     {
@@ -156,7 +154,7 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
     }//else if (knopf == pathUpBut) 
     else if (knopf == pathHomeBut)
     {
-      Log.d(TAG, "######about to go home! ");
+      //Log.d(TAG, "######about to go home! ");
 
       for (int lastIndex = spinViews.size() - 1; lastIndex > 0; lastIndex--)
       {
@@ -168,32 +166,13 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
 
   private void changePath()
   {
-    Log.d(TAG, "##############entering changePath with " + lastSpinnerTouched);
-    //if (lastSpinnerTouched < 0)
-    //{
-    //no spinner changed, touched etc...
-    //Log.d(TAG, "no spinner touched, change path invalid, bailing");
-    //return;
-    //}//if (lastSpinnerTouched < 0)
+    //Log.d(TAG, "##############entering changePath with " + lastSpinnerTouched);
     int actPos = spinViews.size() - 1;
     if (lastSpinnerTouched >= 0 && lastSpinnerTouched <= actPos) actPos = lastSpinnerTouched;
 
     E storedIt = dataFrag.getItem(actPos);
     Spinner actSpin = spinViews.get(actPos);
     E selectedIt = dataFrag.extractData(actSpin.getSelectedItem(), actSpin.getSelectedItemPosition());
-//    if (!selectedIt.equals(storedIt))    
-//    {
-//      //Log.d(TAG, "no the same! exchanging items in dataFrag");
-//      dataFrag.setItem(selectedIt, lastSpinnerTouched);
-//      //TODO check that in dataFrag we set up the recordview recordFrag.setData(selectedItem);
-//    }//if(!selectedIt.equals(storedIt))
-//    else 
-//    {
-//      //Log.d(TAG, "just doodled with the spinner..."); 
-//      dataFrag.setItem(selectedIt, lastSpinnerTouched);
-//    }
-   
-
 
     for (int index = spinViews.size() - 1; index > lastSpinnerTouched; index--)
     {
@@ -206,9 +185,6 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
     
     if (viewContainer != null)  viewContainer.invalidate();
     if (viewContainer != null)  viewContainer.refreshDrawableState();
-    //Log.e(TAG, "ehm selected inexistend spinner item?? " + adapterPos);
-    //finished here, but if we doodle, send back we selected the last default entry...
-    //lastSpinnerTouched = spinViews.size() - 1;
     //Log.d(TAG, "------ end set last touched " + lastSpinnerTouched);
   }//private void changePath()
   /**

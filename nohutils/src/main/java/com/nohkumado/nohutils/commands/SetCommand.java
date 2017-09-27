@@ -34,7 +34,7 @@ import com.nohkumado.nohutils.*;
 import java.util.*;
 import java.util.prefs.*;
 import java.util.regex.*;
-//import com.gnu.utils.*;
+//import com.nohkumado.utils.*;
 
 public class SetCommand extends Command implements Cloneable, CommandI
 {

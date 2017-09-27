@@ -223,5 +223,5 @@ public class ReturnValue<E> implements Cloneable
     {
         errno = e;
     }
-}// public class ReturnValue extends com.gnu.utils.MessageUser
+}// public class ReturnValue extends com.nohkumado.utils.MessageUser
 

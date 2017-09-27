@@ -35,7 +35,7 @@
 package com.nohkumado.nohutils;
 import java.util.*;
 import java.util.regex.*;
-//import com.gnu.utils.*;
+//import com.nohkumado.utils.*;
 
 public interface CommandI extends Cloneable,PipableI
 {

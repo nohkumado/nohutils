@@ -30,7 +30,7 @@
 
 package com.nohkumado.nohutils;
 
-//import com.gnu.utils.*;
+//import com.nohkumado.utils.*;
 import java.util.*;
 import java.util.regex.*;
 import android.util.*;
@@ -66,7 +66,11 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 				//Log.d(TAG,"command is "+aCmd);
 	      //aCmd.name(key);
 				//Log.d(TAG,"about to add comd "+key+" v: "+aCmd+" to "+commands);
-				commands.put(key, aCmd);
+				if( key == null)
+        {
+          Log.e(TAG,"key was null for cmd "+aCmd+" to "+commands);
+        }
+        else commands.put(key, aCmd);
 			}// if(cmds.get(key) instanceof Command)
 
 		}// for(String key: commands.keySet())
@@ -204,15 +208,19 @@ public class CmdLineParser  implements Cloneable,CommandParserI
    */
   public String help()
   {
-    String help = "help\n";
+    StringBuilder helpBld = new StringBuilder();
+    helpBld.append("help\n");
     for (Iterator<String> i = commands.keySet().iterator(); i.hasNext();)
     {
       String cmdName = i.next();
+      helpBld.append(cmdName).append( " : ");
       CommandI aCmd = commands.get(cmdName);
-      help += cmdName + " : " + aCmd.help();
+      String cmdHelp = aCmd.help();
+      helpBld.append(cmdHelp);
+      if(!(cmdHelp != null && cmdHelp.endsWith("\n"))) helpBld.append("\n");
     }//for(Iterator<String> i = commands.keySet().iterator(); i.hasNext();)
-    shell.print(help);
-    return(help);
+    shell.print(helpBld.toString());
+    return(helpBld.toString());
   }//public String help()
   /*
 	 find a command, means try key completion if not found directly clone the command and return it

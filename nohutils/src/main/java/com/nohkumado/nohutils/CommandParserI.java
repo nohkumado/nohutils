@@ -29,7 +29,7 @@
 */
 package com.nohkumado.nohutils;
 import java.util.*;
-public  interface CommandParserI //extends com.gnu.jtrader.EventGeneratorI
+public  interface CommandParserI //extends com.nohkumado.jtrader.EventGeneratorI
 {
 
 	public void parseMode(String p0);

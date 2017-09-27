@@ -44,6 +44,28 @@ public class UtilsTester
    * 
    * @param toCheck 
    */
+  public boolean doTrans(boolean result, StringBuilder msg)
+  {
+    if (result == true)
+    {
+      
+      if (msg == null || msg.equals(""))
+      {
+        error(testName);
+      }// if(msg != null || !msg.equals(""))
+      else
+      {
+        error(testName + " " + msg);
+      }// else
+    }//# if(toCheck.status())
+    return(!result);
+  }// public void doTrans(Item toCheck)
+  
+  /** 
+   * 
+   * 
+   * @param toCheck 
+   */
   public boolean doTrans(ReturnValue status)
   {
     return doTrans(!status.status(), status.report());
@@ -68,5 +90,16 @@ public class UtilsTester
     if (immediate) Log.e(TAG, m);
     else log.append("ERROR:").append(m).append("\n");
   }// public void print(String m)
-
+  /** 
+   * error 
+   * 
+   * @param m 
+   */
+  public StringBuilder error(StringBuilder m)
+  {
+    if (immediate) Log.e(TAG, m.toString());
+    else log.append("ERROR:").append(m).append("\n");
+    return m;
+  }// public void print(String m)
+  
 }// public class UtilsTester

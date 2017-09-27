@@ -4,4 +4,6 @@
 		 <string name="hello_world">Welcome!</string>
 		<string name="testhelp">run this command to make the tests on the nohutils</string>
     <string name="test_cmd">test</string>
+    <string name="menu_settings">menu settings</string>
+    <string name="mabout">about</string>
 </resources>

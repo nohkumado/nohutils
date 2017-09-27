@@ -16,6 +16,8 @@ public class NohTest extends UtilsTester
   
   public String runTest()
   {
+    StringBuilder result = new StringBuilder();
+    result.append("TreeMapTable test:");
     //print("TreeMapTable test");
     TreeMapTable<String,String> table = new TreeMapTable<>();
     table.set("A","B","vier");

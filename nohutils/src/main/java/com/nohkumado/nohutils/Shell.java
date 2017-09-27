@@ -1,5 +1,4 @@
-/** Id: Shell.java,v 1+4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
- *
+/** 
  * NAME Shell 
  *
  * AUTHOR Bruno Boettcher <nohkumado at gmail dot com> 
@@ -378,6 +377,21 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		else if (res instanceof Integer) prefs.edit().putInt(locname, (Integer)res).apply();
 		return null;
 	}
+  public int intPref(String key)
+  {
+    int result = 0;
+    try
+    {
+      String value = preference(key);
+      if (value != null) result = (new Integer(value)).intValue();
+    }
+    catch (NumberFormatException e)
+    {
+      Log.e(TAG, "no number for " + key + " : " + preference(key)); 
+      error("no number for " + key + " : " + preference(key));
+    }
+    return result;
+  }//private void intPref(String key)
 	/** 
 	 * rmRessources 
 	 *
@@ -410,6 +424,23 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	{
 		return(localVars.get(varname));
 	}
+
+  public int getInt(String key)
+  {
+    int result = 0;
+    try
+    {
+      String value = preference(key);
+      if (value != null) result = (new Integer(value)).intValue();
+    }
+    catch (NumberFormatException e)
+    {
+      Log.e(TAG, "no number for " + key + " : " + preference(key)); 
+      error("no number for " + key + " : " + preference(key));
+    }
+    return result;
+  }//public int getInt(String varname)
+
 	public Map<String,Object> getAll()
 	{
 		return(localVars);

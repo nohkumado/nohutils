@@ -19,12 +19,10 @@ package com.nohkumado.utilsapp.commands;
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 import com.nohkumado.nohutils.*;
-import com.nohkumado.nohutils.commands.*;
 import com.nohkumado.utilsapp.*;
-import java.util.*;
-import java.util.regex.*;
-
 import com.nohkumado.utilsapp.test.*;
+
+import com.nohkumado.utilsapp.R;
 
 public class TestCmd extends Command implements Cloneable, CommandI
   {
@@ -38,7 +36,8 @@ public class TestCmd extends Command implements Cloneable, CommandI
     public TestCmd(ShellI s)
     {
       super(s);
-      if (s != null) name = s.msg(R.string.test_cmd);
+      name("test");
+      //if (s != null) name = s.msg(R.string.test_cmd);
     }// public Command()
 
     public TestCmd(ShellI s, String n)

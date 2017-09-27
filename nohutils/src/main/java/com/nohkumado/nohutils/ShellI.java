@@ -30,7 +30,7 @@
 
 package com.nohkumado.nohutils;
 
-//import com.gnu.utils.*;
+//import com.nohkumado.utils.*;
 import android.os.*;
 import android.widget.*;
 import com.nohkumado.nohutils.view.*;
@@ -39,6 +39,9 @@ import java.util.*;
 
 public interface ShellI extends PipableI 
 {
+
+  public int getInt(String p0);
+
 
 public ShellI cpyCtor();
 
@@ -106,6 +109,7 @@ public ShellI cpyCtor();
    */
   public String preference(String locname);
   public String preference(String locname, Object res);
+  public int intPref(String locaname);
 
   /** 
    * local settings 
