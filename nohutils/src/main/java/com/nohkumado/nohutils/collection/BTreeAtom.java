@@ -22,7 +22,7 @@ package com.nohkumado.nohutils.collection;
  * CONSEQUENTIAL DAMAGES RELATING  TO THE SOFTWARE.
  */
 
-import com.nohkumado.nohutils.*;
+import android.util.*;
 import java.util.*;
 
 /**
@@ -40,7 +40,7 @@ public class BTreeAtom
 
 	protected BTreeAtom(String name, BTreeAtomFactory f)
 	{
-		this.name = name;
+		this.name = name.trim();
 		factory = f;
 	}
 	/**
@@ -87,12 +87,11 @@ public class BTreeAtom
 	/**
 	 * return true if this is a leave
 	 */
-	protected boolean isLeave()
+	protected boolean isLeaf()
 	{
-		if (parent != null || (left == null && right == null)) return true;
+		if (parent != null && (left == null && right == null)) return true;
 		return false;
-	}
-
+	}//protected boolean isLeaf()
 	/**
 	 * create a string representation of this tree
 	 */
@@ -100,10 +99,10 @@ public class BTreeAtom
 	{
 		StringBuilder result = new StringBuilder();
 		result.append(indent).append(name).append(" ");;
-		if (!isLeave()) result.append(" (");
+		if (!isLeaf()) result.append(" (");
 		if (left != null) result.append(left.toString(indent + "  "));
 		if (right != null) result.append(right.toString(indent + "  "));
-		if (!isLeave()) result.append(")");
+		if (!isLeaf()) result.append(")");
 		result.append("\n");
 		return result.toString();
 	}
@@ -112,9 +111,11 @@ public class BTreeAtom
 	public String toString()
 	{
 		StringBuilder result = new StringBuilder();
+		//Log.d(TAG,"toS["+name+"]");
 		result.append(name).append(" ");;
 		if (left != null) result.append(left.toString());
 		if (right != null) result.append(right.toString());
+		//Log.d(TAG,"done '"+result+"'");
 		return result.toString();
 	}//public String toString(String indent)
 
@@ -134,16 +135,15 @@ public class BTreeAtom
 	 */
 	public void copy(BTreeAtom root)
 	{
-		
 		name = root.name;
 		if (root.left != null) 
 		{
-			left = factory.instantiate(root.left);
+			left(factory.instantiate(root.left));
 		}
 		
 		if (root.right != null) 
 		{
-			right = factory.instantiate(root.right);
+			right(factory.instantiate(root.right));
 		}
 	}//public void copy(GeneticAtom root)
 
@@ -177,11 +177,19 @@ public class BTreeAtom
 		name = n;
 		return name;
 	}//public String name()
-	public void walk(ArrayList<BTreeAtom> flatList)
+	public ArrayList<BTreeAtom> walk()
 	{
+		return walk(null);
+	}
+	public ArrayList<BTreeAtom> walk(ArrayList<BTreeAtom> flatList)
+	{
+		if(flatList == null) flatList = new ArrayList<>();
+		//if(parent == null) Log.e(TAG,"walk no parent for "+this);
 		flatList.add(this);
 		if(left != null) left.walk(flatList);
 		if(right != null)  right.walk(flatList);
-	}
+		return flatList;
+	}//public ArrayList<BTreeAtom> walk(ArrayList<BTreeAtom> flatList)
+	
 	
 }//class
