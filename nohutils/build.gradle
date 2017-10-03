@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.0"
+    compileSdkVersion 26
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
-        applicationId "com.nohkumado.nohutils"
+        //applicationId "com.nohkumado.nohutils"
         minSdkVersion 21
-        targetSdkVersion 21
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }

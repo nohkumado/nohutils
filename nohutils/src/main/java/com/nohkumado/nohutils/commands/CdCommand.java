@@ -1,5 +1,4 @@
-/** Id: CdCommand.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
- *
+/*
  * NAME CdCommand 
  *
  * AUTHOR Bruno Boettcher <bboett at adlp.org> 
@@ -62,10 +61,9 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 
 	 activate this command
 
-   * @param line 
-   * @param heap 
-   * @return 
+   * @return message or result usually displayed by shell
    */
+  @Override
   public String execute()
   {
 		Log.d(TAG, "cd exe ");
@@ -110,8 +108,9 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 	 * with 2 parameters it replaces the parameter
 	 * 
 	 * @param line 
-	 * @return 
+	 * @return parse what is parsable and return the rest
 	 */
+	@Override
 	public String parse(String line)
 	{
 		Log.d(TAG, "parsing " + line);

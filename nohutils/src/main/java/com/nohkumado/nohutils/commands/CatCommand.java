@@ -1,6 +1,5 @@
 package com.nohkumado.nohutils.commands;
-/** Id: CatCommand.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
- *
+/*
  * NAME CatCommand 
  *
  * AUTHOR Bruno Boettcher <bboett at adlp.org> 
@@ -34,6 +33,7 @@ import android.util.*;
 import com.nohkumado.nohutils.*;
 import java.io.*;
 
+
 public class CatCommand extends Command implements Cloneable, CommandI
 {
 	public static final String TAG="CatCmd";
@@ -62,10 +62,9 @@ public class CatCommand extends Command implements Cloneable, CommandI
 
 	 activate this command
 
-	 * @param line 
-	 * @param heap 
-	 * @return 
+	 * @return result
 	 */
+	@Override
 	public String execute()
 	{
 		Log.d(TAG, "cat exe ");
@@ -91,8 +90,8 @@ public class CatCommand extends Command implements Cloneable, CommandI
 	 * with one parameter it prints the value of that parameter
 	 * with 2 parameters it replaces the parameter
 	 * 
-	 * @param line 
-	 * @return 
+	 * @param line  ev arguments
+	 * @return the rest
 	 */
 	public String parse(String line)
 	{

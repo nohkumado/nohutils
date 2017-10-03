@@ -1,4 +1,5 @@
 package com.nohkumado.utilsapp.test;
+import com.nohkumado.nohutils.ShellI;
 import com.nohkumado.nohutils.test.*;
 import com.nohkumado.nohutils.collection.*;
 /**
@@ -8,10 +9,12 @@ will slowly rebuild it here...
 public class NohTest extends UtilsTester
 {
   private final static String TAG ="NoT";
-  
-  public NohTest()
+  private final ShellI shell;
+
+
+  public NohTest(ShellI s)
   {
-    
+    shell = s;
   }
   
   public String runTest()
@@ -25,12 +28,19 @@ public class NohTest extends UtilsTester
     table.set("C","E","zwei");
     table.set("C","B","drei");
 
-    doTrans(!"zwei".equals(table.get("C","E")),"failed TreeMapTable test: zwei !="+table.get("C","E"));
+    if(doTrans(!"zwei".equals(table.get("C","E")),"failed TreeMapTable test: zwei !="+table.get("C","E"))) result.append("success!");
+    else result.append("failed!");
     //print("End TreeMapTable test");
     
     //print("TreeMapTable test");
+    result.append("\nNTreeNode test:");
     NTreeNode root = new NTreeNode();
-    return log.toString();
-  }
-  
-}
+    /*NTreeAtom leave = root.remove("path");
+    leave =  root.get("path");
+    leave =  root.set("somethiong","path");
+    root.toString();*/
+    return result.toString();
+  }//public String runTest()
+
+}//public class NohTest extends UtilsTester
+

@@ -1,5 +1,5 @@
 package com.nohkumado.utilsapp.commands;
-/** 
+/*
  * after instantiation, execute it!
  *
  * COPYRIGHT and LICENCE
@@ -50,13 +50,12 @@ public class TestCmd extends Command implements Cloneable, CommandI
 
      activate this command
 
-     * @param line 
-     * @param heap 
-     * @return 
+     * @return the result
      */
+    @Override
     public String execute()
     {
-      NohTest tester = new NohTest();
+      NohTest tester = new NohTest(shell);
       return(tester.runTest());
     }//end execute
 
@@ -66,9 +65,10 @@ public class TestCmd extends Command implements Cloneable, CommandI
      * with one parameter it prints the value of that parameter
      * with 2 parameters it replaces the parameter
      * 
-     * @param line 
-     * @return 
+     * @param line arguments
+     * @return the unparsable rest
      */
+    @Override
     public String parse(String line)
     {
       return("");
