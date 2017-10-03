@@ -1,6 +1,5 @@
 package com.nohkumado.nohutils.collection;
-/* $Id: NTreeLeave.java 2016 bboett Exp $ -*- java -*-
- * Copyright (C) 2016 Bruno Böttcher
+/* Copyright (C) 2016 Bruno Böttcher
  * nohkumado@gmail.com
  * https://sites.google.com/site/nokumado/
  *
@@ -25,7 +24,8 @@ package com.nohkumado.nohutils.collection;
 /**
 * Tree leave, its sole purpose is to hold the reference to some content
 */
-public class NTreeLeave<E> extends NTreeAtom<E> 
+@SuppressWarnings("WeakerAccess")
+public class NTreeLeave<E> extends NTreeAtom<E>
 {
 	protected E content;
 	
@@ -35,7 +35,7 @@ public class NTreeLeave<E> extends NTreeAtom<E>
 	}
 
 	@Override
-	public NTreeAtom set(E aEe, String path)
+	public NTreeAtom<E> set(E aEe, String path)
 	{
 		content = aEe;
 		return this;

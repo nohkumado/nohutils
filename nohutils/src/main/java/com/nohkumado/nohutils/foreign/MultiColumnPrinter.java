@@ -42,7 +42,6 @@ import java.util.Enumeration;
 import java.util.Vector;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Iterator;
 
 /**
  * Utility class for printing aligned collumns of text. How/where
@@ -148,6 +147,7 @@ import java.util.Iterator;
  * </PRE>
  *
  */
+@SuppressWarnings({"unchecked", "SameParameterValue", "WeakerAccess", "CanBeFinal", "UnusedParameters"})
 public abstract class MultiColumnPrinter
 {
 
@@ -206,13 +206,11 @@ public abstract class MultiColumnPrinter
 
 	/**
 	 * Creates a new sorted MultiColumnPrinter class.
-	 *
-	 * @param numCol number of columns
+	 *  @param numCol number of columns
 	 * @param gap gap between each column
-	 * @param border character used to frame the titles
-	 * @param align type of alignment within columns
-	 */
-	public MultiColumnPrinter(int numCol, int gap, String border, int align)
+   * @param border character used to frame the titles
+   */
+	public MultiColumnPrinter(int numCol, int gap, String border,int align)
 	{
 		this(numCol, gap, border, align, DEFAULT_SORT);
 	}
@@ -311,10 +309,7 @@ public abstract class MultiColumnPrinter
 		// always overwrite the old values.
 
 		String[] rowInstance = new String[(row.length)];
-		for (int i = 0; i < row.length; i++)
-		{
-			rowInstance[i] = row[i];
-		}
+		System.arraycopy(row, 0, rowInstance, 0, row.length);
 		titleTable.addElement(rowInstance);
 
 		titleSpanTable.addElement(span);
@@ -323,7 +318,7 @@ public abstract class MultiColumnPrinter
 	/**
 	 * Set alignment for title strings
 	 *
-	 * @param titleAlign
+	 * @param titleAlign align title by
 	 */
 	public void setTitleAlign(int titleAlign)
   {
@@ -340,10 +335,7 @@ public abstract class MultiColumnPrinter
 		// Need to create a new instance of it, otherwise the new values will
 		// always overwrite the old values.
 		String[] rowInstance = new String[(row.length)];
-		for (int i = 0; i < row.length; i++)
-		{
-			rowInstance[i] = row[i];
-		}
+		System.arraycopy(row, 0, rowInstance, 0, row.length);
 		table.addElement(rowInstance);
 	}
 
@@ -382,9 +374,8 @@ public abstract class MultiColumnPrinter
 
 	/**
 	 * Prints the multi-column table.
-	 * 
-	 * @param printTitle Specifies if the title rows should be printed.
-	 */
+	 *
+   */
 	public void print(boolean printTitle)
 	{
 
@@ -562,11 +553,9 @@ public abstract class MultiColumnPrinter
 		}
 
 		// Iterate through the table entries
-		Iterator iterator = sortedTable.entrySet().iterator();
-		while (iterator.hasNext())
-		{
-			Map.Entry entry = (Map.Entry)iterator.next();
-			String[] row = ((String[])entry.getValue());
+		for (Object o : sortedTable.entrySet()) {
+			Map.Entry entry = (Map.Entry) o;
+			String[] row = ((String[]) entry.getValue());
 
 			printRow(row);
 		}
@@ -597,15 +586,10 @@ public abstract class MultiColumnPrinter
 	{
 		String key = "";
 
-		for (int i = 0; i < keyCriteria.length; i++)
-		{
-			int content = keyCriteria[i];
-			try
-			{
+		for (int content : keyCriteria) {
+			try {
 				key = key + row[content];
-			}
-			catch (ArrayIndexOutOfBoundsException ae)
-			{
+			} catch (ArrayIndexOutOfBoundsException ae) {
 				// Happens when keyCriteria[] contains an index that
 				// does not exist in 'row'.
 				return null;
@@ -655,7 +639,7 @@ public abstract class MultiColumnPrinter
 	/**
 	 * Prints the multi-column table, with a carriage return.
 	 */
-	public void println()
+	public void println(String str)
 	{
 		print();
 		doPrintln("");
@@ -719,7 +703,6 @@ public abstract class MultiColumnPrinter
 	 *
 	 * This method also prints a newline at the end of the string.
 	 *
-	 * @param str String to print.
-	 */
+   */
 	public abstract void doPrintln(String str);
 }

@@ -1,8 +1,8 @@
 package com.nohkumado.nohutils;
-import android.util.*;
 import java.util.*;
 import java.util.regex.*;
 
+@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public class TokenParser
 {
 	public static final String TAG="TokP";

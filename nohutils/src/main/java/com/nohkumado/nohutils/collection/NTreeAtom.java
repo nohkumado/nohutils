@@ -28,6 +28,7 @@ import android.util.*;
 * common ancestor to node an leave, abstract since it shouldn't have an 
 * implementation....
 */
+@SuppressWarnings({"WeakerAccess", "EmptyMethod", "UnusedParameters"})
 public abstract class NTreeAtom<E>
 {
 
@@ -39,10 +40,10 @@ public abstract class NTreeAtom<E>
 	}
 
 	protected boolean isLeave(){return true;}
-	abstract public NTreeAtom set(E aProfile, String path);
+	abstract public NTreeAtom<E> set(E aProfile, String path);
 	
 	public E get(String path, String name){return null;}
-	public NTreeAtom get(String path)
+	public NTreeAtom<E> get(String path)
 	{
 		return this;
 	}
@@ -57,7 +58,7 @@ public abstract class NTreeAtom<E>
 	}
 
 	
-	public NTreeAtom remove(String path)
+	public NTreeAtom<E> remove(String path)
 	{
 		Log.e(TAG,"we shouldn't be calling remove on a leave...");
 		return null;

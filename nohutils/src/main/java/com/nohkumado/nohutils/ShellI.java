@@ -1,5 +1,4 @@
-/** Id: ShellI.java,v 1+4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
- *
+/*
  * NAME ShellI 
  *
  * AUTHOR Bruno Boettcher <bboett at adlp+org> 
@@ -37,40 +36,41 @@ import com.nohkumado.nohutils.view.*;
 import java.io.*;
 import java.util.*;
 
-public interface ShellI extends PipableI 
+@SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
+public interface ShellI extends PipableI
 {
 
-  public int getInt(String p0);
+  int getInt(String p0);
 
 
-public ShellI cpyCtor();
+ShellI cpyCtor();
 
 
-	public void setParent(ShellI shell);
+	void setParent(ShellI shell);
 
-	public void setChild(ShellI actShell);
-	public ShellI rmChild();
-	public void parseMode(String mode);
-	public void clearCmds();
-	public void setContext(MsgR2StringI context);
-	public MsgR2StringI getContext();
-	public void restoreState(Bundle savedInstanceState);
-	public void saveState(Bundle savedInstanceState);
-	public void setInputMode(boolean p0);
+	void setChild(ShellI actShell);
+	ShellI rmChild();
+	void parseMode(String mode);
+	void clearCmds();
+	void setContext(MsgR2StringI context);
+	MsgR2StringI getContext();
+	void restoreState(Bundle savedInstanceState);
+	void saveState(Bundle savedInstanceState);
+	void setInputMode(boolean p0);
 	//public File getBaseDir();
 	/**
 	 init
 
 	 after instantiation initialisation
    */
-  public boolean init();
+    boolean init();
   /**
 	 process
 
 	 this Method is the one that catches the commands and interprets them
 	 should copy some parts of nSim:lineShellI concerning batches!
    */
-  public String process(String line);
+  String process(String line);
   /**
 
 	 process
@@ -80,88 +80,87 @@ public ShellI cpyCtor();
 
 	 this one is for internal use, when invoking commands through the shell programmately, so no command parsing is needed, parameters are in a hastable
    */
-  public String process(String line, HashMap<String,Object> parm);
+  String process(String line, HashMap<String, Object> parm);
   /**
 
 	 prompt
 
 	 build up the short help string
    */
-  public String prompt();
-  public void prompt(String p);
-	public void printOnCmdline(String prompt);
-  public String getCmdline();
+  String prompt();
+  void prompt(String p);
+	void printOnCmdline(String prompt);
+  String getCmdline();
 	/**
 	 exit
 
 	 quit and close the shell
 
    */
-  public void exit();
-  public void exit(String endMsg);
+    void exit();
+  void exit(String endMsg);
   /** 
    * ressources 
    *
    * equivalent to the environment variables of a shell....
    * 
-   * @param envname 
-   * @param envname 
+   * @param locname locname
    */
-  public String preference(String locname);
-  public String preference(String locname, Object res);
-  public int intPref(String locaname);
+  String preference(String locname);
+  String preference(String locname, Object res);
+  int intPref(String locaname);
 
   /** 
    * local settings 
-   * 
-   * @param envname 
-   * @return 
+   *
+   * @param envname envname
+   * @return envname
    */
-  public Object get(String envname);
-	public Map<String, Object> getAll();
+  Object get(String envname);
+	Map<String, Object> getAll();
   /** 
    * ressources 
    *
    * equivalent to the environment variables of a shell....
    * 
-   * @param envname 
-   * @param envname 
+   * @param envname  envname
+   * @param obj obj
    */
-  public Object set(String envname, Object obj);
+  Object set(String envname, Object obj);
   /** 
    * prototype for a help function 
    * 
-   * @return 
+   * @return help
    */
-  public String help();
+  String help();
   /**
 	 issue a statement....
    */
-  public void print(String n);
+  void print(String n);
   /**
 	 issue a question and expect a return
    */
-  public void ask(String n, CommandI asker);
-  public void ask(String question, String defaultValue, CommandI asker);
-  public void ask(String question, HashMap<String,Object> options, CommandI asker);
-  public void askNum(String n, CommandI asker);
-  public void askNum(String question, String defaultValue, CommandI asker);
-  public void askNum(String question, HashMap<String,Object> options, CommandI asker);
+  void ask(String n, CommandI asker);
+  void ask(String question, String defaultValue, CommandI asker);
+  void ask(String question, HashMap<String, Object> options, CommandI asker);
+  void askNum(String n, CommandI asker);
+  void askNum(String question, String defaultValue, CommandI asker);
+  void askNum(String question, HashMap<String, Object> options, CommandI asker);
   /**
 	 retrieve a localized message
    */
-  public String msg(String errorMsg);
-	public String msg(int errorId);
+  String msg(String errorMsg);
+	String msg(int resourceId);
 
 	/**
 	 issue an debug message
    */
-  public void debug(String errorMsg);
+    void debug(String errorMsg);
 	/**
 	 issue an error
    */
-  public void error(String errorMsg);
-  /**
+    void error(String errorMsg);
+  /*
 	 isRunning
 	 return if the shell is running or not
    */
@@ -170,18 +169,18 @@ public ShellI cpyCtor();
 	 *
 	 *  feedCmds
 	 *
-	 * @param cmds 
-	 * @return 
+	 * @param cmds cmds
+	 * @return HashMap
 	 */
-	public HashMap<String,CommandI> feedCmds(HashMap<String,CommandI> cmds);
+    HashMap<String,CommandI> feedCmds(HashMap<String, CommandI> cmds);
 
-	public int getDisplayWidth();
+	int getDisplayWidth();
 	/** 
 	 set the input editext and the output screen
 	 */
   //public void setInOut(EditText in, TextView out);
-	public void setInOut(EditText in, LoggerFrag out);
-	public InputStream open(String name)  throws IOException;
-	public void beep();
-	public void endQuestion(); //stop forwarding keyevents to a question
+    void setInOut(EditText in, LoggerFrag out);
+	InputStream open(String name)  throws IOException;
+	void beep();
+	void endQuestion(); //stop forwarding keyevents to a question
 }//public class ShellI

@@ -1,4 +1,4 @@
-/** 
+/*
  * NAME Shell 
  *
  * AUTHOR Bruno Boettcher <nohkumado at gmail dot com> 
@@ -29,13 +29,11 @@
 
 package com.nohkumado.nohutils;
 
-import android.*;
 import android.content.*;
 import android.os.*;
 import android.preference.*;
 import android.util.*;
 import android.view.*;
-import android.view.View.*;
 import android.widget.*;
 import android.widget.TextView.*;
 import com.nohkumado.nohutils.foreign.*;
@@ -52,10 +50,11 @@ import android.view.View.OnKeyListener;
  - delegate the command queue to a worker thread.... 
 
  */
+@SuppressWarnings({"SameParameterValue", "WeakerAccess", "CanBeFinal", "EmptyMethod", "UnusedReturnValue", "UnusedParameters"})
 public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 {
-	protected HashMap<String,Object> localVars = new HashMap<String,Object>();
-	protected ArrayList<String> screenContent = new ArrayList<String>();
+	protected HashMap<String,Object> localVars = new HashMap<>();
+	protected ArrayList<String> screenContent = new ArrayList<>();
 	protected CommandParserI cmdParser = null;
 	//protected  TextView out = null;
   protected  LoggerFrag out = null;
@@ -74,41 +73,39 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 	protected CommandI actQuestion = null;
 
-	protected ArrayList<String> history = new ArrayList<String>();
+	protected ArrayList<String> history = new ArrayList<>();
 
 	protected  int maxHistory = 1024;
 	protected int histNavigation = 0;
-
-	private int tabcount;
 
 	private boolean overwrite = false;
 
 	protected ShellI parentShell, childShell = null;
 
-	protected Stack<String> promptStack = new Stack<String>();
+	protected Stack<String> promptStack = new Stack<>();
 
 	/** CTOR
 
 	 */
 	//public Shell(CmdLineParserI p)
-	public Shell(MsgR2StringI c, CommandParserI p)
+	public Shell(MsgR2StringI c,CommandParserI p)
 	{
 		super();
 		context = c;
-		if (p == null) cmdParser = new CmdLineParser();
+		if (null == null) cmdParser = new CmdLineParser();
 		else cmdParser = p;
 		cmdParser.shell(this);
 		set("shell", this);
 	}// public Shell()
 	public Shell(MsgR2StringI c)
 	{
-		this(c, null);
+		this(c,null);
 	}
 
 	@Override
 	public ShellI cpyCtor()
 	{
-		Shell cpy = new Shell(context, null);
+		Shell cpy = new Shell(context);
 		for (String key: localVars.keySet())
 		{
 			Object value = localVars.get(key);
@@ -131,7 +128,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 		this.out = out;
 		this.in = in;
-		if (out == null) screenContent = new ArrayList<String>();
+		if (out == null) screenContent = new ArrayList<>();
     else
     {
       if (screenContent != null)
@@ -194,12 +191,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		//TODO check if shell is allready running otherwise push into a TODO stack
 		String retVal = "";
 		ArrayList<CommandI> toWorkOf = cmdParser.parse(line);
-		if (toWorkOf.size() > 0) 
-			for (Iterator<CommandI> i = toWorkOf.iterator(); i.hasNext();)
-			{
-				CommandI aCmd = i.next();
-				if (aCmd != null) 
-				{
+		if (toWorkOf.size() > 0)
+			for (CommandI aCmd : toWorkOf) {
+				if (aCmd != null) {
 					//System.out.println("abpout to exe: "+aCmd);
 					retVal = aCmd.execute();
 					//TODO pipe ahould interced e here 
@@ -317,7 +311,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	/** 
 	 * setter for promtp 
 	 * 
-	 * @param p 
+	 * @param p prompt
 	 */
 	public void prompt(String p)
 	{ set("prompt", p); }
@@ -353,7 +347,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	 sessions and local vars that should be dropped::::
 	 changed now, be careful with other projects!! preferences is now called (instead of ressource) and it string only (will have to revert if necessary) and accesses shared prefs
 	 * 
-	 * @param envname 
+	 * @param envname envname
 	 */
 	public String preference(String envname)
 	{
@@ -362,8 +356,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 		//SharedPreferences prefs = context.getSharedPreferences(
 		//	context.getPackageName(), Context.MODE_PRIVATE);
-		String result = prefs.getString(envname, envname);	
-		return(result);
+		return(prefs.getString(envname, envname));
 	}// public Object ressource(String envname)
 	@Override
 	public String preference(String locname, Object res)
@@ -383,7 +376,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
     try
     {
       String value = preference(key);
-      if (value != null) result = (new Integer(value)).intValue();
+      if (value != null) result = Integer.valueOf(value);
     }
     catch (NumberFormatException e)
     {
@@ -397,7 +390,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	 *
 	 * equivalent to the rm environment variables of a shell....
 	 * 
-	 * @param envname 
+	 * @param envname envname
 	 */
 	public java.lang.Object rmRessource(String envname)
 	{
@@ -415,9 +408,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	 * get 
 	 *
 	 * equivalent to the environment variables of a shell....
-	 * 
-	 * @param envname 
-	 * @param envname 
+	 *
+	 * @param varname varname
 	 * @return the objet of the setting to get
 	 */
 	public Object get(String varname)
@@ -431,7 +423,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
     try
     {
       String value = preference(key);
-      if (value != null) result = (new Integer(value)).intValue();
+      if (value != null) result = Integer.valueOf(value);
     }
     catch (NumberFormatException e)
     {
@@ -451,8 +443,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	 *
 	 * equivalent to the environment variables of a shell....
 	 * 
-	 * @param envname 
-	 * @param envname 
+	 * @param varname varname
 	 */
 	public Object set(String varname, Object value)
 	{
@@ -462,7 +453,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	/** 
 	 * prototype for a help function 
 	 * 
-	 * @return 
+	 * @return help
 	 */
 	public String help()
 	{
@@ -471,9 +462,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	}//end help
 	/** 
 	 * returns the message associated with a token
-	 * 
-	 * @param  resourceId
-	 * @return 
+	 * resourceId
+	 * @param  resourceId resourceId
+	 * @return msg
 	 */
 	public String msg(int resourceId)
 	{
@@ -484,8 +475,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	/** 
 	 * returns the message associated with a token
 	 * 
-	 * @param m 
-	 * @return 
+	 * @param m msg
+	 * @return msg
 	 */
 	public String msg(String m)
 	{
@@ -495,9 +486,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
       return m; 
     }
 
-    String result = context.msg(m);
-
-    /*  
+    /*
      if(m.equals(result))
      {
 
@@ -510,7 +499,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
      { error("not found message : " + m);}
      }
      */
-		return(result);
+		return(context.msg(m));
 	}// public String msg(String m)
 	/**
 	 executeCommands
@@ -521,12 +510,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	 */
 	private void executeCommands(ArrayList<CommandI> toWorkOf)
 	{
-		if (toWorkOf.size() > 0) 
-			for (Iterator<CommandI> i = toWorkOf.iterator(); i.hasNext();)
-			{
-				CommandI aCmd = i.next();
-				if (aCmd != null) 
-				{
+		if (toWorkOf.size() > 0)
+			for (CommandI aCmd : toWorkOf) {
+				if (aCmd != null) {
 					//System.out.println("abpout to exe: "+aCmd);
 					String retVal = aCmd.execute();
 					//debug( "res3\n" + retVal);
@@ -545,7 +531,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public String read()
 	{
 		//TODO at the moment we drop the batchfile func and drop the buggy Input Stream stuff
-		/** now initialise the loop that will read from the inputStream until
+		/* now initialise the loop that will read from the inputStream until
 		 *exhaustion */
 		if (in == null)
 		{
@@ -574,7 +560,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 					isNumeric = false;
 				}// catch(InputMismatchException e)
 			}
-			while(isNumeric == false);
+			while(!isNumeric);
 			scanType = null;
 		}// if(scanType != null && scanType.equals("numeric"))
 		else if (scanType != null && scanType.equals("int"))
@@ -594,7 +580,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 					isNumeric = false;
 				}// catch(InputMismatchException e)
 			}
-			while(isNumeric == false);
+			while(!isNumeric);
 			scanType = null;
 		}// if(scanType != null && scanType.equals("numeric"))
 		else
@@ -605,8 +591,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	/**
 	 * onEditorAction
 	 * @param tw, the view the event happened
-	 * @param actionId, 
-	 * @param event
+	 * @param actionId, actionId
+	 * @param event event
 	 */
 	@Override
 	public boolean onEditorAction(TextView tw, int actionId, KeyEvent event)
@@ -673,9 +659,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	}
 	/**------------------------------------------------------------------
 	 * onKey
-	 * @param tw, the view the event happened
-	 * @param actionId, 
-	 * @param event
+	 * @param v, the view the event happened
+	 * @param keyCode, keyCode
+	 * @param event event
 	 */
 
 	@Override
@@ -686,7 +672,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		//if (actQuestion != null && actQuestion instanceof KeyPressListener) debug( "forwarding keyevent");
 		if (actQuestion != null && actQuestion instanceof KeyPressListener) 
 			result = ((KeyPressListener)actQuestion).onKey(v, keyCode, event);
-		if (result == true) return false;
+		if (result) return false;
 
 		//debug( "hit key :" + keyCode + " stamp " + event.getEventTime());
 		if (keyCode == KeyEvent.KEYCODE_DPAD_UP && event.getAction() == KeyEvent.ACTION_DOWN)
@@ -743,10 +729,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				if (toWorkOf.size() > 0)
 				{
 					CommandI lastCmd = toWorkOf.get(toWorkOf.size() - 1);
-					StringBuilder corrected = new StringBuilder();
+					@SuppressWarnings("StringBufferReplaceableByString") StringBuilder corrected = new StringBuilder();
 					corrected.append(prompt());
 					corrected.append(incoming);
-					corrected.append(lastCmd.expand(""));
+					corrected.append(lastCmd.expand());
 					//debug("changed line to "+corrected.toString());
 					printOnCmdline(corrected.toString());
 				}
@@ -757,7 +743,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			}
 			else
 				print("uhm tab key but not from the edittext??");
-			tabcount = 0;
+			int tabcount = 0;
 		}
 		else if (keyCode == KeyEvent.KEYCODE_INSERT && event.getAction() == KeyEvent.ACTION_DOWN)
 		{
@@ -956,7 +942,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	 * 
 	 * @param question a string to issue to prompts for an answer
 	 * @param options more data, e.g. default value, a range selection, captions for range selection,  
-	 * @return 
+	 * @return user inpoout
 	 */
 	public void ask(String question, HashMap<String,Object> options, CommandI caller) 
 	{
@@ -969,10 +955,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			if (question.length() > 0) print(question + " ");
 			question = "";
 			List select = (List) options.get("select");
-			List<String> captions = (List<String>) options.get("captions");
+			@SuppressWarnings("unchecked") List<String> captions = (List<String>) options.get("captions");
 
-			List selectCopy = new ArrayList<String>();
-			List captionsCopy = new ArrayList<String>();
+			List<String> selectCopy = new ArrayList<>();
+			List<String> captionsCopy = new ArrayList<>();
 			if (defVal != null && defVal.length() > 0)
 			//if(defVal != null && defVal.length() > 0 && !defVal.equals("null"))
 			{
@@ -984,7 +970,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			{
 				if (!select.get(i).equals(defVal))
 				{
-					selectCopy.add(select.get(i));
+					selectCopy.add(select.get(i).toString());
 					if (captions != null && captions.size() > i)captionsCopy.add(captions.get(i));
 					else captionsCopy.add("");
 				}//if(!select.get(i).equals(defVal))
@@ -1011,7 +997,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				{
 					try
 					{
-						index = (new Integer(answer)).intValue();
+						index = Integer.valueOf(answer);
 					}// try
 					catch (NumberFormatException e)
 					{
@@ -1066,7 +1052,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	 * code that is able to load JournalEintrag, as well as KontoEintrag or
 	 * Currencies...
 	 * 
-	 * @param baseName 
+	 * @param baseName  baseName
 	 */
 	public void load(String baseName)
 	{
@@ -1083,8 +1069,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	 *
 	 *  feedCmds
 	 *
-	 * @param cmds 
-	 * @return 
+	 * @param cmds cmds
+	 * @return list
 	 */
 	public HashMap<String,CommandI> feedCmds(HashMap<String,CommandI> cmds)
 	{
@@ -1177,8 +1163,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		//debug("listing asset files");
 		//listAssetFiles(""); 
 		//debug("trying to open asset "+name);
-		InputStream is = context.getResources().getAssets().open(name);
-		return is;
+		return context.getResources().getAssets().open(name);
 	}
 	private boolean listAssetFiles(String path) 
 	{
@@ -1282,8 +1267,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		savedInstanceState.putInt("histNavigation", histNavigation);
 		//savedInstanceState.putStringArrayList("screenContent", screenContent);
 		savedInstanceState.putStringArrayList("history", history);
-		ArrayList<String> varnames = new ArrayList<String>();
-		ArrayList<String> varval = new ArrayList<String>();
+		ArrayList<String> varnames = new ArrayList<>();
+		ArrayList<String> varval = new ArrayList<>();
 		for (String name : localVars.keySet())
 		{
 			if (localVars.get(name) instanceof String)

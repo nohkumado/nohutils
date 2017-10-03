@@ -42,4 +42,9 @@
     <string name="not_a_int">not a int</string>
     <string name="need_specifying">need specifying</string>
     <string name="addNewPathSeg">add new path</string>
-		</resources>
+    <string name="text">Text</string>
+    <string name="ok">OK</string>
+	<string name="up">up</string>
+	<string name="home">home</string>
+	<string name="testhelp">run this command to make the tests on the nohutils</string>
+</resources>

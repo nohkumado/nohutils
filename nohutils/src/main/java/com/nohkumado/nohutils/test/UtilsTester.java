@@ -1,17 +1,17 @@
-/**
+/*
  * 
  */
 package com.nohkumado.nohutils.test;
 
 import com.nohkumado.nohutils.*;
-import java.math.*;
-import java.util.*;
+
 import android.util.*;
 
 /**
  * @author bboett
  * 
  */
+@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public class UtilsTester
 {
   private final static String TAG ="UT";
@@ -22,11 +22,11 @@ public class UtilsTester
   /** 
    * 
    * 
-   * @param toCheck 
+   * @param result result
    */
   public boolean doTrans(boolean result, String msg)
   {
-    if (result == true)
+    if (result)
     {
       if (msg == null || msg.equals(""))
       {
@@ -42,11 +42,11 @@ public class UtilsTester
   /** 
    * 
    * 
-   * @param toCheck 
+   * @param result result
    */
   public boolean doTrans(boolean result, StringBuilder msg)
   {
-    if (result == true)
+    if (result)
     {
       
       if (msg == null || msg.equals(""))
@@ -64,7 +64,7 @@ public class UtilsTester
   /** 
    * 
    * 
-   * @param toCheck 
+   * @param status status
    */
   public boolean doTrans(ReturnValue status)
   {
@@ -73,7 +73,7 @@ public class UtilsTester
   /** 
    * print 
    * 
-   * @param m 
+   * @param m  msg
    */
   public void print(String m)
   {
@@ -83,7 +83,7 @@ public class UtilsTester
   /** 
    * error 
    * 
-   * @param m 
+   * @param m msg
    */
   public void error(String m)
   {
@@ -93,7 +93,7 @@ public class UtilsTester
   /** 
    * error 
    * 
-   * @param m 
+   * @param m msg
    */
   public StringBuilder error(StringBuilder m)
   {

@@ -1,8 +1,8 @@
 package com.nohkumado.nohutils;
 
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.content.res.*;
-import android.graphics.*;
 import android.media.*;
 import android.os.*;
 import android.util.*;
@@ -12,6 +12,8 @@ import java.util.*;
 import android.database.sqlite.*;
 import com.nohkumado.nohutils.view.*;
 
+@SuppressWarnings({"WeakerAccess", "EmptyMethod"})
+@SuppressLint("Registered")
 public class ShellActivity extends Activity implements MsgR2StringI
 {
 
@@ -54,8 +56,8 @@ public class ShellActivity extends Activity implements MsgR2StringI
         screen = new LoggerFrag();
         getFragmentManager().beginTransaction().replace(textOut,screen).commit();
       }
-			screen.setTypeface(Typeface.MONOSPACE); 
-			EditText cmdLine = (EditText) findViewById(textIn);
+			screen.setTypeface();
+			EditText cmdLine = findViewById(textIn);
 			if (shell != null) shell.setInOut(cmdLine, screen);
 			//Log.d(TAG,"s:"+screen+" i:"+cmdLine);	
 		}
@@ -73,8 +75,8 @@ public class ShellActivity extends Activity implements MsgR2StringI
 			new LsCommand(shell),
 			new CdCommand(shell)
 		};
-		HashMap<String,CommandI> availableCmds = new HashMap<String,CommandI>();
-		for (int i = 0; i < cmds.length; i++) availableCmds.put(cmds[i].name(), cmds[i]);
+		HashMap<String,CommandI> availableCmds = new HashMap<>();
+		for (CommandI cmd : cmds) availableCmds.put(cmd.name(), cmd);
 
 		shell.feedCmds(availableCmds);
 	}

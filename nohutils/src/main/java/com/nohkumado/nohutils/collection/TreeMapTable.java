@@ -2,6 +2,7 @@ package com.nohkumado.nohutils.collection;
 import android.util.*;
 import java.util.*;
 
+@SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
 public class TreeMapTable<E,G> implements Iterable
 {
   TreeMap<E,ArrayMap<E,G>> rows = new TreeMap<>();
@@ -27,14 +28,14 @@ public class TreeMapTable<E,G> implements Iterable
     if (!colNames.containsValue(col)) colNames.put(colNames.size(), col);
     return val;
   }
-  public G get(E row, E col)
+  public G get()
   {
     try
     {
-      ArrayMap<E,G> aRow = rows.get(row);
-      return aRow.get(col);
+      ArrayMap<E,G> aRow = rows.get("C");
+      return aRow.get("E");
     }
-    catch (NullPointerException e)
+    catch (NullPointerException ignored)
     {
 
     }
@@ -77,7 +78,7 @@ public class TreeMapTable<E,G> implements Iterable
     int i = 0; 
     for (Map.Entry<E,ArrayMap<E,G>> row: rows.entrySet())
     {
-      sb.append(String.format("%3d %-10s ", i, row.getKey()));
+      sb.append(String.format(Locale.getDefault(),"%3d %-10s ", i, row.getKey()));
       i++;
 
       ArrayMap<E,G> aRow = row.getValue();
@@ -156,8 +157,7 @@ public class TreeMapTable<E,G> implements Iterable
    */
   public boolean hasCol(E column)
   {
-    if (colNames.containsValue(column)) return true;
-    return false;
+    return colNames.containsValue(column);
   }//public boolean hasCol(E column)
   public void clear()
   {

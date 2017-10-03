@@ -1,16 +1,16 @@
 package com.nohkumado.nohutils;
 
-import android.util.*;
 import java.util.*;
 import java.util.regex.*;
 
+@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public class CharParser
 {
 	public static final String TAG="CharP";
 	public static final int UNPARSED_ARGS = 1;
 
 	protected CmdLineParser parentParser;
-	protected ArrayList<Pattern> patterns = new ArrayList<Pattern>();
+	protected ArrayList<Pattern> patterns = new ArrayList<>();
 
 	//Pattern pat_cmd_arg = Pattern.compile("^(\\S+)\\s+(.*)$");
 
@@ -99,6 +99,7 @@ public class CharParser
             //Log.d(TAG," cmd '"+line+"' not found");
             result &= false;
           }
+					//noinspection UnnecessaryContinue
 					continue;
 				}//if(line.matches("^(\\S+)\\s*$"))
         //else Log.d(TAG,cmdPat+" fail '"+line+"'");

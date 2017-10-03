@@ -4,6 +4,7 @@ import android.view.*;
 import android.widget.*;
 import com.nohkumado.nohutils.view.*;
 
+@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public class PrintOnTextView implements Runnable
 {
   LoggerFrag out;

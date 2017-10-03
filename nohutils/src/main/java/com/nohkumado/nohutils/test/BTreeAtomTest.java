@@ -1,6 +1,7 @@
 package com.nohkumado.nohutils.test;
 import com.nohkumado.nohutils.collection.*;
 
+@SuppressWarnings("WeakerAccess")
 public class BTreeAtomTest extends UtilsTester implements Cloneable
 {
 	protected static String testName  = "BTreeAtom";

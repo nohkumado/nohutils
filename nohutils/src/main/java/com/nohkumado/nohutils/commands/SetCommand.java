@@ -1,5 +1,4 @@
-/** Id: SetCommand.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
- *
+/*
  * NAME SetCommand 
  *
  * AUTHOR Bruno Boettcher <bboett at adlp.org> 
@@ -32,10 +31,10 @@
 package com.nohkumado.nohutils.commands;
 import com.nohkumado.nohutils.*;
 import java.util.*;
-import java.util.prefs.*;
 import java.util.regex.*;
 //import com.nohkumado.utils.*;
 
+@SuppressWarnings("WeakerAccess")
 public class SetCommand extends Command implements Cloneable, CommandI
 {
   protected String var_name = "", var_value = "";
@@ -61,9 +60,8 @@ public class SetCommand extends Command implements Cloneable, CommandI
 
 	 activate this command
 
-   * @param line 
-   * @param heap 
-   * @return 
+
+   * @return execute
    */
   public String execute()
   {
@@ -81,14 +79,12 @@ public class SetCommand extends Command implements Cloneable, CommandI
       result = shell.msg(R.string.variable_list) + ":\nEnvironment:\n";
 			//TODO suspect here.... check it out...
       HashMap<String,Object> environment = (HashMap<String, Object>) shell.getAll();
-      for (Iterator<String> e = environment.keySet().iterator(); e.hasNext();)
-      {
+			for (String argName : environment.keySet()) {
 
-				String argName = e.next();
 				//TODO put this into a hiddenVars array....
-				if (!(argName.equals("shell") ||  argName.equals("msger") ||  argName.equals("Fibu")))
+				if (!(argName.equals("shell") || argName.equals("msger") || argName.equals("Fibu")))
 					result += argName + " : " + environment.get(argName) + "\n";
-      }// for(Iterator<String> e = environment.keySet().iterator(); e.hasNext();)
+			}// for(Iterator<String> e = environment.keySet().iterator(); e.hasNext();)
       result += shell.msg(R.string.endlist) + "\n";
     }// else
     return(result);
@@ -100,8 +96,8 @@ public class SetCommand extends Command implements Cloneable, CommandI
 	 * with one parameter it prints the value of that parameter
 	 * with 2 parameters it replaces the parameter
 	 * 
-	 * @param line 
-	 * @return 
+	 * @param line line
+	 * @return unparse
 	 */
 	public String parse(String line)
 	{
@@ -120,7 +116,6 @@ public class SetCommand extends Command implements Cloneable, CommandI
 	 * instead of parsing the options, give them directly, eg when invoking a command from the program code directly
 	 * 
 	 * @param parms the hashtable with the options
-	 * @param parms 
 	 */
 	public void setParameters(HashMap<String,Object> parms)
 	{
@@ -134,7 +129,8 @@ public class SetCommand extends Command implements Cloneable, CommandI
 	 issue the help message associated with this command
 
    */
-  public String help()
+  @Override
+	public String help()
   {
 		//return(shell.msg("set") + " " + var_name + " " + shell.msg("value") + " " + shell.msg("to_set_a_value") + "\n");
     return(shell.msg(R.string.sethelp));
@@ -143,13 +139,12 @@ public class SetCommand extends Command implements Cloneable, CommandI
 	public SetCommand clone()
 	{
 		//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
-		SetCommand cloned = (SetCommand)super.clone();
-		//  SetCommand cloned = new SetCommand(shell);
+    //  SetCommand cloned = new SetCommand(shell);
 		//cloned.type = type;
 		//cloned.name = name;
 		//cloned.group = group;
 		//cloned.messageHandler = messageHandler;
 		//cloned.shell = shell;
-    return cloned;
+    return (SetCommand)super.clone();
 	}//public Object clone()
 }//public class Command

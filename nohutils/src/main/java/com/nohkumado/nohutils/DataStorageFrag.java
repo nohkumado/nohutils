@@ -10,21 +10,21 @@ public interface DataStorageFrag<E>
   //public E getLastValidItem();
  // public void removeFromHere(int i);
 
-  public void remove(int lastIndex);
+  void remove(int lastIndex);
   //public E getLastItem();
 
   //public E fillItem(int pos, Cursor dataCrs);
 
-  public E getItem(int id);
-  public E getItem();
+  E getItem(int id);
+  E getItem();
 
-  public void setItem(E actItem, int pos);
-  public void setItem(E get);
+  void setItem(E actItem, int pos);
+  void setItem(E get);
 
-  public int pathSize();
+  int pathSize();
 
-  public BaseAdapter getAdapter(int pos);
-  public E extractData(Object selectedItem, int selectedItemPosition);
+  BaseAdapter getAdapter(int pos);
+  E extractData(Object selectedItem, int selectedItemPosition);
   
   //public void setAdapter(int pos, SimpleCursorAdapter sAdapter);
   //public void swapCursor(int id, Cursor data);

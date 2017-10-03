@@ -1,16 +1,15 @@
-/**
+/*
  * 
  */
 package com.nohkumado.nohutils;
 
-import java.math.*;
-import java.util.*;
 import android.util.*;
 
 /**
  * @author bboett
  * 
  */
+@SuppressWarnings("WeakerAccess")
 public class Tester
 {
 	public static final String TAG = "Tester";
@@ -30,11 +29,11 @@ public class Tester
 	/** 
 	 * 
 	 * 
-	 * @param toCheck 
+	 * @param result  boolean
 	 */
 	public boolean doTrans(boolean result, String msg)
 	{
-		if (result == true)
+		if (result)
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.append(TAG);
@@ -54,7 +53,7 @@ public class Tester
 	/** 
 	 * 
 	 * 
-	 * @param toCheck 
+	 * @param status status
 	 */
 	public boolean doTrans(ReturnValue status)
 	{
@@ -63,7 +62,7 @@ public class Tester
 	/** 
 	 * 
 	 * 
-	 * @param m 
+	 * @param m msg
 	 */
 	public static void print(String m)
 	{

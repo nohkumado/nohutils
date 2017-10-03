@@ -35,7 +35,7 @@ import  java.util.*;
  */
 public interface  OperationInterface
 {
-  /** CTOR
+  /* CTOR
    */
   //public OperationInterface(String[] rawdata, List<String> tableHeader);
   /** toString
@@ -43,13 +43,13 @@ public interface  OperationInterface
     retourne une forme en forme de chaines de caractères de cette liste
     l'argument optionnel donne l'ordre et les colonnes à sortir
    */
-  public String toString();
+  String toString();
   /**
 
     applique
 
     applique l'operation et génère la ou les lignes de journal
    */
-  public List applique(ShellI shell,HashMap<String,Object> dynamicVars);
-  public String name();
+  List applique(ShellI shell, HashMap<String, Object> dynamicVars);
+  String name();
 } // end class OperationInterface 

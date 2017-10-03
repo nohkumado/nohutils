@@ -23,18 +23,17 @@
  */
 
 package com.nohkumado.nohutils.commands;
- import java.util.prefs.*;
- import java.util.*;
  import java.io.*;
 import java.util.regex.*;
 
+ @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
  public class PatternFileFilter implements FilenameFilter
 {
   protected Pattern pattern;
   /** 
    * CTOR 
    * 
-   * @param pat 
+   * @param pat  pattern
    */
   public PatternFileFilter(String pat)
   {
@@ -44,9 +43,9 @@ import java.util.regex.*;
   /** 
    * check against the stored pattern 
    * 
-   * @param dir 
-   * @param name 
-   * @return 
+   * @param dir dir
+   * @param name name
+   * @return yes or no
    */
   public boolean accept(File dir, String name)
   {
@@ -54,8 +53,7 @@ import java.util.regex.*;
     {
       //System.out.println("comparing "+pattern+" vs "+name);
       Matcher matcher = pattern.matcher(name);
-      if(matcher.find()) return(true);
-      return(false);
+      return matcher.find();
     }// if(pattern != null)
     return(true);
   }//public boolean accept(File dir, String name)

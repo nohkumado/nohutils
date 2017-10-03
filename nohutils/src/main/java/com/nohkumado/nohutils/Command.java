@@ -1,5 +1,4 @@
-/** Id: Command.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
- *
+/*
  * NAME Command 
  *
  * AUTHOR Bruno Boettcher <bboett at adlp.org> 
@@ -37,7 +36,8 @@ import java.util.*;
 import java.util.regex.*;
 //import com.nohkumado.utils.*;
 
-public class Command 
+@SuppressWarnings("WeakerAccess")
+public class Command
 implements Cloneable, CommandI
 {
 	protected String type = null;
@@ -89,7 +89,7 @@ implements Cloneable, CommandI
 
 	 activate this command
 
-	 * @return 
+	 * @return reult
 	 */
 	public String execute()
 	{
@@ -138,17 +138,18 @@ implements Cloneable, CommandI
 	 * instead of parsing the options, give them directly, eg when invoking a command from the program code directly
 	 * 
 	 * @param parms the hashtable with the options
-	 * @param parms 
 	 */
 	public void setParameters(HashMap<String,Object> parms)
-	{ parameter = parms;};
-	/** 
+	{ parameter = parms;}
+
+    /**
 	 * preparation for pipe command, redirect in and output 
-	 * @param MSG the stuff to send on to be printed out normally
+	 * @param msg the stuff to send on to be printed out normally
 	 */
 	public void print(String msg)
-	{ stream.print(msg);};
-	/** 
+	{ stream.print(msg);}
+
+    /**
 	 * preparation for pipe command, redirect in and output 
 	 * @param out the thing to send the output
 	 */
@@ -156,11 +157,10 @@ implements Cloneable, CommandI
 	public boolean setOut(PipableI out)
 	{
 		stream = out;
-		if (stream != null) return true;
-		return false;
-	}
+    return stream != null;
+  }
 	@Override
-	public String expand(String actArg)
+	public String expand()
 	{
 		return "";
 	}

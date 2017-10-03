@@ -1,5 +1,4 @@
-/** Id: QuitCommand.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
- *
+/*
  * NAME QuitCommand 
  *
  * AUTHOR Bruno Boettcher <bboett at adlp.org> 
@@ -30,7 +29,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package com.nohkumado.nohutils.commands;
-import java.util.*;
 import com.nohkumado.nohutils.*;
 
 public class QuitCommand extends Command implements Cloneable, CommandI
@@ -57,9 +55,7 @@ public class QuitCommand extends Command implements Cloneable, CommandI
 
 	 activate this command
 
-   * @param line 
-   * @param heap 
-   * @return 
+   * @return result
    */
   public String execute()
   {
@@ -84,7 +80,6 @@ public class QuitCommand extends Command implements Cloneable, CommandI
 	public QuitCommand clone()
 	{
 		//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
-		QuitCommand cloned = (QuitCommand)super.clone();
-    return cloned;
+    return (QuitCommand)super.clone();
 	}//public Object clone()
 }//public class Command

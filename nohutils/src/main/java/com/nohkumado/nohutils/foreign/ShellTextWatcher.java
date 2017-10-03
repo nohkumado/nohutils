@@ -1,14 +1,14 @@
 package com.nohkumado.nohutils.foreign;
 
-/**
- base taken from from pskink on 
+/*
+base taken from from pskink on
  http://stackoverflow.com/questions/22318903/how-to-enable-overwrite-mode-in-edittext
  usage   editText.addTextChangedListener(watcher);
  */
 
 import android.text.*;
-import android.util.*;
 
+@SuppressWarnings("WeakerAccess")
 public class ShellTextWatcher implements TextWatcher
 {
 	boolean formatting;

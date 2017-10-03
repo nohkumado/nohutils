@@ -1,6 +1,7 @@
 package com.nohkumado.nohutils;
 import android.widget.*;
 
+@SuppressWarnings("WeakerAccess")
 public class DownScroller implements Runnable
 {
 	ScrollView scroll_view = null;

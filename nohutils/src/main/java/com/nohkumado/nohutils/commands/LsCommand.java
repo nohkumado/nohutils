@@ -1,5 +1,4 @@
-/** Id: LsCommand.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
- *
+/*
  * NAME LsCommand 
  *
  * AUTHOR Bruno Boettcher <bboett at adlp.org> 
@@ -34,8 +33,8 @@ import java.util.*;
 import java.io.*;
 import java.util.regex.*;
 import com.nohkumado.nohutils.*;
-import android.util.*;
 
+@SuppressWarnings("WeakerAccess")
 public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 {
 	public static final String TAG="LsCmd";
@@ -63,9 +62,8 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 
 	 activate this command
 
-   * @param line 
-   * @param heap 
-   * @return 
+
+   * @return resuklt
    */
   public String execute()
   {
@@ -105,7 +103,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 				//Log.d("LsCmd", "reading dir");
 				String[] choices = theDir.list(filter);
 				int maxlength = 1;
-				ArrayList<String> content = new ArrayList<String>();
+				ArrayList<String> content = new ArrayList<>();
 				for (String name : choices) 
 				{
 					//Log.d(TAG, "name= " + name);
@@ -128,7 +126,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 							}
 						}//if (aFile.exists())	
 					}
-					catch (NullPointerException e)
+					catch (NullPointerException ignored)
 					{  }
 
 				}//for(String name : choices)
@@ -139,7 +137,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 				if (numOfCols < 1) numOfCols = 1;
 				//Log.d("lscm", "available chars: " + numOfchars + " malength: " + maxlength + " = " + numOfCols);
 
-				ColumPrinter mp = new  ColumPrinter(numOfCols, 2, "-");
+				ColumPrinter mp = new  ColumPrinter(numOfCols, 2);
 				String    oneRow[] = new String [ content.size() + 1 ];//+ 1 to be sure....
 				int counter = 0;
 				for (String name : content)
@@ -173,8 +171,8 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
    * with one parameter it prints the value of that parameter
    * with 2 parameters it replaces the parameter
    * 
-   * @param line 
-   * @return 
+   * @param line line
+   * @return parse
    */
   public String parse(String line)
   {

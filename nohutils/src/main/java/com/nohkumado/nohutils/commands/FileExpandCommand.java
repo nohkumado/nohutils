@@ -1,6 +1,5 @@
 package com.nohkumado.nohutils.commands;
-/** Id: CdCommand.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
- *
+/*
  * NAME CdCommand 
  *
  * AUTHOR Bruno Boettcher <bboett at adlp.org> 
@@ -32,10 +31,11 @@ package com.nohkumado.nohutils.commands;
  */
 import java.io.*;
 import java.util.*;
-import java.util.regex.*;
+
 import com.nohkumado.nohutils.*;
 import android.util.*;
 
+@SuppressWarnings("WeakerAccess")
 public class FileExpandCommand extends Command implements Cloneable, CommandI
 {
 	public static final String TAG="FexCmd";
@@ -60,17 +60,16 @@ public class FileExpandCommand extends Command implements Cloneable, CommandI
 	public FileExpandCommand clone()
 	{
 		//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
-		FileExpandCommand cloned = (FileExpandCommand)super.clone();
-		//  CdCommand cloned = new CdCommand(shell);
+    //  CdCommand cloned = new CdCommand(shell);
 		//cloned.type = type;
 		//cloned.name = name;
 		//cloned.group = group;
 		//cloned.messageHandler = messageHandler;
 		//cloned.shell = shell;
-		return cloned;
+		return (FileExpandCommand)super.clone();
 	}//public Object clone()
 
-	public String expand(String arg)
+	public String expand()
 	{
 		String actPath = path;
 		Log.d(TAG,"expanding '"+path+"'");
@@ -107,7 +106,7 @@ public class FileExpandCommand extends Command implements Cloneable, CommandI
 
 				String[] content = actTry.list();
 				Log.d(TAG, "is dir! contents " + Arrays.toString(content));
-				ArrayList<String> choices = new ArrayList<String>();
+				ArrayList<String> choices = new ArrayList<>();
 
 				for (String oneName : content)
 					if (oneName.startsWith(rest)) choices.add(oneName);
@@ -128,7 +127,7 @@ public class FileExpandCommand extends Command implements Cloneable, CommandI
 					shell.beep();
 					Log.d(TAG, "several choices searching least common denominator ");
 					String start = choices.remove(0);
-					ArrayList<String> subMenge = new ArrayList<String>();
+					ArrayList<String> subMenge = new ArrayList<>();
 
 					for (String oneName: choices)
 						subMenge.add(greatestCommonPrefix(start, oneName));

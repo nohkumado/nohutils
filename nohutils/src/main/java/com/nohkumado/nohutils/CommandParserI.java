@@ -1,5 +1,4 @@
-/** Id: CommandParserI.java,v 1+4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
- *
+/*
  * NAME CommandParserI 
  *
  * AUTHOR Bruno Boettcher <bboett at adlp+org> 
@@ -29,44 +28,45 @@
 */
 package com.nohkumado.nohutils;
 import java.util.*;
+@SuppressWarnings({"EmptyMethod", "UnusedParameters"})
 public  interface CommandParserI //extends com.nohkumado.jtrader.EventGeneratorI
 {
 
-	public void parseMode(String p0);
+	void parseMode(String p0);
 
 
-	public void clearCmds();
+	void clearCmds();
 
   /** -------------------------- init --------------------------
    *
    */
-  public  HashMap<String,CommandI>  feedCmds(HashMap<String,CommandI> cmds);
+  HashMap<String,CommandI>  feedCmds(HashMap<String, CommandI> cmds);
   /** -------------------------- setRessource --------------------------
    *
    */
-  public void  setRessource (Properties arg0);
+  void  setRessource(Properties arg0);
   /** -------------------------- formatProperties --------------------------
    *
    */
-  public String  formatProperties (Properties arg0);
+  String  formatProperties(Properties arg0);
   /** -------------------------- parse --------------------------
    *
    */
-  public ArrayList<CommandI> parse (String line);
+  ArrayList<CommandI> parse(String line);
    /** 
     * find a command, means try key completion if not found directly clone the command and return it
     * 
-    * @param token 
-    * @return 
+    * @param token name of cmd
+    * @return found cmd
     */
-   public CommandI findCmd(String token);
+   CommandI findCmd(String token);
   /** -------------------------- getIntString --------------------------
    * setter/getter a reference on the actual shell
    */
-  public ShellI shell();
-  public void shell(ShellI  s);
+  ShellI shell();
+  void shell(ShellI s);
   /** -------------------------- getHelp --------------------------
    * compile the Help from the commands
    */
-  public String help();
+  String help();
 }

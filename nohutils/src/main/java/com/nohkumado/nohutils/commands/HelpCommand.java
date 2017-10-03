@@ -1,7 +1,6 @@
 package com.nohkumado.nohutils.commands;
 
-/** Id: HelpCommand.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
- *
+/*
  * NAME HelpCommand 
  *
  * AUTHOR Bruno Boettcher <bboett at adlp.org> 
@@ -31,7 +30,6 @@ package com.nohkumado.nohutils.commands;
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-import java.util.*;
 import com.nohkumado.nohutils.*;
 
 public class HelpCommand extends Command implements Cloneable, CommandI
@@ -45,7 +43,7 @@ public class HelpCommand extends Command implements Cloneable, CommandI
 	public HelpCommand(ShellI s)
 	{
 		super(s);
-		if (s != null) name = s.msg(R.string.quit);
+		if (s != null) name = s.msg(com.nohkumado.nohutils.R.string.quit);
 	}// public Command()
 
 	public HelpCommand(ShellI s, String n)
@@ -58,9 +56,7 @@ public class HelpCommand extends Command implements Cloneable, CommandI
 
 	 activate this command
 
-	 * @param line 
-	 * @param heap 
-	 * @return 
+	 * @return reult
 	 */
 	public String execute()
 	{
@@ -75,7 +71,7 @@ public class HelpCommand extends Command implements Cloneable, CommandI
 	 */
 	public String help()
 	{
-		return(shell.msg(R.string.shell_help) + "\n");
+		return(shell.msg(com.nohkumado.nohutils.R.string.shell_help) + "\n");
 	}//end help
 	/**
 	 make a copy of this object
@@ -83,7 +79,6 @@ public class HelpCommand extends Command implements Cloneable, CommandI
 	public HelpCommand clone()
 	{
 		//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
-		HelpCommand cloned = (HelpCommand)super.clone();
-		return cloned;
+    return (HelpCommand)super.clone();
 	}//public Object clone()
 }//public class Command

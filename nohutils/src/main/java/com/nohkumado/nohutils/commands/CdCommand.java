@@ -30,11 +30,11 @@
  */
 package com.nohkumado.nohutils.commands;
 import java.io.*;
-import java.util.*;
-import java.util.regex.*;
+
 import com.nohkumado.nohutils.*;
 import android.util.*;
 
+@SuppressWarnings("WeakerAccess")
 public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 {
 	public static final String TAG="CdCmd";
@@ -107,7 +107,7 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 	 * with one parameter it prints the value of that parameter
 	 * with 2 parameters it replaces the parameter
 	 * 
-	 * @param line 
+	 * @param line arguments
 	 * @return parse what is parsable and return the rest
 	 */
 	@Override
@@ -169,14 +169,13 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 	public CdCommand clone()
 	{
 		//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
-		CdCommand cloned = (CdCommand)super.clone();
 		//  CdCommand cloned = new CdCommand(shell);
 		//cloned.type = type;
 		//cloned.name = name;
 		//cloned.group = group;
 		//cloned.messageHandler = messageHandler;
 		//cloned.shell = shell;
-    return cloned;
+    return (CdCommand)super.clone();
 	}//public Object clone()
 
 	/*

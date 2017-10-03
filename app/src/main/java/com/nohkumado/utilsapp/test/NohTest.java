@@ -6,15 +6,14 @@ import com.nohkumado.nohutils.collection.*;
 Begin, don't know where the proper testsuite fell of... :( somehow it disappeared...
 will slowly rebuild it here...
 */
+@SuppressWarnings("UnusedParameters")
 public class NohTest extends UtilsTester
 {
   private final static String TAG ="NoT";
-  private final ShellI shell;
 
 
   public NohTest(ShellI s)
   {
-    shell = s;
   }
   
   public String runTest()
@@ -28,7 +27,7 @@ public class NohTest extends UtilsTester
     table.set("C","E","zwei");
     table.set("C","B","drei");
 
-    if(doTrans(!"zwei".equals(table.get("C","E")),"failed TreeMapTable test: zwei !="+table.get("C","E"))) result.append("success!");
+    if(doTrans(!"zwei".equals(table.get()),"failed TreeMapTable test: zwei !="+table.get())) result.append("success!");
     else result.append("failed!");
     //print("End TreeMapTable test");
     

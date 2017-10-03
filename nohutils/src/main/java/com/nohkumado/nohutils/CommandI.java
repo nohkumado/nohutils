@@ -1,5 +1,4 @@
-/** Id: CommandI.java,v 1.4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
- *
+/*
  * NAME CommandI 
  *
  * AUTHOR Bruno Boettcher <bboett at adlp.org> 
@@ -33,69 +32,69 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package com.nohkumado.nohutils;
-import java.util.*;
-import java.util.regex.*;
+
+import java.util.HashMap;
+import java.util.regex.Pattern;
 //import com.nohkumado.utils.*;
 
-public interface CommandI extends Cloneable,PipableI
-{
+@SuppressWarnings("SameParameterValue")
+public interface CommandI extends Cloneable, PipableI {
 
-	public CommandI clone();
+  CommandI clone();
 
 
-	public Pattern pattern();
+  Pattern pattern();
 
-	/** 
-	 * name
-	 *
-	 * return the name of this command
-	 * 
-	 * @return the name of this item as a string
-	 */
-	public String name();
-	/** 
-	 * name
-	 *
-	 * set the name of this command
-	 * 
-	 * @return the name of this item as a string
-	 */
-	public void name(String n);
-	/**
+  /**
+   * name
+   * <p>
+   * return the name of this command
+   *
+   * @return the name of this item as a string
+   */
+  String name();
 
-	 execute
+  /**
+   * name
+   * <p>
+   * set the name of this command
+   *
+   * @return the name of this item as a string
+   */
+  void name(String n);
 
-	 activate this command
+  /**
+   * execute
+   * <p>
+   * activate this command
+   *
+   * @return reult
+   */
+  String execute();
 
-	 * @param line 
-	 * @param heap 
-	 * @return 
-	 */
-	public String execute();
-	/**
+  /**
+   * parse
+   * <p>
+   * parse for eventual arguments, return what is not needed
+   *
+   * @param line arguments
+   * @return rest
+   */
+  String parse(String line);
 
-	 parse
+  /**
+   * instead of parsing the options, give them directly, eg when invoking a command from the program code directly
+   *
+   * @param parms the hashtable with the options
+   */
+  void setParameters(HashMap<String, Object> parms);
 
-	 parse for eventual arguments, return what is not needed
+  /**
+   * help
+   * <p>
+   * issue the help message associated with this command
+   */
+  String help();
 
-	 * @param line 
-	 * @return 
-	 */
-	public String parse(String line);
-	/** 
-	 * instead of parsing the options, give them directly, eg when invoking a command from the program code directly
-	 * 
-	 * @param parms the hashtable with the options
-	 * @param parms 
-	 */
-	public void setParameters(HashMap<String,Object> parms);
-	/**
-
-	 help
-
-	 issue the help message associated with this command
-
-	 */
-	public String help();
-	public String expand(String actArg);
+  String expand();
 }//public class CommandI

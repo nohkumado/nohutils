@@ -6,26 +6,27 @@ import android.database.sqlite.*;
 import java.io.*;
 import java.util.*;
 
+@SuppressWarnings({"SameReturnValue", "UnusedParameters"})
 public interface MsgR2StringI
 {
 
-  public SQLiteOpenHelper getDbHelper();
+  SQLiteOpenHelper getDbHelper();
 
 
-	public String[] msgArr(int resourceId);
+	String[] msgArr(int resourceId);
 
 
-	public void display(String path, String type);
+	void display(String path, String type);
 
-	public String msg(int stringid);
-	public String msg(String stringid);
+	String msg(int stringid);
+	String msg(String stringid);
 	//from Context...
-	public SharedPreferences getSharedPreferences(String pckage,int mode);
-	public Resources getResources();
-	public String getPackageName();
-	public void startActivity (Intent intent);
-	public File getExternalFilesDir(String type);
-	public void playSound();
-	public String callback(String name, HashMap<String,Object> args);
-  public void runOnUiThread (Runnable action);
+    SharedPreferences getSharedPreferences(String pckage, int mode);
+	Resources getResources();
+	String getPackageName();
+	void startActivity(Intent intent);
+	File getExternalFilesDir(String type);
+	void playSound();
+	String callback(String name, HashMap<String, Object> args);
+  void runOnUiThread(Runnable action);
 }

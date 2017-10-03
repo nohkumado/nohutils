@@ -1,6 +1,5 @@
 package com.nohkumado.utilsapp;
 
-import android.app.*;
 import android.os.*;
 import android.util.*;
 import android.widget.*;
@@ -24,7 +23,7 @@ public class MainActivity extends Msg2RString
 	
 		setContentView(R.layout.main);
 		LoggerFrag screen = (LoggerFrag) getFragmentManager().findFragmentById(R.id.textOut);
-		EditText cmdLine = (EditText) findViewById(R.id.TextIn);
+		EditText cmdLine = findViewById(R.id.TextIn);
     LoggerFrag logger = (LoggerFrag)getFragmentManager().findFragmentById(com.nohkumado.utilsapp.R.id.textOut);
     if(logger == null)
     {
@@ -48,8 +47,8 @@ public class MainActivity extends Msg2RString
 			new CdCommand(shell),
       new TestCmd(shell)
 		};
-	  HashMap<String,CommandI> availableCmds = new HashMap<String,CommandI>();
-		for (int i = 0; i < cmds.length; i++) availableCmds.put(cmds[i].name(), cmds[i]);
+	  HashMap<String,CommandI> availableCmds = new HashMap<>();
+    for (CommandI cmd : cmds) availableCmds.put(cmd.name(), cmd);
 
 		shell.feedCmds(availableCmds);
   }//protected void onCreate(Bundle savedInstanceState)

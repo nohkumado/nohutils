@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
     android:orientation="horizontal"
@@ -26,24 +27,29 @@
         android:layout_width="wrap_content"
         android:ems="10"
         android:id="@+id/NewOrgaField"
+        android:inputType="text"
         android:selectAllOnFocus="true"
-        android:text="@string/addNewPathSeg"/>
+        android:text="@string/addNewPathSeg"
+        tools:ignore="LabelFor" />
 
     <ImageButton
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:contentDescription="@string/ok"
         android:src="@drawable/ic_check_black_24dp"
         android:id="@+id/path_ok"/>
 
     <ImageButton
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:contentDescription="@string/up"
         android:src="@drawable/ic_chevron_left_black_24dp"
         android:id="@+id/upButton"/>
 
     <ImageButton
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:contentDescription="@string/home"
         android:src="@drawable/ic_home_black_24dp"
         android:id="@+id/homeButton"/>
 

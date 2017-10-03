@@ -1,12 +1,11 @@
-/** Id: CmdLineParser.java,v 1+4 2005/09/30 16:24:48 bboett Exp  -*- java -*-
+/*
+ * NAME CmdLineParser
  *
- * NAME CmdLineParser 
+ * AUTHOR Bruno Boettcher <bboett at adlp+org>
  *
- * AUTHOR Bruno Boettcher <bboett at adlp+org> 
+ * SEE ALSO no docu at the moment
  *
- * SEE ALSO no docu at the moment 
- *
- * DESCRIPTION 
+ * DESCRIPTION
  * takes a line of text and tries to split it by hash value
  *
  * COPYRIGHT and LICENCE
@@ -32,12 +31,13 @@ package com.nohkumado.nohutils;
 
 //import com.nohkumado.utils.*;
 import java.util.*;
-import java.util.regex.*;
+
 import android.util.*;
 
+@SuppressWarnings({"SameParameterValue", "WeakerAccess", "CanBeFinal"})
 public class CmdLineParser  implements Cloneable,CommandParserI
 {
-	protected TreeMap<String,CommandI> commands = new TreeMap<String,CommandI>();
+	protected TreeMap<String,CommandI> commands = new TreeMap<>();
 	protected ShellI shell = null;
 	public static final String TAG="CmdP";
 
@@ -51,8 +51,8 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 	 *
 	 *  feedCmds
 	 *
-	 * @param cmds 
-	 * @return 
+	 * @param cmds list of copmmands
+	 * @return map of commands
 	 */
 	public HashMap<String,CommandI> feedCmds(HashMap<String,CommandI> cmds)
 	{
@@ -90,7 +90,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 
 	public ArrayList<CommandI> parse(String line, boolean strictParse)
 	{
-		ArrayList<CommandI> resultStack = new ArrayList<CommandI>();
+		ArrayList<CommandI> resultStack = new ArrayList<>();
 		String lastprompt = shell.prompt();
 		if (lastprompt != null) line = line.replace(lastprompt, "").trim();
 		//Log.d(TAG,"parsing line : "+line);
@@ -124,7 +124,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			TokenParser parser = new TokenParser(this);
 			if (strictParse && !parser.parse(line, resultStack))
 			{
-				if (parser.errorCode() == parser.UNPARSED_ARGS)
+				if (parser.errorCode() == TokenParser.UNPARSED_ARGS)
 				{
 					StringBuilder sb = new StringBuilder();
 					sb.append(shell.msg(R.string.syntax_error));
@@ -146,7 +146,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			CharParser parser = new CharParser(this);
 			if (strictParse && !parser.parse(line, resultStack))
 			{
-				if (parser.errorCode() == parser.UNPARSED_ARGS)
+				if (parser.errorCode() == CharParser.UNPARSED_ARGS)
 				{
 					StringBuilder sb = new StringBuilder();
 					sb.append(shell.msg(R.string.syntax_error));
@@ -201,7 +201,6 @@ public class CmdLineParser  implements Cloneable,CommandParserI
    */
   public void  setRessource(Properties arg0)
   {
-    ;
   }// public void  setRessource (Properties arg0)
   /** -------------------------- getHelp --------------------------
    * compile the Help from the commands
@@ -210,15 +209,13 @@ public class CmdLineParser  implements Cloneable,CommandParserI
   {
     StringBuilder helpBld = new StringBuilder();
     helpBld.append("help\n");
-    for (Iterator<String> i = commands.keySet().iterator(); i.hasNext();)
-    {
-      String cmdName = i.next();
-      helpBld.append(cmdName).append( " : ");
-      CommandI aCmd = commands.get(cmdName);
-      String cmdHelp = aCmd.help();
-      helpBld.append(cmdHelp);
-      if(!(cmdHelp != null && cmdHelp.endsWith("\n"))) helpBld.append("\n");
-    }//for(Iterator<String> i = commands.keySet().iterator(); i.hasNext();)
+		for (String cmdName : commands.keySet()) {
+			helpBld.append(cmdName).append(" : ");
+			CommandI aCmd = commands.get(cmdName);
+			String cmdHelp = aCmd.help();
+			helpBld.append(cmdHelp);
+			if (!(cmdHelp != null && cmdHelp.endsWith("\n"))) helpBld.append("\n");
+		}//for(Iterator<String> i = commands.keySet().iterator(); i.hasNext();)
     shell.print(helpBld.toString());
     return(helpBld.toString());
   }//public String help()
@@ -232,22 +229,19 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		if (commands.containsKey(token)) 
 		{
 			//System.out.println("got it:"+commands.get(token));
-			return((CommandI)commands.get(token).clone());
+			return commands.get(token).clone();
 		}//if(commands.containsKey(token)) 
 		String key = "";
-		ArrayList<String> matchingKeys = new ArrayList();
-		for (Iterator<String> e = commands.keySet().iterator(); e.hasNext();)
-		{
-			String actKey = e.next();
-			if (actKey.startsWith(token))
-			{
+		ArrayList<String> matchingKeys = new ArrayList<>();
+		for (String actKey : commands.keySet()) {
+			if (actKey.startsWith(token)) {
 				key = actKey;
 				matchingKeys.add(actKey);
-        Log.d(TAG,"key matches "+key);
+				Log.d(TAG, "key matches " + key);
 			}//if(actKey.matches("^"+token))
-      else Log.d(TAG,"no key matches "+actKey);
+			else Log.d(TAG, "no key matches " + actKey);
 		}//for(Iterator<String> e = commands.keySet().iterator(); e.hasNext();)
-		if (matchingKeys.size() == 1) return((CommandI)commands.get(key).clone());
+		if (matchingKeys.size() == 1) return commands.get(key).clone();
 		if (matchingKeys.size() > 1)
 		{
 			CommandI aCmd = new Command(shell); // dummy command to avoid the help output

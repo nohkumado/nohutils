@@ -34,6 +34,7 @@ import com.nohkumado.nohutils.*;
 import java.io.*;
 
 
+@SuppressWarnings("WeakerAccess")
 public class CatCommand extends Command implements Cloneable, CommandI
 {
 	public static final String TAG="CatCmd";
@@ -116,13 +117,12 @@ public class CatCommand extends Command implements Cloneable, CommandI
 	public CatCommand clone()
 	{
 		//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
-		CatCommand cloned = (CatCommand)super.clone();
 		//  CdCommand cloned = new CdCommand(shell);
 		//cloned.type = type;
 		//cloned.name = name;
 		//cloned.group = group;
 		//cloned.messageHandler = messageHandler;
 		//cloned.shell = shell;
-		return cloned;
+		return (CatCommand)super.clone();
 	}//public Object clone()
 }//public class Command

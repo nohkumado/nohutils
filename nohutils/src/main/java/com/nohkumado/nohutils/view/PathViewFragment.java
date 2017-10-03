@@ -4,7 +4,6 @@ package com.nohkumado.nohutils.view;
 import android.app.*;
 import android.content.*;
 import android.os.*;
-import android.util.*;
 import android.view.*;
 import android.view.View.*;
 import android.widget.*;
@@ -12,14 +11,13 @@ import android.widget.AdapterView.*;
 import com.nohkumado.nohutils.*;
 import java.util.*;
 
-import android.view.View.OnClickListener;
-
+@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public class PathViewFragment<E> extends Fragment implements OnClickListener,OnItemSelectedListener
 {
   public final static String TAG = "PVF";
   private ArrayList<Integer> addLater = new ArrayList<>();
 
-  protected  ArrayList<Spinner> spinViews = new ArrayList<Spinner>();
+  protected  ArrayList<Spinner> spinViews = new ArrayList<>();
 
   private LinearLayout viewContainer;
 
@@ -62,7 +60,7 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
         //Log.d(TAG, "check container : " + viewContainer);
         if (viewContainer != null)
         {
-          LinearLayout container = (LinearLayout) viewContainer.findViewById(R.id.treeselector);
+          LinearLayout container = viewContainer.findViewById(R.id.treeselector);
           //Log.d(TAG, "adding spinner to container");
           //spinInit.add(true);
           spinViews.add(v);
@@ -92,7 +90,7 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
   /**
    setter for the datafrag
    */
-  public void setStorage(DataStorageFrag dF)
+  public void setStorage(DataStorageFrag<E> dF)
   {
     this.dataFrag = dF;
     if (dF.pathSize() == 0)
@@ -121,11 +119,11 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
     //Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
     //textFrame = (TextView) viewContainer.findViewById(R.id.loggerview);
 
-    pathChangeBut = (ImageButton) viewContainer.findViewById(R.id.path_ok);
+    pathChangeBut = viewContainer.findViewById(R.id.path_ok);
     pathChangeBut.setOnClickListener(this);
-    pathUpBut = (ImageButton) viewContainer.findViewById(R.id.upButton);
+    pathUpBut = viewContainer.findViewById(R.id.upButton);
     pathUpBut.setOnClickListener(this);
-    pathHomeBut = (ImageButton) viewContainer.findViewById(R.id.homeButton);
+    pathHomeBut = viewContainer.findViewById(R.id.homeButton);
     pathHomeBut.setOnClickListener(this);
 
 

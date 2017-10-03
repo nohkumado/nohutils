@@ -1,5 +1,4 @@
-/** $Id: ReturnValue.java,v 1.4 2005/09/30 16:24:48 bboett Exp $ -*- java -*-
- * NAME ReturnValue 
+/*NAME ReturnValue
  *
  * AUTHOR Bruno Boettcher <bboett at adlp.org> 
  *
@@ -31,8 +30,8 @@ package com.nohkumado.nohutils;
 
 //import Data.Dumper;
 import com.nohkumado.nohutils.*;
-import java.util.*;
 
+@SuppressWarnings("WeakerAccess")
 public class ReturnValue<E> implements Cloneable
 {
     protected boolean status = true;
@@ -43,8 +42,7 @@ public class ReturnValue<E> implements Cloneable
     //protected Item item = null;
     /** 
      * CTOR 
-     * 
-     * @param n 
+     *
      */
     public ReturnValue()
     {
@@ -66,8 +64,9 @@ public class ReturnValue<E> implements Cloneable
     /** 
      * status
      * 
-     * @return 
+     * @return  status
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean status()
     {
         return(status);
@@ -102,8 +101,8 @@ public class ReturnValue<E> implements Cloneable
     /** 
      * setter for the status
      * 
-     * @param s 
-     * @return 
+     * @param s status to set
+     * @return nothing
      */
     public void status(boolean s)
     {
@@ -113,7 +112,7 @@ public class ReturnValue<E> implements Cloneable
     /** 
      * return an eventual report 
      * 
-     * @return 
+     * @return report
      */
     public String report()
     {
@@ -122,7 +121,7 @@ public class ReturnValue<E> implements Cloneable
     /** 
      * 
      * 
-     * @param m 
+     * @param m mesg
      */
     public void croak(String m)
     {
@@ -131,7 +130,7 @@ public class ReturnValue<E> implements Cloneable
     /** 
      * 
      * 
-     * @param m 
+     * @param m mesg
      */
     public void croakmore(String m)
     {
@@ -140,7 +139,7 @@ public class ReturnValue<E> implements Cloneable
     /** 
      * 
      * 
-     * @param m 
+     * @param m mesg
      */
     public void croakmore(ReturnValue m)
     {
@@ -149,7 +148,7 @@ public class ReturnValue<E> implements Cloneable
     /** 
      * 
      * 
-     * @param v 
+     * @param v value
      */
     public void value(E v)
     {
@@ -176,7 +175,7 @@ public class ReturnValue<E> implements Cloneable
     /** 
      * transform this into a string 
      * 
-     * @return 
+     * @return toString
      */
     public String toString()
     {
@@ -189,7 +188,7 @@ public class ReturnValue<E> implements Cloneable
         }// if(!msg.equals(""))
         if(value != null) 
         {
-           if(moreInfo == false) report +=":";
+           if(!moreInfo) report +=":";
             report +="\n   value:"+value;
         }// if(value != null) 
         return(report);
@@ -217,7 +216,7 @@ public class ReturnValue<E> implements Cloneable
     /**
      * Set errno.
      *
-     * @param errno the value to set.
+     * @param e errno the value to set.
      */
     public void errno(int e)
     {

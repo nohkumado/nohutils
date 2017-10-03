@@ -23,15 +23,15 @@ package com.nohkumado.nohutils.collection;
  */
 
 import java.util.*;
-import android.util.*;
 import java.util.regex.*;
 
 /**
  * Node of a n-dimensional tree
  */
-public class NTreeNode<E>  extends NTreeAtom<E> 
+@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
+public class NTreeNode<E>  extends NTreeAtom<E>
 {
-	protected HashMap<String, NTreeAtom<E>> childs = new HashMap<String, NTreeAtom<E>>();
+	protected HashMap<String, NTreeAtom<E>> childs = new HashMap<>();
 	protected Pattern slash = Pattern.compile("/");
 	public static final String TAG = "NTN";
 
@@ -141,7 +141,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			if (child == null)
 			{
 				//Log.d(TAG, "creating new node " + localKey);
-				child = new NTreeNode<E>();
+				child = new NTreeNode<>();
 				childs.put(localKey, child);
 			}
 			child = child.set(aProfile, restPath);
@@ -154,7 +154,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			if (child == null)
 			{
 				//Log.d(TAG, "creating leave " + path);
-				child = new NTreeLeave<E>();
+				child = new NTreeLeave<>();
 				childs.put(path, child);
 			}
 			child.setContent(aProfile);

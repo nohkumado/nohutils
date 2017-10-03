@@ -1,4 +1,5 @@
 package com.nohkumado.nohutils.view;
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.graphics.*;
 import android.os.*;
@@ -6,12 +7,12 @@ import android.text.*;
 import android.text.method.*;
 import android.util.*;
 import android.view.*;
-import android.view.ViewTreeObserver.*;
 import android.widget.*;
-import com.nohkumado.nohutils.*;
+
 import java.util.*;
 import android.view.ViewGroup.*;
 
+@SuppressWarnings({"WeakerAccess", "CanBeFinal", "UnusedReturnValue"})
 public class LoggerFrag extends Fragment
 {
   protected ArrayList<String> content = new ArrayList<>();
@@ -29,6 +30,7 @@ public class LoggerFrag extends Fragment
     textFrame = alternate;
     refresh();
   }
+  @SuppressLint("SetTextI18n")
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
   {
@@ -37,10 +39,10 @@ public class LoggerFrag extends Fragment
 
     if (viewContainer == null)
     {
-      viewContainer = inflater.inflate(R.layout.loggerfrag, container);
+      viewContainer = inflater.inflate(com.nohkumado.nohutils.R.layout.loggerfrag, container);
     }
     Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
-    textFrame = (TextView) viewContainer.findViewById(R.id.loggerview);
+    textFrame = viewContainer.findViewById(com.nohkumado.nohutils.R.id.loggerview);
 
     textFrame.setText("starting up");
     if (max_lines > 0) textFrame.setMaxLines(max_lines);
@@ -171,8 +173,8 @@ public class LoggerFrag extends Fragment
         {
           textFrame.setText(sb.toString());
           textFrame.invalidate();
-          if(textFrame.getHeight() == 0) textFrame.setHeight(LayoutParams.FILL_PARENT);
-          if(textFrame.getWidth() == 0) textFrame.setWidth(LayoutParams.FILL_PARENT);
+          if(textFrame.getHeight() == 0) textFrame.setHeight(LayoutParams.MATCH_PARENT);
+          if(textFrame.getWidth() == 0) textFrame.setWidth(LayoutParams.MATCH_PARENT);
           //Log.d(TAG, "set screen to  " + sb);
 
           ViewParent obj = viewContainer.getParent();
@@ -226,9 +228,9 @@ public class LoggerFrag extends Fragment
     return null;
   }
 
-  public void setTypeface(Typeface chosenFont)
+  public void setTypeface()
   {
-    if (textFrame != null) textFrame.setTypeface(chosenFont);
+    if (textFrame != null) textFrame.setTypeface(Typeface.MONOSPACE);
   }
 
  /* public void setChildLayoutParams(ViewGroup.LayoutParams layout)

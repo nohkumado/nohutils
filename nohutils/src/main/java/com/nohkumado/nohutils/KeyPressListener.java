@@ -2,15 +2,16 @@ package com.nohkumado.nohutils;
 
 import android.view.*;
 
+@SuppressWarnings("WeakerAccess")
 public interface KeyPressListener
 {
 	/**------------------------------------------------------------------
 	 * onKey
-	 * @param tw, the view the event happened
-	 * @param actionId, 
-	 * @param event
+	 * @param v, the view the event happened
+	 * @param keyCode, code
+	 * @param event event
 	 */
 
-	public boolean onKey(View v, int keyCode, KeyEvent event); 
+    boolean onKey(View v, int keyCode, KeyEvent event);
 	
-}
+}//public interface KeyPressListener

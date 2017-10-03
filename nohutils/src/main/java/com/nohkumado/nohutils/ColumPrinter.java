@@ -35,50 +35,42 @@ import com.nohkumado.nohutils.foreign.*;
  * </PRE>
  *
 */
+@SuppressWarnings({"SameParameterValue", "WeakerAccess"})
 public class ColumPrinter extends MultiColumnPrinter
 {
   protected StringBuilder sb = new StringBuilder();
 	/**
 	 * Creates a new MultiColumnPrinter class.
-	 *
-	 * @param numCol number of columns
+	 *  @param numCol number of columns
 	 * @param gap gap between each column
 	 * @param border character used to frame the titles
 	 * @param align type of alignment within columns
-	 * @param sort true if the output is sorted; false otherwise
-	 *
-	 * REVISIT: Possibly adding another argument that specifies which ones can
-	 * be truncated (xxx...)
 	 */
-	public ColumPrinter(int numCol, int gap, String border, 
-											int align, boolean sort)
+	public ColumPrinter(int numCol, int gap, String border,
+											int align)
 	{
-		super(numCol, gap, border, align, sort);
+		super(numCol, gap, border, align, MultiColumnPrinter.DEFAULT_SORT);
 	}
 
 	/**
 	 * Creates a new sorted MultiColumnPrinter class.
-	 *
-	 * @param numCol number of columns
-	 * @param gap gap between each column
-	 * @param border character used to frame the titles
-	 * @param align type of alignment within columns
-	 */
-	public ColumPrinter(int numCol, int gap, String border, int align)
-	{
-		this(numCol, gap, border, align, DEFAULT_SORT);
-	}
-
-	/**
-	 * Creates a sorted new MultiColumnPrinter class using LEFT alignment.
-	 *
-	 * @param numCol number of columns
+	 *  @param numCol number of columns
 	 * @param gap gap between each column
 	 * @param border character used to frame the titles
 	 */
 	public ColumPrinter(int numCol, int gap, String border)
 	{
-		this(numCol, gap, border, LEFT);
+		this(numCol, gap, border, MultiColumnPrinter.LEFT);
+	}
+
+	/**
+	 * Creates a sorted new MultiColumnPrinter class using LEFT alignment.
+	 * @param numCol number of columns
+	 *
+	 */
+	public ColumPrinter(int numCol)
+	{
+		this(numCol, 2, "-");
 	}
 
 	/**
@@ -90,7 +82,7 @@ public class ColumPrinter extends MultiColumnPrinter
 	 */
 	public ColumPrinter(int numCol, int gap)
 	{
-		this(numCol, gap, null, LEFT);
+		this(numCol, gap, null);
 	}
 
 	@Override
@@ -102,7 +94,7 @@ public class ColumPrinter extends MultiColumnPrinter
 	@Override
 	public void doPrintln(String str)
 	{
-		sb.append(str + "\n");
+		sb.append(str).append("\n");
 	}
 
 	@Override

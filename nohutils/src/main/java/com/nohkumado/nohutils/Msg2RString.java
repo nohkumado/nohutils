@@ -1,21 +1,19 @@
 package com.nohkumado.nohutils;
 
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.content.*;
 import android.content.res.*;
-import android.database.*;
 import android.database.sqlite.*;
-import android.graphics.*;
 import android.media.*;
 import android.os.*;
-import android.preference.*;
 import android.util.*;
-import android.view.*;
-import android.widget.*;
+
 import com.nohkumado.nohutils.*;
 import java.util.*;
-import com.nohkumado.nohutils.view.*;
 
+@SuppressWarnings("WeakerAccess")
+@SuppressLint("Registered")
 public class Msg2RString extends Activity implements MsgR2StringI
 //,SharedPreferences.OnSharedPreferenceChangeListener see sample below
 {

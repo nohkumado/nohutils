@@ -22,13 +22,13 @@ package com.nohkumado.nohutils.collection;
  * CONSEQUENTIAL DAMAGES RELATING  TO THE SOFTWARE.
  */
 
-import android.util.*;
 import java.util.*;
 
 /**
  * Node of a n-dimensional tree
  */
-public class BTreeAtom 
+@SuppressWarnings({"WeakerAccess", "CanBeFinal", "UnusedReturnValue"})
+public class BTreeAtom
 {
 	protected BTreeAtomFactory factory;
 	//public static BTreeAtom factory(String n)
@@ -87,22 +87,21 @@ public class BTreeAtom
 	/**
 	 * return true if this is a leave
 	 */
-	protected boolean isLeaf()
+	protected boolean isNode()
 	{
-		if (parent != null && (left == null && right == null)) return true;
-		return false;
-	}//protected boolean isLeaf()
+    return parent == null || (left != null || right != null);
+  }//protected boolean isLeaf()
 	/**
 	 * create a string representation of this tree
 	 */
 	public String toString(String indent)
 	{
 		StringBuilder result = new StringBuilder();
-		result.append(indent).append(name).append(" ");;
-		if (!isLeaf()) result.append(" (");
+		result.append(indent).append(name).append(" ");
+        if (isNode()) result.append(" (");
 		if (left != null) result.append(left.toString(indent + "  "));
 		if (right != null) result.append(right.toString(indent + "  "));
-		if (!isLeaf()) result.append(")");
+		if (isNode()) result.append(")");
 		result.append("\n");
 		return result.toString();
 	}
@@ -112,8 +111,8 @@ public class BTreeAtom
 	{
 		StringBuilder result = new StringBuilder();
 		//Log.d(TAG,"toS["+name+"]");
-		result.append(name).append(" ");;
-		if (left != null) result.append(left.toString());
+		result.append(name).append(" ");
+        if (left != null) result.append(left.toString());
 		if (right != null) result.append(right.toString());
 		//Log.d(TAG,"done '"+result+"'");
 		return result.toString();
@@ -151,13 +150,14 @@ public class BTreeAtom
 	 * override the equals method of those dman thing, seems the default is
 	 * broken...
 	 * ------------------------------------------------------------------*/
+	@SuppressWarnings("SimplifiableIfStatement")
 	public boolean equals(Object obj)
 	{
 		if (! (obj instanceof BTreeAtom)) return false;
 		BTreeAtom cmpTo = (BTreeAtom) obj;
 		if (!name.equals(cmpTo.name)) return false;
 		boolean toRet = true;
-		if (left == null && cmpTo.left == null && 
+		if (left == null && cmpTo.left == null &&
 			right == null && cmpTo.right == null) return toRet; //is leaf
 		if (left != null && cmpTo.left != null) toRet &= left.equals(cmpTo.left);
 		else toRet &= false;
