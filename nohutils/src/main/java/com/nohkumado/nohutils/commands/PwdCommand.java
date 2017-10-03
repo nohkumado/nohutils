@@ -42,7 +42,7 @@ public class PwdCommand extends Command implements Cloneable, CommandI
   public PwdCommand(ShellI s)
   {
     super(s);
-		if(s != null) name = s.msg(R.string.pwd);
+		if(s != null) name = s.msg(com.nohkumado.nohutils.R.string.pwd);
   }// public Command()
 
   public PwdCommand(ShellI s,String n)
@@ -59,7 +59,7 @@ public class PwdCommand extends Command implements Cloneable, CommandI
    */
   public String execute()
   {
-    String result = "";
+    //String result = "";
     String pwd = (String)shell.get("pwd");
     if(pwd == null ) pwd = System.getProperty("user.dir")+"sdcard";
     else if(pwd.length() <= 0 ) pwd = System.getProperty("user.dir"+"sdcard");
@@ -76,7 +76,7 @@ public class PwdCommand extends Command implements Cloneable, CommandI
    */
   public String help()
   {
-    return(shell.msg(R.string.pwd_help)+"\n");
+    return(shell.msg(com.nohkumado.nohutils.R.string.pwd_help)+"\n");
   }//end help
   /** 
    * copy this object 

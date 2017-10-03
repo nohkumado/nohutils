@@ -49,7 +49,7 @@ public class UtilsTester
     if (result)
     {
       
-      if (msg == null || msg.equals(""))
+      if (msg == null || msg.length() <= 0)
       {
         error(testName);
       }// if(msg != null || !msg.equals(""))

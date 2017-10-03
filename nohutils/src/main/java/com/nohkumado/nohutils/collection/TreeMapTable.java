@@ -28,12 +28,13 @@ public class TreeMapTable<E,G> implements Iterable
     if (!colNames.containsValue(col)) colNames.put(colNames.size(), col);
     return val;
   }
-  public G get()
+  @SuppressWarnings("SameParameterValue")
+  public G get(E row, E col)
   {
     try
     {
-      ArrayMap<E,G> aRow = rows.get("C");
-      return aRow.get("E");
+      ArrayMap<E,G> aRow = rows.get(row);
+      return aRow.get(col);
     }
     catch (NullPointerException ignored)
     {
@@ -67,7 +68,7 @@ public class TreeMapTable<E,G> implements Iterable
     StringBuilder sb = new StringBuilder();
     sb.append("%10s ");
     for (int i = 0; i <= colNames.size(); i++) sb.append("%10s ");
-    String form = sb.toString();
+    //String form = sb.toString();
     sb =  new StringBuilder();
     sb.append(String.format("%3s %10s ", "num", "token"));
     for (Map.Entry<Integer,E> col: colNames.entrySet())
@@ -120,6 +121,7 @@ public class TreeMapTable<E,G> implements Iterable
   /**
    * remove a whole line
    */
+  @SuppressWarnings("SuspiciousMethodCalls")
   public ArrayMap<E,G> remove(String line)
   {
     return rows.remove(line);
@@ -127,11 +129,12 @@ public class TreeMapTable<E,G> implements Iterable
   /**
    * remove a field
    */
+  @SuppressWarnings("SuspiciousMethodCalls")
   public G remove(String line, String col)
   {
-    if (rows.get(line) != null)
+    ArrayMap<E,G> lineMap = rows.get(line);
+    if (lineMap != null)
     {
-      ArrayMap<E,G> lineMap = rows.get(line); 
       return lineMap.remove(col);  
     }
     return null;

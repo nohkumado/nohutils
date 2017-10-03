@@ -49,7 +49,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
   public LsCommand(ShellI s)
   {
     super(s);
-		if (s != null) name = s.msg(R.string.ls);
+		if (s != null) name = s.msg(com.nohkumado.nohutils.R.string.ls);
   }// public Command()
 
   public LsCommand(ShellI s, String n)
@@ -65,7 +65,8 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 
    * @return resuklt
    */
-  public String execute()
+  @SuppressWarnings("ConstantConditions")
+	public String execute()
   {
 		//Log.d(TAG,"ls starting pwd: "+shell.get("pwd"));
 		
@@ -90,8 +91,8 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 		//Log.d("LsCmd", "path = " + path);
 
     File theDir = new File(path);
-		if (!theDir.exists()) return(shell.msg(R.string.cd_does_not_exist));
-		if (!theDir.canRead()) return(shell.msg(R.string.ls_not_enough_rights)+" "+theDir);
+		if (!theDir.exists()) return(shell.msg(com.nohkumado.nohutils.R.string.cd_does_not_exist));
+		if (!theDir.canRead()) return(shell.msg(com.nohkumado.nohutils.R.string.ls_not_enough_rights)+" "+theDir);
 		
     if (theDir.exists() && theDir.isDirectory())
     {
@@ -112,7 +113,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 					File aFile = new File(path + sep + name);
 					try
 					{
-						if (aFile != null && aFile.exists())
+						if (aFile.exists())
 						{
 							//Log.d(TAG, "file exists, adding to content: " + content + " n:" + name + " max:" + maxlength);
 
@@ -199,7 +200,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 				}// try
 				catch (PatternSyntaxException e)
 				{
-					shell.print(shell.msg(R.string.lscmd_invalid_pattern) + "\n");
+					shell.print(shell.msg(com.nohkumado.nohutils.R.string.lscmd_invalid_pattern) + "\n");
 
 				}// catch(PatternSyntaxException e)«»
       }//if(matcher.find())
@@ -217,7 +218,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
    */
   public String help()
   {
-    return(shell.msg(R.string.ls_help)	+ "\n");
+    return(shell.msg(com.nohkumado.nohutils.R.string.ls_help)	+ "\n");
   }//end help
   //make a copy of this object
   public LsCommand clone()

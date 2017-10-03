@@ -23,7 +23,7 @@
  *  the terms of the GNU General Public License as published by the Free Software
  *  Foundation; version 2 of the License.
  *
- *  This program is distributed in the hope that it will be importful, but WITHOUT ANY
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY
  *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  *  PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
@@ -89,7 +89,7 @@ implements Cloneable, CommandI
 
 	 activate this command
 
-	 * @return reult
+	 * @return result
 	 */
 	public String execute()
 	{
@@ -105,7 +105,7 @@ implements Cloneable, CommandI
 	 */
 	public String help()
 	{
-		return(shell.msg(R.string.no_help) + "\n");
+		return(shell.msg(com.nohkumado.nohutils.R.string.no_help) + "\n");
 	}//end help
 	/** 
 	 * clone this command 

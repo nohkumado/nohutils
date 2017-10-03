@@ -16,6 +16,7 @@ public class NohTest extends UtilsTester
   {
   }
   
+  @SuppressWarnings("UnusedAssignment")
   public String runTest()
   {
     StringBuilder result = new StringBuilder();
@@ -27,7 +28,7 @@ public class NohTest extends UtilsTester
     table.set("C","E","zwei");
     table.set("C","B","drei");
 
-    if(doTrans(!"zwei".equals(table.get()),"failed TreeMapTable test: zwei !="+table.get())) result.append("success!");
+    if(doTrans(!"zwei".equals(table.get("C","E")),"failed TreeMapTable test: zwei !="+table.get("C","E"))) result.append("success!");
     else result.append("failed!");
     //print("End TreeMapTable test");
     

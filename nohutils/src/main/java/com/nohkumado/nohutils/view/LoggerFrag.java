@@ -185,13 +185,13 @@ public class LoggerFrag extends Fragment
             //scroll_view.post(scroll);
             scroll_view.fullScroll(View.FOCUS_DOWN);
           }
-          else
+         /* else
           {
             //fixed size window....
 
             //Log.d(TAG,"chekcing size\n");
           }
-
+*/
         }
       });
   }

@@ -13,6 +13,7 @@ public class MainActivity extends Msg2RString
 {
 	private final static String TAG ="MA";
 
+	@SuppressWarnings("UnusedAssignment")
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{

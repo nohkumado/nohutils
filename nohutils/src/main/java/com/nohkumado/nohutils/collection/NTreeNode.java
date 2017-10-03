@@ -118,7 +118,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 	@Override
 	public NTreeAtom<E> set(E aProfile, String path)
 	{
-		NTreeAtom<E> child = null;
+		NTreeAtom<E> child;
 		//Log.d(TAG, "setting profile in node " + path);
 		String localKey = path;
 		String restPath = "";
@@ -135,7 +135,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 		//Log.d(TAG, "splitted path into " + localKey + " / " + restPath);
 
 
-		if (restPath != null && restPath.length() > 0)
+		if (restPath.length() > 0)
 		{
 			child = childs.get(localKey);
 			if (child == null)

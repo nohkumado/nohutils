@@ -31,7 +31,7 @@ public class TokenParser
 		errorCode = 0;
 
 		Matcher matcher;
-		int lineLength = 1;
+		int lineLength;
 		do
 		{
 			lineLength = line.length();
@@ -74,11 +74,10 @@ public class TokenParser
 					resultStack.add(aCmd);
 					if (rest != null && rest.length() > 0)
 					{
-						result = false;
 						errorCode =  UNPARSED_ARGS;
 						errorMsg = rest;
 						errorCmd = cmd;
-						return result;
+						return false;
 					}
 				}//if(aCmd != null)
 				else result = false;
@@ -97,10 +96,9 @@ public class TokenParser
 			}//else
 			else
 			{
-				result = false;
 				errorCode =  UNPARSABLE;
 				errorMsg = line;
-				return result;
+				return false;
 			}
 		}while(line != null && line.length() > 0 && (line.length() - lineLength) != 0);
 

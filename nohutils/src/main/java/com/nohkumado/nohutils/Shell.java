@@ -92,7 +92,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	{
 		super();
 		context = c;
-		if (null == null) cmdParser = new CmdLineParser();
+		if (p == null) cmdParser = new CmdLineParser();
 		else cmdParser = p;
 		cmdParser.shell(this);
 		set("shell", this);
@@ -199,7 +199,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 					//TODO pipe ahould interced e here 
 					debug("res\n" + retVal);
 
-					if (retVal != "") print(retVal);
+					if (!Objects.equals(retVal, "")) print(retVal);
 					//System.out.println("retVal = "+retVal);
 				}//if(aCmd != null) 
 				else
@@ -274,7 +274,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	 */
 	public String prompt()
 	{
-		String prompt = "";
+		String prompt;
 		if (get("prompt") == null) 
 		{
 			prompt = "> ";
@@ -299,7 +299,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		{
 			in.setText(toPrint);
 			in.setSelection(toPrint.length());
-			setEditTextFocus(in);
+			setEditTextFocus(in,true);
 			in.requestFocus();			
 		}
 	}//end prompt
@@ -517,7 +517,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 					String retVal = aCmd.execute();
 					//debug( "res3\n" + retVal);
 
-					if (retVal != "") print(retVal);
+					if (!Objects.equals(retVal, "")) print(retVal);
 					//System.out.println("retVal = "+retVal);
 				}//if(aCmd != null) 
 				else
@@ -545,8 +545,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 		if (scanType != null && scanType.equals("numeric"))
 		{
-			print(msg(R.string.numeric_asked));
-			boolean isNumeric = false;
+			print(msg(com.nohkumado.nohutils.R.string.numeric_asked));
+			boolean isNumeric;
 			do
 			{
 				try
@@ -556,7 +556,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				}// try
 				catch (InputMismatchException e)
 				{
-					print(msg(R.string.not_a_numeric) + "\n>");
+					print(msg(com.nohkumado.nohutils.R.string.not_a_numeric) + "\n>");
 					isNumeric = false;
 				}// catch(InputMismatchException e)
 			}
@@ -566,7 +566,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		else if (scanType != null && scanType.equals("int"))
 		{
 			print(msg(R.string.question_is_int));
-			boolean isNumeric = false;
+			boolean isNumeric;
 			do
 			{
 				try
@@ -576,7 +576,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				}// try
 				catch (InputMismatchException e)
 				{
-					print(msg(R.string.not_a_int) + "\n>");
+					print(msg(com.nohkumado.nohutils.R.string.not_a_int) + "\n>");
 					isNumeric = false;
 				}// catch(InputMismatchException e)
 			}
@@ -643,7 +643,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			}
 			else
 			{
-				String logEntry = prompt() + " " + incoming;
+				//String logEntry = prompt() + " " + incoming;
 				//debug("should print out '"+incoming+"'");
 
 				print(incoming);
@@ -693,16 +693,14 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		{
 			histNavigation--;
 			int actPost = history.size() - histNavigation;
-			String content = "";
+			String content;
 			if (actPost >= history.size())
 			{
-				if (actPost == history.size())
-				{}
-				else 
+				if (actPost != history.size())
 				{
 					context.playSound();
 					histNavigation = 0;	
-				}
+				}//if (actPost != history.size())
 				content = "";
 			}
 			else content = history.get(actPost);
@@ -743,7 +741,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			}
 			else
 				print("uhm tab key but not from the edittext??");
-			int tabcount = 0;
+			//int tabcount = 0;
 		}
 		else if (keyCode == KeyEvent.KEYCODE_INSERT && event.getAction() == KeyEvent.ACTION_DOWN)
 		{
@@ -888,9 +886,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	}//protected void print(String something)
 	//------------------------------------------------------------------
 	//public void setEditTextFocus(EditText searchEditText, boolean isFocused)
-	public void setEditTextFocus(EditText searchEditText)
+	public void setEditTextFocus(EditText searchEditText,boolean isFocused)
 	{
-		boolean isFocused = true;
+		//boolean isFocused = true;
 		searchEditText.setCursorVisible(isFocused);
 		searchEditText.setFocusable(isFocused);
 		searchEditText.setFocusableInTouchMode(isFocused);
@@ -980,11 +978,11 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			{
 				question += "[" + i + "] : " + selectCopy.get(i);
 				String cap = "" + captionsCopy.get(i);
-				if (cap != null && cap.length() > 0) question += " (" + cap + ")";
+				if (cap.length() > 0) question += " (" + cap + ")";
 				question += "\n>";
 			}// for(int i = 0 ; i < select.length; i++)
 
-			int index = 0;
+			int index;
 			String answer = "";
 			do
 			{
@@ -1007,7 +1005,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				}//else
 			}// do
 			while(index < 0  || index >= select.size()); 
-			answer = selectCopy.get(index) + "";
+			//answer = selectCopy.get(index) + "";
 			//return(answer);
 		}// if(options.get("select") != null)
 		else if (options.get("type") != null) scanType = options.get("type") + "";
@@ -1181,12 +1179,12 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 						return false;
 				}
 			}
-			else
+			/*else
 			{
 				// This is a file
 				// TODO: add file name to an array list
 				//debug( "asset single file : " + path);
-			}
+			}*/
 		}
 		catch (IOException e)
 		{
@@ -1240,8 +1238,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			return;
 		}
 		int index = 0;
+		assert varnames != null;
 		for (String name : varnames)
 		{
+			assert varval != null;
 			localVars.put(name, varval.get(index));
 			index++;
 		}

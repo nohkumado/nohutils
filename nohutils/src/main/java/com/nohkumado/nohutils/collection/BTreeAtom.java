@@ -27,7 +27,7 @@ import java.util.*;
 /**
  * Node of a n-dimensional tree
  */
-@SuppressWarnings({"WeakerAccess", "CanBeFinal", "UnusedReturnValue"})
+@SuppressWarnings({"WeakerAccess", "CanBeFinal", "UnusedReturnValue", "ConstantConditions"})
 public class BTreeAtom
 {
 	protected BTreeAtomFactory factory;
@@ -147,7 +147,7 @@ public class BTreeAtom
 	}//public void copy(GeneticAtom root)
 
 	/** -----------------------------------------------------------------
-	 * override the equals method of those dman thing, seems the default is
+	 * override the equals method of those damn thing, seems the default is
 	 * broken...
 	 * ------------------------------------------------------------------*/
 	@SuppressWarnings("SimplifiableIfStatement")

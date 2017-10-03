@@ -3,7 +3,7 @@ package com.nohkumado.nohutils;
 import java.util.*;
 import java.util.regex.*;
 
-@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
+@SuppressWarnings({"WeakerAccess", "CanBeFinal", "ConstantConditions"})
 public class CharParser
 {
 	public static final String TAG="CharP";
@@ -44,14 +44,14 @@ public class CharParser
     //Log.d(TAG,"char parsing  '"+line+"'");
     
 		Matcher matcher;
-		int lineLength = 1;
+		int lineLength;
 		do
 		{
 			lineLength = line.length();
 			int cmd_count = resultStack.size();
 			for (Pattern cmdPat : patterns)
 			{
-				//we need to give the line over to cmd.parse, so making the mathcer her...
+				//we need to give the line over to cmd.parse, so making the matcher her...
 				//seems irrelevant... especially since we can't be sure to get the right pattern for all commands...
 				if ((matcher = cmdPat.matcher(line)).find())
 				{

@@ -21,7 +21,7 @@ package com.nohkumado.nohutils.commands;
  *  the terms of the GNU General Public License as published by the Free Software
  *  Foundation; version 2 of the License.
  *
- *  This program is distributed in the hope that it will be importful, but WITHOUT ANY
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY
  *  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
  *  PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
@@ -111,7 +111,7 @@ public class CatCommand extends Command implements Cloneable, CommandI
 	 */
 	public String help()
 	{
-		return(shell.msg(R.string.cat_help) + "\n");
+		return(shell.msg(com.nohkumado.nohutils.R.string.cat_help) + "\n");
 	}//end help
 	//make a copy of this object
 	public CatCommand clone()

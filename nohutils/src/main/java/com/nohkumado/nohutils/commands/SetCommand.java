@@ -47,7 +47,7 @@ public class SetCommand extends Command implements Cloneable, CommandI
   public SetCommand(ShellI s)
   {
     super(s);
-		if (s != null) name = s.msg(R.string.set);
+		if (s != null) name = s.msg(com.nohkumado.nohutils.R.string.set);
   }// public Command()
 
   public SetCommand(ShellI s, String n)
@@ -66,17 +66,17 @@ public class SetCommand extends Command implements Cloneable, CommandI
   public String execute()
   {
     String result = "";
-    if (var_name != "")
+    if (!Objects.equals(var_name, ""))
     {
       result += var_name + " : ";
-      if (var_value != "") shell.set(var_name, var_value);
+      if (!Objects.equals(var_value, "")) shell.set(var_name, var_value);
       if (shell.preference(var_name) != null)
 				result += shell.preference(var_name) + "\n";
       else result += shell.get(var_name) + "\n";
     }// if(value != "")
     else
     {
-      result = shell.msg(R.string.variable_list) + ":\nEnvironment:\n";
+      result = shell.msg(com.nohkumado.nohutils.R.string.variable_list) + ":\nEnvironment:\n";
 			//TODO suspect here.... check it out...
       HashMap<String,Object> environment = (HashMap<String, Object>) shell.getAll();
 			for (String argName : environment.keySet()) {
@@ -85,7 +85,7 @@ public class SetCommand extends Command implements Cloneable, CommandI
 				if (!(argName.equals("shell") || argName.equals("msger") || argName.equals("Fibu")))
 					result += argName + " : " + environment.get(argName) + "\n";
 			}// for(Iterator<String> e = environment.keySet().iterator(); e.hasNext();)
-      result += shell.msg(R.string.endlist) + "\n";
+      result += shell.msg(com.nohkumado.nohutils.R.string.endlist) + "\n";
     }// else
     return(result);
   }//end execute
@@ -133,7 +133,7 @@ public class SetCommand extends Command implements Cloneable, CommandI
 	public String help()
   {
 		//return(shell.msg("set") + " " + var_name + " " + shell.msg("value") + " " + shell.msg("to_set_a_value") + "\n");
-    return(shell.msg(R.string.sethelp));
+    return(shell.msg(com.nohkumado.nohutils.R.string.sethelp));
   }//end help
 	//make a copy of this object
 	public SetCommand clone()

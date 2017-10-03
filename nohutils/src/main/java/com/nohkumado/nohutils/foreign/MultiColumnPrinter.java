@@ -478,7 +478,7 @@ public abstract class MultiColumnPrinter
 
 				for (int i = 0; i < numCol; i++)
 				{
-					int availableSpace = 0, span = curSpan[i];
+					int availableSpace, span = curSpan[i];
 
 					if (span == 0)
 						continue;
@@ -653,6 +653,7 @@ public abstract class MultiColumnPrinter
 		}
 	}
 
+	@SuppressWarnings("UnusedAssignment")
 	private void printBorder()
 	{
 

@@ -51,7 +51,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 	 *
 	 *  feedCmds
 	 *
-	 * @param cmds list of copmmands
+	 * @param cmds list of commands
 	 * @return map of commands
 	 */
 	public HashMap<String,CommandI> feedCmds(HashMap<String,CommandI> cmds)
@@ -60,8 +60,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		{
 			//Log.d(TAG,"about to add command "+key);
 
-			if (cmds.get(key) instanceof CommandI)
-			{
+
 	      CommandI aCmd = cmds.get(key);
 				//Log.d(TAG,"command is "+aCmd);
 	      //aCmd.name(key);
@@ -71,7 +70,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
           Log.e(TAG,"key was null for cmd "+aCmd+" to "+commands);
         }
         else commands.put(key, aCmd);
-			}// if(cmds.get(key) instanceof Command)
+
 
 		}// for(String key: commands.keySet())
 		return(null);
@@ -119,7 +118,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		}
 		//Log.d(TAG,"mode "+mode);
 
-		if (mode == "tokenized")
+		if (Objects.equals(mode, "tokenized"))
 		{
 			TokenParser parser = new TokenParser(this);
 			if (strictParse && !parser.parse(line, resultStack))
@@ -127,13 +126,13 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 				if (parser.errorCode() == TokenParser.UNPARSED_ARGS)
 				{
 					StringBuilder sb = new StringBuilder();
-					sb.append(shell.msg(R.string.syntax_error));
+					sb.append(shell.msg(com.nohkumado.nohutils.R.string.syntax_error));
 					sb.append(" ");
-					sb.append(shell.msg(R.string.cmd_command));
+					sb.append(shell.msg(com.nohkumado.nohutils.R.string.cmd_command));
 					sb.append(" ");
 					sb.append(parser.errorCmd());
 					sb.append(" ");
-					sb.append(shell.msg(R.string.cmd_unparsed_args));
+					sb.append(shell.msg(com.nohkumado.nohutils.R.string.cmd_unparsed_args));
 					sb.append(" ");
 					sb.append(parser.errorMsg());
 
@@ -141,7 +140,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 				}
 			}
 		}//if(mode == null || mode == "tokenized")
-		else if (mode == "char")
+		else if (Objects.equals(mode, "char"))
 		{
 			CharParser parser = new CharParser(this);
 			if (strictParse && !parser.parse(line, resultStack))
@@ -149,13 +148,13 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 				if (parser.errorCode() == CharParser.UNPARSED_ARGS)
 				{
 					StringBuilder sb = new StringBuilder();
-					sb.append(shell.msg(R.string.syntax_error));
+					sb.append(shell.msg(com.nohkumado.nohutils.R.string.syntax_error));
 					sb.append(" ");
-					sb.append(shell.msg(R.string.cmd_command));
+					sb.append(shell.msg(com.nohkumado.nohutils.R.string.cmd_command));
 					sb.append(" ");
 					sb.append(parser.errorCmd());
 					sb.append(" ");
-					sb.append(shell.msg(R.string.cmd_unparsed_args));
+					sb.append(shell.msg(com.nohkumado.nohutils.R.string.cmd_unparsed_args));
 					sb.append(" ");
 					sb.append(parser.errorMsg());
 
@@ -164,7 +163,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			}
 		}//if(mode == null || mode == "tokenized")
 		
-		else if (mode == "vilike")
+		else if (Objects.equals(mode, "vilike"))
 		{
 			Log.d(TAG, "please provide an implementation for this parsing mode");
 		}//else if(mode == "vilike")
@@ -174,7 +173,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			help(); return(resultStack);
 		}//else
 
-		if (strictParse && resultStack.size() <= 0)  shell.print(shell.msg(R.string.syntax_error));
+		if (strictParse && resultStack.size() <= 0)  shell.print(shell.msg(com.nohkumado.nohutils.R.string.syntax_error));
 
 		return(resultStack);
 	}//public Vector<CommandI> parse(String line)
@@ -245,7 +244,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		if (matchingKeys.size() > 1)
 		{
 			CommandI aCmd = new Command(shell); // dummy command to avoid the help output
-			shell.print(shell.msg(R.string.need_specifying) + " " + matchingKeys.toString());
+			shell.print(shell.msg(com.nohkumado.nohutils.R.string.need_specifying) + " " + matchingKeys.toString());
 			return(aCmd);
 		}//if(matchingKeys.size() > 1)
 		return(null);
