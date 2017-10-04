@@ -34,6 +34,7 @@ import android.os.*;
 import android.preference.*;
 import android.util.*;
 import android.view.*;
+import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import android.widget.TextView.*;
 import com.nohkumado.nohutils.foreign.*;
@@ -602,62 +603,72 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		//if (tw != out) debug( "wrong source");
 		//else debug( "good source");
 
-		//if (actionId == EditorInfo.IME_NULL		&&   
-		if (event.getAction() == KeyEvent.ACTION_DOWN) 
+		if (actionId == EditorInfo.IME_NULL) reactToEnter(tw);
+    else if(event == null)
+    {
+      Log.e(TAG,"ooooyy??? something unknown triggered editoraction :"+actionId);
+      error("ooooyy??? something unknown triggered editoraction :"+actionId+" vs ime: "+EditorInfo.IME_NULL);
+    }
+		else if (event.getAction() == KeyEvent.ACTION_DOWN)
 		{
-			histNavigation = 0;
-			//debug( "hit the enter key... calling read");
-			String incoming = tw.getText().toString().trim();
-			//debug( "hit the enter key... got " + incoming);
-			//removing prompt from incoming line
-
-			String lastprompt = prompt();
-			if (lastprompt != null) incoming = incoming.replace(lastprompt.trim(), "").trim();
-
-			if (incoming.length() > 0)  history.add(incoming);
-			if (history.size() > maxHistory) 
-				while (history.size() > maxHistory) history.remove(0);
-
-			//debug( "read extracted " + incoming);
-			if (actQuestion != null)
-			{
-        /*StringBuilder sb = new StringBuilder();
-         sb.append("diverting to actquestion ").append(actQuestion);
-         sb.append(" actp:"+get("prompt"));
-         */
-        if (!promptStack.empty()) prompt(promptStack.pop());
-        //sb.append(" newp:"+get("prompt"));
-        //debug( sb.toString());
-
-				CommandI toExe = actQuestion;
-				//TODO eventually her we should mitigate if its a keylistener we should rescind 
-				//from killing it, but we needa mechanism to tell that we don't need forwarding 
-				//anymore... maybe we should reask a dummy question.... in the lsitener.... 
-				//to reset the actquestion
-
-				actQuestion = null;
-				//setting to 0 beforehand, since the parsing could arise new questions...
-				toExe.parse(incoming);
-        toExe.execute();
-				printOnCmdline(prompt());
-			}
-			else
-			{
-				//String logEntry = prompt() + " " + incoming;
-				//debug("should print out '"+incoming+"'");
-
-				print(incoming);
-				//debug( "proceeding to parse");
-
-				ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
-        //debug( "cmd list " + toWorkOf);
-        executeCommands(toWorkOf);	
-			}
+      reactToEnter(tw);
 		}
 
 		return true;
 	}
-	/**------------------------------------------------------------------
+
+  private void reactToEnter(TextView tw) {
+    histNavigation = 0;
+    //debug( "hit the enter key... calling read");
+    String incoming = tw.getText().toString().trim();
+    //debug( "hit the enter key... got " + incoming);
+    //removing prompt from incoming line
+
+    String lastprompt = prompt();
+    if (lastprompt != null) incoming = incoming.replace(lastprompt.trim(), "").trim();
+
+    if (incoming.length() > 0)  history.add(incoming);
+    if (history.size() > maxHistory)
+      while (history.size() > maxHistory) history.remove(0);
+
+    //debug( "read extracted " + incoming);
+    if (actQuestion != null)
+    {
+/*StringBuilder sb = new StringBuilder();
+sb.append("diverting to actquestion ").append(actQuestion);
+sb.append(" actp:"+get("prompt"));
+*/
+if (!promptStack.empty()) prompt(promptStack.pop());
+//sb.append(" newp:"+get("prompt"));
+//debug( sb.toString());
+
+      CommandI toExe = actQuestion;
+      //TODO eventually her we should mitigate if its a keylistener we should rescind
+      //from killing it, but we needa mechanism to tell that we don't need forwarding
+      //anymore... maybe we should reask a dummy question.... in the lsitener....
+      //to reset the actquestion
+
+      actQuestion = null;
+      //setting to 0 beforehand, since the parsing could arise new questions...
+      toExe.parse(incoming);
+toExe.execute();
+      printOnCmdline(prompt());
+    }
+    else
+    {
+      //String logEntry = prompt() + " " + incoming;
+      //debug("should print out '"+incoming+"'");
+
+      print(incoming);
+      //debug( "proceeding to parse");
+
+      ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
+//debug( "cmd list " + toWorkOf);
+executeCommands(toWorkOf);
+    }
+  }
+
+  /**------------------------------------------------------------------
 	 * onKey
 	 * @param v, the view the event happened
 	 * @param keyCode, keyCode
