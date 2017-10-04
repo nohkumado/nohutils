@@ -3,6 +3,7 @@ package com.nohkumado.nohutils;
 import android.annotation.SuppressLint;
 import android.app.*;
 import android.content.res.*;
+import android.graphics.Typeface;
 import android.media.*;
 import android.os.*;
 import android.util.*;
@@ -56,7 +57,8 @@ public class ShellActivity extends Activity implements MsgR2StringI
         screen = new LoggerFrag();
         getFragmentManager().beginTransaction().replace(textOut,screen).commit();
       }
-			screen.setTypeface();
+
+			screen.setTypeface(Typeface.MONOSPACE);
 			EditText cmdLine = findViewById(textIn);
 			if (shell != null) shell.setInOut(cmdLine, screen);
 			//Log.d(TAG,"s:"+screen+" i:"+cmdLine);	

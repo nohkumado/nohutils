@@ -228,9 +228,9 @@ public class LoggerFrag extends Fragment
     return null;
   }
 
-  public void setTypeface()
+  public void setTypeface(Typeface tf)
   {
-    if (textFrame != null) textFrame.setTypeface(Typeface.MONOSPACE);
+    if (textFrame != null) textFrame.setTypeface(tf);
   }
 
  /* public void setChildLayoutParams(ViewGroup.LayoutParams layout)
