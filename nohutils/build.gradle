@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 ext {
     PUBLISH_GROUP_ID = 'com.nohkumado'
     PUBLISH_ARTIFACT_ID = 'nohutils'
-    PUBLISH_VERSION = '1.2'
+    PUBLISH_VERSION = '1.3'
     //bintrayRepo = 'nohutils'
     //bintrayName = 'nohutils'
 

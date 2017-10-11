@@ -603,16 +603,14 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		//if (tw != out) debug( "wrong source");
 		//else debug( "good source");
 
-		if (actionId == EditorInfo.IME_NULL) reactToEnter(tw);
-    else if(event == null)
-    {
-      Log.e(TAG,"ooooyy??? something unknown triggered editoraction :"+actionId);
-      error("ooooyy??? something unknown triggered editoraction :"+actionId+" vs ime: "+EditorInfo.IME_NULL);
-    }
-		else if (event.getAction() == KeyEvent.ACTION_DOWN)
+    if (actionId == EditorInfo.IME_NULL || (event != null && event.getAction() == KeyEvent.ACTION_DOWN))
 		{
       reactToEnter(tw);
 		}
+		else {
+      error("ooooyy??? onEditorAction unknown event...n :"+actionId+" vs ime: "+EditorInfo.IME_NULL+" ev: "+event);
+      Log.e(TAG, "onEditorAction unknown event... " + actionId+" vs ime: "+EditorInfo.IME_NULL+" ev: "+event);
+    }
 
 		return true;
 	}
