@@ -19,7 +19,7 @@ public class Msg2RString extends Activity implements MsgR2StringI
 {
 	public static final String TAG = "msg2Str";
 	private static final int RESULT_SETTINGS = 1;
-	protected Shell shell;
+	protected ShellI shell;
 
 	@Override
 	public SQLiteOpenHelper getDbHelper()

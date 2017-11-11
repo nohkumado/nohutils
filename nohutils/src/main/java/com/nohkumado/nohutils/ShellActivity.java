@@ -59,7 +59,7 @@ public class ShellActivity extends Activity implements MsgR2StringI
       }
 
 			screen.setTypeface(Typeface.MONOSPACE);
-			EditText cmdLine = findViewById(textIn);
+			EditText cmdLine = (EditText)findViewById(textIn);
 			if (shell != null) shell.setInOut(cmdLine, screen);
 			//Log.d(TAG,"s:"+screen+" i:"+cmdLine);	
 		}
