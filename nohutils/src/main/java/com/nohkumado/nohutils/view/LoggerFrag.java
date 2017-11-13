@@ -1,5 +1,5 @@
 package com.nohkumado.nohutils.view;
-import android.annotation.SuppressLint;
+import android.annotation.*;
 import android.app.*;
 import android.graphics.*;
 import android.os.*;
@@ -7,14 +7,15 @@ import android.text.*;
 import android.text.method.*;
 import android.util.*;
 import android.view.*;
-import android.widget.*;
-
-import java.util.*;
 import android.view.ViewGroup.*;
+import android.widget.*;
+import com.nohkumado.nohutils.*;
+import java.util.*;
 
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "UnusedReturnValue"})
 public class LoggerFrag extends Fragment
 {
+	protected final static int MAX_LINES = 25;
 	protected ArrayList<String> content = new ArrayList<>();
 	protected int max_lines;
 
@@ -30,31 +31,42 @@ public class LoggerFrag extends Fragment
 		textFrame = alternate;
 		refresh();
 	}
+
+	public LoggerFrag()
+	{
+		super();
+		Log.d(TAG, super.toString() + " CTOR");
+	}
 	@SuppressLint("SetTextI18n")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		Log.d(TAG, super.toString() + " onCrateView");
 		setRetainInstance(true);
 		viewContainer = super.onCreateView(inflater, container, savedInstanceState);
 
 		if (viewContainer == null)
 		{
-			viewContainer = inflater.inflate(com.nohkumado.nohutils.R.layout.loggerfrag, container);
-			Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
+			viewContainer = inflater.inflate(R.layout.loggerfrag, container, false);
+			//Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
 		}
 		textFrame = (TextView)viewContainer.findViewById(com.nohkumado.nohutils.R.id.loggerview);
 
-		textFrame.setText("starting up");
+		add("starting up");
+		//textFrame.setText("starting up");
 		if (max_lines > 0) textFrame.setMaxLines(max_lines);
 		if (max_lines <= 0)
 		{
+			textFrame.setMaxLines(MAX_LINES);
 			StringBuilder sb = new StringBuilder();
+			//sb.append("starting up");
 			for (int i= 0; i < 10; i++)
 			{
-				sb.append("\n");
+				sb.append("-\n");
 			}
-			textFrame.setText(sb.toString());
-			Log.d(TAG, "extracted frame " + textFrame + " set to  "+sb +" " + textFrame.getWidth() + ":" + textFrame.getHeight());
+			add(sb.toString());
+			//textFrame.setText(sb.toString());
+			//Log.d(TAG, "extracted frame " + textFrame + " set to  "+sb +" " + textFrame.getWidth() + ":" + textFrame.getHeight());
 
 			/*
 			 textFrame.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -107,14 +119,15 @@ public class LoggerFrag extends Fragment
 		content.add(aLine);
 		if (max_lines > 0)
 		{
-			while (content.size() > max_lines) content.remove(0);
+			while (content.size() > max_lines) Log.d(TAG, "removing excess line " + content.remove(0));
 		}
 		if (textFrame != null)
 		{
 			refresh();
 		}
 		return this;
-	}
+	}//public LoggerFrag add(String aLine)
+
 
 	/**
 
@@ -131,7 +144,7 @@ public class LoggerFrag extends Fragment
 			int lastVisibleLineNumber  = layout.getLineForVertical(scrollY + height);
 			int totalLines = lastVisibleLineNumber - firstVisibleLineNumber;
 
-			//Log.d(TAG,"data:"+content.size()+"vis lin = "+totalLines+" vs lc:"+textFrame.getLayout().getLineCount());
+			Log.d(TAG, "data:" + content.size() + "vis lin = " + totalLines + " vs lc:" + textFrame.getLayout().getLineCount());
 
 
 			if ((totalLines == lastLines) && totalLines < content.size())
@@ -152,19 +165,18 @@ public class LoggerFrag extends Fragment
                 //while(totalLines < content.size()) content.remove(0);
 			}
 			lastLines = totalLines;
-		}
-
-
+		}//if ((totalLines == lastLines) && totalLines < content.size())
 
 		final StringBuilder sb = new StringBuilder();
 		for (String line : content) sb.append(line).append("\n");
+		sb.append("for Logger ").append(super.toString() + "\n");
 		//StringBuilder debug = new StringBuilder();
 		//debug.append("refresh about to print ");
 		//.append(sb).append(" ")
 		//debug.append(content.size()).append("/");
 		//if(textFrame.getLayout() == null) debug.append("unknown");
 		//else debug.append(textFrame.getLayout().getLineCount());
-		//Log.d(TAG, debug.toString());
+		Log.d(TAG, "printing to screen(" + textFrame + ") " + sb.toString());
 		getActivity().runOnUiThread(new Runnable()
 			{
 				@Override

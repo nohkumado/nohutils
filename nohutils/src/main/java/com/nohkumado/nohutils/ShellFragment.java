@@ -17,6 +17,9 @@ public class ShellFragment extends Fragment
 
 	private View viewContainer;
 	
+	public ShellFragment()
+	{
+	}
 	public ShellFragment(MsgR2StringI callback)
 	{
 		handler = callback; //need? need not?
@@ -30,9 +33,9 @@ public class ShellFragment extends Fragment
 		{
 			if(handler == null || !handler.equals(context))
 			{
-				Log.d(TAG,"attaching "+context+" instead of "+handler);
+				//Log.d(TAG,"attaching "+context+" instead of "+handler);
 				handler = (MsgR2StringI) context;
-				shell.setContext(handler);	
+				shell().setContext(handler);	
 			}//if(handler == null || !handler.equals(context))
 		}//if(context instanceof MsgR2StringI)
 		else Log.e(TAG,"couldn't attach context, no MsgR2StringI... "+context);
@@ -53,7 +56,7 @@ public class ShellFragment extends Fragment
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		if (shell == null) shell = new Shell(handler);
+		shell();
 	}
 	
 	@Override
@@ -64,18 +67,42 @@ public class ShellFragment extends Fragment
 		
 		if (viewContainer == null)
 		{
-			//viewContainer = (LinearLayout)inflater.inflate(R.layout.shellviewfrag, container,false);
-			viewContainer = (RelativeLayout)inflater.inflate(R.layout.shellviewfrag, null,false);
+			Log.d(TAG,"inflating shellview");
+			viewContainer = (RelativeLayout)inflater.inflate(R.layout.shellviewfrag, container,false);
+			//viewContainer = (RelativeLayout)inflater.inflate(R.layout.shellviewfrag, null,false);
 		}
-		/*EditText cmdLine = (EditText) viewContainer.findViewById(R.id.TextIn);
-		LoggerFrag logger = (LoggerFrag)getFragmentManager().findFragmentById(R.id.textOut);
+		EditText cmdLine = (EditText) viewContainer.findViewById(R.id.shell_text_in);
+		//FragmentManager fm = getFragmentManager();
+		FragmentManager fm = getChildFragmentManager();
+		LoggerFrag logger = (LoggerFrag)fm.findFragmentById(R.id.shell_text_out);
 		if (logger == null)
 		{
-			logger = (LoggerFrag)getFragmentManager().findFragmentByTag("screen");
-			if (logger == null) logger = new LoggerFrag(); //well everything failed....
-			getFragmentManager().beginTransaction().replace(R.id.textOut, logger, "screen").commit();
+			Log.d(TAG,"logger was null... error...");
+			for(int index=0; index<((ViewGroup)viewContainer).getChildCount(); ++index) {
+				View nextChild = ((ViewGroup)viewContainer).getChildAt(index);
+				Log.d(TAG,"child["+index+"] "+nextChild);
+			}
+			logger = (LoggerFrag)fm.findFragmentByTag("screen");
+			if (logger == null) 
+			{
+				logger = new LoggerFrag(); //well everything failed....
+				Log.e(TAG,"ultra bug... had to create the fragment");
+			}
+			
+			ViewParent parent = logger.getParent();
+			Log.e(TAG,"fragment parent "+parent);
+			
+			if(parent == null)
+			{
+				Log.e(TAG,"replacing logger");
+				fm.beginTransaction().replace(R.id.shell_text_out, logger, "screen").commit();
+				
+			} else Log.e(TAG,"can't replace logger ");
+				Log.e(TAG,"done with logger");
+			
 		}//if (logger == null)
-		shell.setInOut(cmdLine, logger);
+		logger.add("Shellfrag started logger");
+		shell().setInOut(cmdLine, logger);
 		shell.init();
 		//shell.print("Welcome ");*/
 		return viewContainer;

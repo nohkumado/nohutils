@@ -59,19 +59,15 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		for (String key: cmds.keySet())
 		{
 			//Log.d(TAG,"about to add command "+key);
-
-
-	      CommandI aCmd = cmds.get(key);
-				//Log.d(TAG,"command is "+aCmd);
-	      //aCmd.name(key);
-				//Log.d(TAG,"about to add comd "+key+" v: "+aCmd+" to "+commands);
-				if( key == null)
-        {
-          Log.e(TAG,"key was null for cmd "+aCmd+" to "+commands);
-        }
-        else commands.put(key, aCmd);
-
-
+			CommandI aCmd = cmds.get(key);
+			//Log.d(TAG,"command is "+aCmd);
+			//aCmd.name(key);
+			//Log.d(TAG, "about to add comd '" + key + "' v: " + aCmd + " to " + commands);
+			if (key == null)
+			{
+				Log.e(TAG, "key was null for cmd " + aCmd + " to " + commands);
+			}
+			else commands.put(key, aCmd);
 		}// for(String key: commands.keySet())
 		return(null);
 	}//public void init
@@ -162,7 +158,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 				}
 			}
 		}//if(mode == null || mode == "tokenized")
-		
+
 		else if (Objects.equals(mode, "vilike"))
 		{
 			Log.d(TAG, "please provide an implementation for this parsing mode");
@@ -184,46 +180,47 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 	{
 		return(shell);
 	}// public SchellI getShell()«»
-  public void shell(ShellI  s)
+	public void shell(ShellI  s)
 	{ shell = s; }
-  /** -------------------------- formatProperties --------------------------
-   *
-   TODO only proto here
-   */
-  public String  formatProperties(Properties arg0)
-  {
-    return(arg0.toString());
-  }// public String  formatProperties (Properties arg0)«»
-  /** -------------------------- setRessource --------------------------
-   *
-   TODO only proto here
-   */
-  public void  setRessource(Properties arg0)
-  {
-  }// public void  setRessource (Properties arg0)
-  /** -------------------------- getHelp --------------------------
-   * compile the Help from the commands
-   */
-  public String help()
-  {
-    StringBuilder helpBld = new StringBuilder();
-    helpBld.append("help\n");
-		for (String cmdName : commands.keySet()) {
+	/** -------------------------- formatProperties --------------------------
+	 *
+	 TODO only proto here
+	 */
+	public String  formatProperties(Properties arg0)
+	{
+		return(arg0.toString());
+	}// public String  formatProperties (Properties arg0)«»
+	/** -------------------------- setRessource --------------------------
+	 *
+	 TODO only proto here
+	 */
+	public void  setRessource(Properties arg0)
+	{
+	}// public void  setRessource (Properties arg0)
+	/** -------------------------- getHelp --------------------------
+	 * compile the Help from the commands
+	 */
+	public String help()
+	{
+		StringBuilder helpBld = new StringBuilder();
+		helpBld.append("help\n");
+		for (String cmdName : commands.keySet())
+		{
 			helpBld.append(cmdName).append(" : ");
 			CommandI aCmd = commands.get(cmdName);
 			String cmdHelp = aCmd.help();
 			helpBld.append(cmdHelp);
 			if (!(cmdHelp != null && cmdHelp.endsWith("\n"))) helpBld.append("\n");
 		}//for(Iterator<String> i = commands.keySet().iterator(); i.hasNext();)
-    shell.print(helpBld.toString());
-    return(helpBld.toString());
-  }//public String help()
-  /*
+		shell.print(helpBld.toString());
+		return(helpBld.toString());
+	}//public String help()
+	/*
 	 find a command, means try key completion if not found directly clone the command and return it
 	 */
 	public CommandI findCmd(String token)
 	{
-		System.out.println("find command "+token);
+		System.out.println("find command " + token);
 
 		if (commands.containsKey(token)) 
 		{
@@ -232,8 +229,10 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		}//if(commands.containsKey(token)) 
 		String key = "";
 		ArrayList<String> matchingKeys = new ArrayList<>();
-		for (String actKey : commands.keySet()) {
-			if (actKey.startsWith(token)) {
+		for (String actKey : commands.keySet())
+		{
+			if (actKey.startsWith(token))
+			{
 				key = actKey;
 				matchingKeys.add(actKey);
 				Log.d(TAG, "key matches " + key);

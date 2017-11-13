@@ -3,6 +3,8 @@ package com.nohkumado.utilsapp;
 import android.app.*;
 import android.os.*;
 import android.util.*;
+import android.view.*;
+import android.widget.*;
 import com.nohkumado.nohutils.*;
 import com.nohkumado.nohutils.commands.*;
 import com.nohkumado.utilsapp.commands.*;
@@ -28,11 +30,23 @@ public class MainActivity extends Msg2RString
 		ShellFragment shellfrag = (ShellFragment) fm.findFragmentByTag("shellFrag");
 		if (shellfrag == null)
 		{
+			//Log.d(TAG, "no shell frag");
 			shellfrag = new ShellFragment(this);
+			//Log.d(TAG, "shellfrag created parent linsting childs");
+			//LinearLayout minSc = (LinearLayout) findViewById(R.id.mainscreen);
+			
+			//if(minSc != null)
+			//	for(int index=0; index<minSc.getChildCount(); ++index) {
+			//	View nextChild = minSc.getChildAt(index);
+			//	Log.d(TAG,"main child["+index+"] "+nextChild);
+			//}
+			//Log.d(TAG,"done");
+			
 			fm.beginTransaction().add(R.id.mainscreen, shellfrag, "shellFrag").commit();
-		}
+			//Log.d(TAG, "shellfrag added");
+		}//if (shellfrag == null)
 		shell = shellfrag.shell();
-		Log.d(TAG,"got shell back : "+shell);
+		//Log.d(TAG, "got shell back : " + shell);
 
 		//if (shell == null) shell = new Shell(this);
 		giveShellCmds();
@@ -53,6 +67,7 @@ public class MainActivity extends Msg2RString
 
 	private void giveShellCmds()
 	{
+		if(shell.getContext() == null) shell.setContext(this);
 		CommandI[] cmds = new CommandI[]
 		{
 			new SetCommand(shell),

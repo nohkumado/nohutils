@@ -58,7 +58,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	protected ArrayList<String> screenContent = new ArrayList<>();
 	protected CommandParserI cmdParser = null;
 	//protected  TextView out = null;
-  protected  LoggerFrag out = null;
+	protected  LoggerFrag out = null;
 	protected  EditText in = null;
 
 	protected boolean batchMode = false;
@@ -89,7 +89,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 	 */
 	//public Shell(CmdLineParserI p)
-	public Shell(MsgR2StringI c,CommandParserI p)
+	public Shell(MsgR2StringI c, CommandParserI p)
 	{
 		super();
 		context = c;
@@ -100,7 +100,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	}// public Shell()
 	public Shell(MsgR2StringI c)
 	{
-		this(c,null);
+		this(c, null);
 	}
 
 	@Override
@@ -113,31 +113,33 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			//if(value instanceof Cloneable)
 			//cpy.set(key,((Cloneable)value).clone());
 			//else 
-      cpy.set(key, value);
+			cpy.set(key, value);
 
 		}
 		cpy.set("prompt", "$ ");
-    cpy.parentShell = this;
+		cpy.parentShell = this;
 		set("shell", this);
 
 		return cpy;
 	}// public Shell()
 
-  //public void setInOut(EditText in, TextView out)
+	//public void setInOut(EditText in, TextView out)
 	public void setInOut(EditText in, LoggerFrag out)
 	{
 
 		this.out = out;
 		this.in = in;
+		Log.d(TAG,"setting in pout "+in+","+out);
+		out.add("setting in pout "+in+","+out);
 		if (out == null) screenContent = new ArrayList<>();
-    else
-    {
-      if (screenContent != null)
-      {
-        for (String line: screenContent) out.add(line);
-        screenContent = null;
-      }
-    }
+		else
+		{
+			if (screenContent == null) screenContent = new ArrayList<>();
+			screenContent.add(cmdParser.help());
+			for (String line: screenContent) out.add(line);
+			screenContent = null;
+		}//else
+
 		if (in != null)
 		{
 			in.setOnEditorActionListener(this);
@@ -149,11 +151,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			 in.rmOnEditorActionListener(parentShell);
 			 in.rmOnKeyListener(parentShell);
 			 }*/
-
 		}
 		else error("couldn't set action listener");
 		if (out == null) error("no output screen....");
-    else prompt();
+		else prompt();
 	}
 	/**
 
@@ -193,8 +194,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		String retVal = "";
 		ArrayList<CommandI> toWorkOf = cmdParser.parse(line);
 		if (toWorkOf.size() > 0)
-			for (CommandI aCmd : toWorkOf) {
-				if (aCmd != null) {
+			for (CommandI aCmd : toWorkOf)
+			{
+				if (aCmd != null)
+				{
 					//System.out.println("abpout to exe: "+aCmd);
 					retVal = aCmd.execute();
 					//TODO pipe ahould interced e here 
@@ -300,7 +303,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		{
 			in.setText(toPrint);
 			in.setSelection(toPrint.length());
-			setEditTextFocus(in,true);
+			setEditTextFocus(in, true);
 			in.requestFocus();			
 		}
 	}//end prompt
@@ -371,21 +374,21 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		else if (res instanceof Integer) prefs.edit().putInt(locname, (Integer)res).apply();
 		return null;
 	}
-  public int intPref(String key)
-  {
-    int result = 0;
-    try
-    {
-      String value = preference(key);
-      if (value != null) result = Integer.valueOf(value);
-    }
-    catch (NumberFormatException e)
-    {
-      Log.e(TAG, "no number for " + key + " : " + preference(key)); 
-      error("no number for " + key + " : " + preference(key));
-    }
-    return result;
-  }//private void intPref(String key)
+	public int intPref(String key)
+	{
+		int result = 0;
+		try
+		{
+			String value = preference(key);
+			if (value != null) result = Integer.valueOf(value);
+		}
+		catch (NumberFormatException e)
+		{
+			Log.e(TAG, "no number for " + key + " : " + preference(key)); 
+			error("no number for " + key + " : " + preference(key));
+		}
+		return result;
+	}//private void intPref(String key)
 	/** 
 	 * rmRessources 
 	 *
@@ -418,21 +421,21 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		return(localVars.get(varname));
 	}
 
-  public int getInt(String key)
-  {
-    int result = 0;
-    try
-    {
-      String value = preference(key);
-      if (value != null) result = Integer.valueOf(value);
-    }
-    catch (NumberFormatException e)
-    {
-      Log.e(TAG, "no number for " + key + " : " + preference(key)); 
-      error("no number for " + key + " : " + preference(key));
-    }
-    return result;
-  }//public int getInt(String varname)
+	public int getInt(String key)
+	{
+		int result = 0;
+		try
+		{
+			String value = preference(key);
+			if (value != null) result = Integer.valueOf(value);
+		}
+		catch (NumberFormatException e)
+		{
+			Log.e(TAG, "no number for " + key + " : " + preference(key)); 
+			error("no number for " + key + " : " + preference(key));
+		}
+		return result;
+	}//public int getInt(String varname)
 
 	public Map<String,Object> getAll()
 	{
@@ -472,7 +475,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		if (context == null) return "no context";
 
 		return(context.getResources().getString(resourceId));
-  }// public String msg(String m)
+	}// public String msg(String m)
 	/** 
 	 * returns the message associated with a token
 	 * 
@@ -482,24 +485,24 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public String msg(String m)
 	{
 		if (context == null)
-    {
-      print("no context.... returning " + m + " litterally");
-      return m; 
-    }
+		{
+			print("no context.... returning " + m + " litterally");
+			return m; 
+		}
 
-    /*
-     if(m.equals(result))
-     {
+		/*
+		 if(m.equals(result))
+		 {
 
-     try
-     {
-     int resourceId = context.getResources().getIdentifier(m, "strings", "com.nohkumado.nohutils");
-     return(context.getResources().getString(resourceId));
-     }
-     catch (Resources.NotFoundException e)
-     { error("not found message : " + m);}
-     }
-     */
+		 try
+		 {
+		 int resourceId = context.getResources().getIdentifier(m, "strings", "com.nohkumado.nohutils");
+		 return(context.getResources().getString(resourceId));
+		 }
+		 catch (Resources.NotFoundException e)
+		 { error("not found message : " + m);}
+		 }
+		 */
 		return(context.msg(m));
 	}// public String msg(String m)
 	/**
@@ -512,9 +515,11 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	private void executeCommands(ArrayList<CommandI> toWorkOf)
 	{
 		if (toWorkOf.size() > 0)
-			for (CommandI aCmd : toWorkOf) {
-				if (aCmd != null) {
-					//System.out.println("abpout to exe: "+aCmd);
+			for (CommandI aCmd : toWorkOf)
+			{
+				if (aCmd != null)
+				{
+					System.out.println("abpout to exe: "+aCmd);
 					String retVal = aCmd.execute();
 					//debug( "res3\n" + retVal);
 
@@ -598,75 +603,77 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	@Override
 	public boolean onEditorAction(TextView tw, int actionId, KeyEvent event)
 	{
-		//debug( "editoraction["+tw.getText()+"] id : "+actionId+" ev "+event);
+		debug("editoraction[" + tw.getText() + "] id : " + actionId + " ev " + event);
 
 		//if (tw != out) debug( "wrong source");
 		//else debug( "good source");
 
-    if (actionId == EditorInfo.IME_NULL || (event != null && event.getAction() == KeyEvent.ACTION_DOWN))
+		if (actionId == EditorInfo.IME_NULL || (event != null && event.getAction() == KeyEvent.ACTION_DOWN))
 		{
-      reactToEnter(tw);
+			reactToEnter(tw);
 		}
-		else {
-      error("ooooyy??? onEditorAction unknown event...n :"+actionId+" vs ime: "+EditorInfo.IME_NULL+" ev: "+event);
-      Log.e(TAG, "onEditorAction unknown event... " + actionId+" vs ime: "+EditorInfo.IME_NULL+" ev: "+event);
-    }
+		else
+		{
+			error("ooooyy??? onEditorAction unknown event...n :" + actionId + " vs ime: " + EditorInfo.IME_NULL + " ev: " + event);
+			Log.e(TAG, "onEditorAction unknown event... " + actionId + " vs ime: " + EditorInfo.IME_NULL + " ev: " + event);
+		}
 
 		return true;
-	}
+	}//public boolean onEditorAction(TextView tw, int actionId, KeyEvent event)
 
-  private void reactToEnter(TextView tw) {
-    histNavigation = 0;
-    //debug( "hit the enter key... calling read");
-    String incoming = tw.getText().toString().trim();
-    //debug( "hit the enter key... got " + incoming);
-    //removing prompt from incoming line
+	private void reactToEnter(TextView tw)
+	{
+		histNavigation = 0;
+		//debug( "hit the enter key... calling read");
+		String incoming = tw.getText().toString().trim();
+		debug("hit the enter key... got " + incoming);
+		//removing prompt from incoming line
 
-    String lastprompt = prompt();
-    if (lastprompt != null) incoming = incoming.replace(lastprompt.trim(), "").trim();
+		String lastprompt = prompt();
+		if (lastprompt != null) incoming = incoming.replace(lastprompt.trim(), "").trim();
 
-    if (incoming.length() > 0)  history.add(incoming);
-    if (history.size() > maxHistory)
-      while (history.size() > maxHistory) history.remove(0);
+		if (incoming.length() > 0)  history.add(incoming);
+		if (history.size() > maxHistory)
+			while (history.size() > maxHistory) history.remove(0);
 
-    //debug( "read extracted " + incoming);
-    if (actQuestion != null)
-    {
-/*StringBuilder sb = new StringBuilder();
-sb.append("diverting to actquestion ").append(actQuestion);
-sb.append(" actp:"+get("prompt"));
-*/
-if (!promptStack.empty()) prompt(promptStack.pop());
+		debug("read extracted " + incoming);
+		if (actQuestion != null)
+		{
+			/*StringBuilder sb = new StringBuilder();
+			 sb.append("diverting to actquestion ").append(actQuestion);
+			 sb.append(" actp:"+get("prompt"));
+			 */
+			if (!promptStack.empty()) prompt(promptStack.pop());
 //sb.append(" newp:"+get("prompt"));
 //debug( sb.toString());
+			debug("diverting  question to " + actQuestion);
+			CommandI toExe = actQuestion;
+			//TODO eventually her we should mitigate if its a keylistener we should rescind
+			//from killing it, but we needa mechanism to tell that we don't need forwarding
+			//anymore... maybe we should reask a dummy question.... in the lsitener....
+			//to reset the actquestion
 
-      CommandI toExe = actQuestion;
-      //TODO eventually her we should mitigate if its a keylistener we should rescind
-      //from killing it, but we needa mechanism to tell that we don't need forwarding
-      //anymore... maybe we should reask a dummy question.... in the lsitener....
-      //to reset the actquestion
+			actQuestion = null;
+			//setting to 0 beforehand, since the parsing could arise new questions...
+			toExe.parse(incoming);
+			toExe.execute();
+			printOnCmdline(prompt());
+		}
+		else
+		{
+			//String logEntry = prompt() + " " + incoming;
+			debug("should print out '" + incoming + "'");
 
-      actQuestion = null;
-      //setting to 0 beforehand, since the parsing could arise new questions...
-      toExe.parse(incoming);
-toExe.execute();
-      printOnCmdline(prompt());
-    }
-    else
-    {
-      //String logEntry = prompt() + " " + incoming;
-      //debug("should print out '"+incoming+"'");
+			print(incoming);
+			//debug( "proceeding to parse");
 
-      print(incoming);
-      //debug( "proceeding to parse");
+			ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
+			debug("cmd list " + toWorkOf);
+			executeCommands(toWorkOf);
+		}
+	}
 
-      ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
-//debug( "cmd list " + toWorkOf);
-executeCommands(toWorkOf);
-    }
-  }
-
-  /**------------------------------------------------------------------
+	/**------------------------------------------------------------------
 	 * onKey
 	 * @param v, the view the event happened
 	 * @param keyCode, keyCode
@@ -812,90 +819,90 @@ executeCommands(toWorkOf);
 		something = something.trim();
 		//debug("print after trim '"+something+"'");
 
-    /*if (screenContent == null)
-     {error( "oyoyoy??? no history to print " + something + "!!"); return; }
-     if (something.length() > 0) 
-     {
-     String[] splitted = something.split("\n");
-     for (String line: splitted) 
-     {
-     screenContent.add(line);
-     //debug("l:'"+line+"'");
-     }
-     }
-     //debug( "maxlines = " + maxLines);
-     if (screenContent.size() > maxLines) 
-     while (screenContent.size() > maxLines) screenContent.remove(0);
-     */
-    if (something.length() > 0) 
-    {
-      String[] splitted = something.split("\n");
-      for (String line: splitted) 
-      {
-        if (out == null) 
-        {
-          error("oyoyoy??? no screen to print " + line + "!!");
-          screenContent.add(line);
-        }
-        else
-          out.add(line);
-        //debug("l:'"+line+"'");
-      }
+		/*if (screenContent == null)
+		 {error( "oyoyoy??? no history to print " + something + "!!"); return; }
+		 if (something.length() > 0) 
+		 {
+		 String[] splitted = something.split("\n");
+		 for (String line: splitted) 
+		 {
+		 screenContent.add(line);
+		 //debug("l:'"+line+"'");
+		 }
+		 }
+		 //debug( "maxlines = " + maxLines);
+		 if (screenContent.size() > maxLines) 
+		 while (screenContent.size() > maxLines) screenContent.remove(0);
+		 */
+		if (something.length() > 0) 
+		{
+			String[] splitted = something.split("\n");
+			for (String line: splitted) 
+			{
+				if (out == null) 
+				{
+					error("oyoyoy??? no screen to print " + line + "!!");
+					screenContent.add(line);
+				}
+				else
+					out.add(line);
+				//debug("l:'"+line+"'");
+			}
 		}
-    //determine visible part of screen
+		//determine visible part of screen
 		/*int height    = out.getHeight();
-     int scrollY   = out.getScrollY();
-     Layout layout = out.getLayout();
+		 int scrollY   = out.getScrollY();
+		 Layout layout = out.getLayout();
 
-     int firstVisibleLineNumber = 0;
-     int lastVisibleLineNumber  = 0;
-     if (layout != null)
-     {
-     firstVisibleLineNumber = layout.getLineForVertical(scrollY);
-     lastVisibleLineNumber  = layout.getLineForVertical(scrollY + height);
-     //debug("first visinble : "+firstVisibleLineNumber+" last visible "+lastVisibleLineNumber);
-     }
-     //else debug("no layout to determine size.... ");
+		 int firstVisibleLineNumber = 0;
+		 int lastVisibleLineNumber  = 0;
+		 if (layout != null)
+		 {
+		 firstVisibleLineNumber = layout.getLineForVertical(scrollY);
+		 lastVisibleLineNumber  = layout.getLineForVertical(scrollY + height);
+		 //debug("first visinble : "+firstVisibleLineNumber+" last visible "+lastVisibleLineNumber);
+		 }
+		 //else debug("no layout to determine size.... ");
 
-     //debug("height : "+height);
+		 //debug("height : "+height);
 
 
-     //encheck for lines
+		 //encheck for lines
 
-     StringBuilder sb = new StringBuilder();
+		 StringBuilder sb = new StringBuilder();
 
-     if (height > maxLines || height == 0)
-     for (String s : screenContent)
-     {
-     //debug("adding line '"+s+"'");
-     sb.append(s);
-     sb.append("\n");
-     }
-     else for (int i = Math.max(screenContent.size() - height, 0); i < screenContent.size(); i++)
-     {
-     String s = screenContent.get(i);
-     //debug("adding line '"+s+"'");
-     sb.append(s);
-     sb.append("\n");
-     }
-     //debug( "complete text '" + sb.toString() + "'");
-     if (out == null)
-     {
-     error( sb.toString());
-     }
-     else 
-     {
-     Log.d(TAG,"called add on out with "+sb);
-     out.add(sb.toString());
-     //out.setText(Html.fromHtml(sb.toString()));
-     //getContext().runOnUiThread(new PrintOnTextView(out,sb));
+		 if (height > maxLines || height == 0)
+		 for (String s : screenContent)
+		 {
+		 //debug("adding line '"+s+"'");
+		 sb.append(s);
+		 sb.append("\n");
+		 }
+		 else for (int i = Math.max(screenContent.size() - height, 0); i < screenContent.size(); i++)
+		 {
+		 String s = screenContent.get(i);
+		 //debug("adding line '"+s+"'");
+		 sb.append(s);
+		 sb.append("\n");
+		 }
+		 //debug( "complete text '" + sb.toString() + "'");
+		 if (out == null)
+		 {
+		 error( sb.toString());
+		 }
+		 else 
+		 {
+		 Log.d(TAG,"called add on out with "+sb);
+		 out.add(sb.toString());
+		 //out.setText(Html.fromHtml(sb.toString()));
+		 //getContext().runOnUiThread(new PrintOnTextView(out,sb));
 
-     }
-     */
+		 }
+		 */
 	}//protected void print(String something)
 	//------------------------------------------------------------------
 	//public void setEditTextFocus(EditText searchEditText, boolean isFocused)
-	public void setEditTextFocus(EditText searchEditText,boolean isFocused)
+	public void setEditTextFocus(EditText searchEditText, boolean isFocused)
 	{
 		//boolean isFocused = true;
 		searchEditText.setCursorVisible(isFocused);
@@ -929,18 +936,18 @@ executeCommands(toWorkOf);
 	{
 		actQuestion = caller;
 		//print("should ask : "+question+", p:"+prompt());
-    //debug("should ask : "+question+", p:"+prompt());
+		//debug("should ask : "+question+", p:"+prompt());
 
 		if (question.length() > 0) pushPrompt(question + " ");
 		prompt();
 		//print("prompt now "+prompt());
-    //print(question + " ");
+		//print(question + " ");
 		//return(read());
 	}
 
 	private void pushPrompt(String question)
 	{
-    debug("pushing " + get("prompt") + " in favour of " + question);
+		debug("pushing " + get("prompt") + " in favour of " + question);
 		promptStack.push(prompt());
 		prompt(question);
 	}//public String ask()
@@ -1096,7 +1103,7 @@ executeCommands(toWorkOf);
 		if (out != null)
 		{
 			//result = (int) (out.getWidth() / out.getTextSize());
-      result = out.getDisplayWidth();
+			result = out.getDisplayWidth();
 		}
 		return result;
 	}
@@ -1189,11 +1196,11 @@ executeCommands(toWorkOf);
 				}
 			}
 			/*else
-			{
-				// This is a file
-				// TODO: add file name to an array list
-				//debug( "asset single file : " + path);
-			}*/
+			 {
+			 // This is a file
+			 // TODO: add file name to an array list
+			 //debug( "asset single file : " + path);
+			 }*/
 		}
 		catch (IOException e)
 		{
@@ -1293,7 +1300,12 @@ executeCommands(toWorkOf);
 	public void setContext(MsgR2StringI c)
 	{
 		context = c;
-	}
+		//for(CommandI cmd : commands)
+		//{
+
+		//	}//for(CommandI cmd : commands)
+
+	}//public void setContext(MsgR2StringI c)
 	public MsgR2StringI getContext()
 	{
 		return context;
@@ -1313,12 +1325,12 @@ executeCommands(toWorkOf);
 	{
 		// seems no need for this if (childShell != null) childShell.setInOut(null, null);
 
-    childShell = actShell;
+		childShell = actShell;
 		if (childShell != null) 
-    {
-      debug("diverting in out ot childshell");
-      childShell.setInOut(in, out); 
-    }
+		{
+			debug("diverting in out ot childshell");
+			childShell.setInOut(in, out); 
+		}
 	}
 	/**
 	 destroy the reference to the child shell, and re-establish the listeners, 
@@ -1336,7 +1348,7 @@ executeCommands(toWorkOf);
 			in.setOnEditorActionListener(this);
 			in.setOnKeyListener(this);
 		}
-    prompt();
+		prompt();
 		return result;
 	}
 
@@ -1345,8 +1357,8 @@ executeCommands(toWorkOf);
 	{
 		parentShell = s;
 		if (parentShell != null) 
-    {
-      parentShell.setChild(this);
-    }
+		{
+			parentShell.setChild(this);
+		}
 	}
 }//public class Shell

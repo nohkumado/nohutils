@@ -7,7 +7,7 @@
 
 	<fragment
 		android:name="com.nohkumado.nohutils.view.LoggerFrag"
-		android:id="@+id/textOut"
+		android:id="@+id/shell_text_out"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1.0"
@@ -20,7 +20,7 @@
 		android:layout_width="match_parent"
 		android:layout_weight="1.0"
 		android:ems="14"
-		android:id="@+id/TextIn"
+		android:id="@+id/shell_text_in"
 		android:text="shell input"
 		android:padding="12dp"
 		android:lines="3"
