@@ -29,10 +29,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package com.nohkumado.nohutils.commands;
-import java.io.*;
-
-import com.nohkumado.nohutils.*;
+import android.app.*;
+import android.content.pm.*;
 import android.util.*;
+import com.nohkumado.nohutils.*;
+import java.io.*;
 
 @SuppressWarnings("WeakerAccess")
 public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
@@ -76,8 +77,8 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 				Log.d(TAG, "no absolute path ");
 				String pwd = (String)shell.get("pwd");
 				Log.d(TAG, "shell tells us pwd is:  " + pwd);
-				if (pwd == null) pwd = System.getProperty("user.dir");
-				else if (pwd.length() <= 0) pwd = System.getProperty("user.dir");
+				if (pwd == null) pwd = (String)shell.get("user.dir");
+				else if (pwd.length() <= 0) pwd = (String)shell.get("user.dir");
 				Log.d(TAG, "consistency?  " + pwd);
 
 				if (!(pwd.equals("/") && pwd.endsWith("/"))) pwd += System.getProperty("file.separator");
@@ -87,8 +88,15 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 			}// else
 			Log.d(TAG, "about to cd into " + path);
 			File newDir = new File(path);
+			shell.print(name+" : "+newDir.getAbsolutePath());
 			if (newDir.exists())
 			{
+				if(!newDir.canRead() && path.startsWith((String)shell.get("user.dir")))
+					{
+					Log.d(TAG,"need to ask permission for this dir!!");
+						shell.getContext().askPermission("android.permission.READ_EXTERNAL_STORAGE");
+				}
+				
 				//if (newDir.canRead()) result += shell.msg(R.string.cd_not_enough_rights);
 				//else 
 				if (newDir.isDirectory()) shell.set("pwd", newDir.getAbsolutePath());
@@ -113,16 +121,32 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 	@Override
 	public String parse(String line)
 	{
-		Log.d(TAG, "parsing " + line);
-		if (line.length() <= 0)
+		if (shell.get("app.home") == null)
 		{
+			PwdCommand pwdC = new PwdCommand(shell);
+			pwdC.execute();
+		}
+		Log.d(TAG, "parsing " + line);
+		if (line.length() <= 0) //resetting path
+		{
+			//available "app.home", "user.dir" or "app.dir"
 			if (shell.get("home") != null) path = shell.get("home").toString();
-			else path = System.getProperty("user.dir");
+			else
+			{
+				
+				path = shell.get("app.home").toString();
+			}
+				
 			return("");
 		}
 		//	if (line.length() <= 0)
 		File newpos;
-		if (!path.startsWith("/")) newpos = new File((String)shell.get("pwd"), line);
+		if (line.startsWith("~/"))
+		{
+			line = line.replace("~",shell.get("user.dir").toString());
+			newpos = new File(line);
+		}
+		else if (!path.startsWith("/")) newpos = new File((String)shell.get("pwd"), line);
 		else newpos = new File(line);
 
 		try

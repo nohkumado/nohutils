@@ -69,7 +69,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 	@SuppressWarnings("ConstantConditions")
 	public String execute()
 	{
-		Log.d(TAG, "ls starting pwd: " + shell.get("pwd"));
+		//Log.d(TAG, "ls starting pwd: " + shell.get("pwd"));
 
 		//File testit = new File(""+shell.get("pwd"));
 
@@ -78,7 +78,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 		String result = "";
 		CommandI pwdCmd = new PwdCommand(shell);
 		String pwd = pwdCmd.execute();
-		Log.d(TAG,"from cmd pwd: "+pwd);
+		//Log.d(TAG, "from cmd pwd: " + pwd);
 
 		//if (pwd == null) pwd = System.getProperty("user.dir");
 		//else if (pwd.length() <= 0) pwd = System.getProperty("user.dir");
@@ -89,7 +89,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 			if (!path.startsWith("/")) path = pwd + sep + path;
 		}// if(value != "")
 		else path = pwd;
-		Log.d("LsCmd", "path = " + path);
+		//Log.d("LsCmd", "path = " + path);
 
 		File theDir = new File(path);
 		String error = "";
@@ -102,21 +102,21 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 			if (theDir.isDirectory())
 			{
 				result += " :";
-				Log.d("LsCmd", "reading dir");
+				//Log.d("LsCmd", "reading dir");
 				String[] choices = theDir.list(filter);
 				int maxlength = 1;
 				ArrayList<String> content = new ArrayList<>();
 				for (String name : choices) 
 				{
-					Log.d(TAG, "name= " + name);
+					//Log.d(TAG, "name= " + name);
 					if (name == null) continue;
-					Log.d(TAG, "2name= " + name);
+					//Log.d(TAG, "2name= " + name);
 					File aFile = new File(path + sep + name);
 					try
 					{
 						if (aFile.exists())
 						{
-							Log.d(TAG, "file exists, adding to content: " + content + " n:" + name + " max:" + maxlength);
+							//Log.d(TAG, "file exists, adding to content: " + content + " n:" + name + " max:" + maxlength);
 
 							if (name != null && name.length() > maxlength) maxlength = name.length();
 							//Log.d(TAG,"2file exists, adding to content: "+content+" n:"+name+" max:"+maxlength);
@@ -137,7 +137,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 
 				int numOfCols = numOfchars / maxlength;
 				if (numOfCols < 1) numOfCols = 1;
-				Log.d("lscm", "available chars: " + numOfchars + " malength: " + maxlength + " = " + numOfCols);
+				//Log.d("lscm", "available chars: " + numOfchars + " malength: " + maxlength + " = " + numOfCols);
 
 				ColumPrinter mp = new  ColumPrinter(numOfCols, 2);
 				String    oneRow[] = new String [ content.size() + 1 ];//+ 1 to be sure....
@@ -160,11 +160,11 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 				if (theDir.isHidden()) result += "!";
 				result += "\n";
 			}
-			Log.d("LsCmd", "read dir: "+result);
+			//Log.d("LsCmd", "read dir: " + result);
 			return(result);
 		}//if(theDir.exists() && theDir.isDirectory())
-
-		return(result);
+		//Log.d(TAG, "l failed : " + error);
+		return(error);
 	}//end execute
 
 	/** 

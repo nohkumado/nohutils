@@ -10,6 +10,9 @@ import java.util.*;
 public interface MsgR2StringI
 {
 
+	public String askPermission(String p0);
+
+
   SQLiteOpenHelper getDbHelper();
 
 

@@ -67,7 +67,7 @@ public class ShellFragment extends Fragment
 		
 		if (viewContainer == null)
 		{
-			Log.d(TAG,"inflating shellview");
+			//Log.d(TAG,"inflating shellview");
 			viewContainer = (RelativeLayout)inflater.inflate(R.layout.shellviewfrag, container,false);
 			//viewContainer = (RelativeLayout)inflater.inflate(R.layout.shellviewfrag, null,false);
 		}
@@ -77,31 +77,30 @@ public class ShellFragment extends Fragment
 		LoggerFrag logger = (LoggerFrag)fm.findFragmentById(R.id.shell_text_out);
 		if (logger == null)
 		{
-			Log.d(TAG,"logger was null... error...");
-			for(int index=0; index<((ViewGroup)viewContainer).getChildCount(); ++index) {
-				View nextChild = ((ViewGroup)viewContainer).getChildAt(index);
-				Log.d(TAG,"child["+index+"] "+nextChild);
-			}
+			//Log.d(TAG,"logger was null... error...");
+			//for(int index=0; index<((ViewGroup)viewContainer).getChildCount(); ++index) {
+			//	View nextChild = ((ViewGroup)viewContainer).getChildAt(index);
+			//	Log.d(TAG,"child["+index+"] "+nextChild);
+			//}
 			logger = (LoggerFrag)fm.findFragmentByTag("screen");
 			if (logger == null) 
 			{
 				logger = new LoggerFrag(); //well everything failed....
-				Log.e(TAG,"ultra bug... had to create the fragment");
+				//Log.e(TAG,"ultra bug... had to create the fragment");
 			}
 			
 			ViewParent parent = logger.getParent();
-			Log.e(TAG,"fragment parent "+parent);
+			//Log.e(TAG,"fragment parent "+parent);
 			
 			if(parent == null)
 			{
-				Log.e(TAG,"replacing logger");
+				//Log.e(TAG,"replacing logger");
 				fm.beginTransaction().replace(R.id.shell_text_out, logger, "screen").commit();
 				
 			} else Log.e(TAG,"can't replace logger ");
-				Log.e(TAG,"done with logger");
-			
+				//Log.e(TAG,"done with logger");
 		}//if (logger == null)
-		logger.add("Shellfrag started logger");
+		//logger.add("Shellfrag started logger");
 		shell().setInOut(cmdLine, logger);
 		shell.init();
 		//shell.print("Welcome ");*/

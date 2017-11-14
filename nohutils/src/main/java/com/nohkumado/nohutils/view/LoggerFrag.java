@@ -41,7 +41,7 @@ public class LoggerFrag extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		Log.d(TAG, super.toString() + " onCrateView");
+		//Log.d(TAG, super.toString() + " onCrateView");
 		setRetainInstance(true);
 		viewContainer = super.onCreateView(inflater, container, savedInstanceState);
 
@@ -144,7 +144,7 @@ public class LoggerFrag extends Fragment
 			int lastVisibleLineNumber  = layout.getLineForVertical(scrollY + height);
 			int totalLines = lastVisibleLineNumber - firstVisibleLineNumber;
 
-			Log.d(TAG, "data:" + content.size() + "vis lin = " + totalLines + " vs lc:" + textFrame.getLayout().getLineCount());
+			//Log.d(TAG, "data:" + content.size() + "vis lin = " + totalLines + " vs lc:" + textFrame.getLayout().getLineCount());
 
 
 			if ((totalLines == lastLines) && totalLines < content.size())
@@ -169,14 +169,14 @@ public class LoggerFrag extends Fragment
 
 		final StringBuilder sb = new StringBuilder();
 		for (String line : content) sb.append(line).append("\n");
-		sb.append("for Logger ").append(super.toString() + "\n");
+		//sb.append("for Logger ").append(super.toString() + "\n");
 		//StringBuilder debug = new StringBuilder();
 		//debug.append("refresh about to print ");
 		//.append(sb).append(" ")
 		//debug.append(content.size()).append("/");
 		//if(textFrame.getLayout() == null) debug.append("unknown");
 		//else debug.append(textFrame.getLayout().getLineCount());
-		Log.d(TAG, "printing to screen(" + textFrame + ") " + sb.toString());
+		//Log.d(TAG, "printing to screen(" + textFrame + ") " + sb.toString());
 		getActivity().runOnUiThread(new Runnable()
 			{
 				@Override

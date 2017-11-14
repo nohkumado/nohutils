@@ -1,15 +1,14 @@
 package com.nohkumado.nohutils;
 
-import android.annotation.SuppressLint;
+import android.annotation.*;
 import android.app.*;
 import android.content.*;
+import android.content.pm.*;
 import android.content.res.*;
 import android.database.sqlite.*;
 import android.media.*;
 import android.os.*;
 import android.util.*;
-
-import com.nohkumado.nohutils.*;
 import java.util.*;
 
 @SuppressWarnings("WeakerAccess")
@@ -19,6 +18,8 @@ public class Msg2RString extends Activity implements MsgR2StringI
 {
 	public static final String TAG = "msg2Str";
 	private static final int RESULT_SETTINGS = 1;
+	private static final int PERM_REQUEST_READ = 2;
+	
 	protected ShellI shell;
 
 	@Override
@@ -186,6 +187,38 @@ public class Msg2RString extends Activity implements MsgR2StringI
 		// This bundle has also been passed to onCreate.
 		if (shell != null) shell.restoreState(savedInstanceState);
 	}// public void onRestoreInstanceState(Bundle savedInstanceState)
+	@Override
+	public String askPermission(String whichPerm)
+	{
+		if (checkSelfPermission(whichPerm) != PackageManager.PERMISSION_GRANTED)
+		{
+			// Should we show an explanation?
+			if (shouldShowRequestPermissionRationale(whichPerm)) 
+			{
+				String[] splitted = whichPerm.split(".");
+				if(splitted.length >1)
+				{
+					Log.d(TAG,"split gave us a hit : "+splitted[splitted.length-1]);
+					shell.print(shell.msg(splitted[splitted.length-1]));
+				}
+				else shell.print(shell.msg(whichPerm));
+				// Show an explanation to the user *asynchronously* -- don't block
+				// this thread waiting for the user's response! After the user
+				// sees the explanation, try again to request the permission.
+			} 
+			else 
+			{
+				// No explanation needed, we can request the permission.
+				requestPermissions(new String[]{whichPerm},PERM_REQUEST_READ);
 
+				// MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+				// app-defined int constant. The callback method gets the
+				// result of the request.
+			}//else 
+		}//if(checkSelfPermission(whichPerm) != PackageManager.PERMISSION_GRANTED)
+
+		return "";
+	}//public String askPermission(String whichPerm)
+	
 }//public class Msg2RString extends Activity implements MsgR2StringI,SharedPreferences.OnSharedPreferenceChangeListener
 

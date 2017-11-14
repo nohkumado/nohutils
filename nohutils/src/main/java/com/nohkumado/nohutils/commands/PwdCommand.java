@@ -29,63 +29,100 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package com.nohkumado.nohutils.commands;
+import android.app.*;
+import android.os.*;
 import com.nohkumado.nohutils.*;
-
+/**
+* pwd command
+* returns the actual working path
+* on creation it sets up 3 variables
+* "app.home" the pubic directory where the app stores its files
+* "user.dir" the public diretory where all the user data resides
+* "app.dir" the private diretory of the app  
+*/
 public class PwdCommand extends Command implements Cloneable, CommandI
 {
-  /**
-    CTOR
+	/**
+	 CTOR
 
-    Build up a reference
+	 Build up a reference
 
-   */
-  public PwdCommand(ShellI s)
-  {
-    super(s);
-		if(s != null) name = s.msg(com.nohkumado.nohutils.R.string.pwd);
-  }// public Command()
+	 */
+	public PwdCommand(ShellI s)
+	{
+		super(s);
+		if (s != null) name = s.msg(com.nohkumado.nohutils.R.string.pwd);
+	}// public Command()
 
-  public PwdCommand(ShellI s,String n)
-  {
-    super(s,n);
-  }// public PwdCommand()
-  /**
+	public PwdCommand(ShellI s, String n)
+	{
+		super(s, n);
+	}// public PwdCommand()
+	/**
 
-    execute
+	 execute
 
-    activate this command
+	 activate this command
 
-   * @return result
-   */
-  public String execute()
-  {
-    //String result = "";
-    String pwd = (String)shell.get("pwd");
-    if(pwd == null ) pwd = System.getProperty("user.dir")+"sdcard";
-    else if(pwd.length() <= 0 ) pwd = System.getProperty("user.dir"+"sdcard");
-    shell.set("pwd",pwd);
+	 * @return result
+	 */
+	public String execute()
+	{
+		//String result = "";
+		String pwd = (String)shell.get("pwd");
+		if (pwd == null) 
+		{
+			//starting up....
+			shell.set("app.home", ((Activity)(shell.getContext())).getExternalFilesDir("").getAbsolutePath());
+			shell.set("user.dir", Environment.getExternalStoragePublicDirectory("").getAbsolutePath());
+			shell.set("app.dir", ((Activity)(shell.getContext())).getFilesDir().getAbsolutePath());
+			if(isExternalStorageReadable()) pwd = shell.get("app.home").toString();
+			else pwd = shell.get("app.dir").toString();
+			shell.set("pwd", pwd);
+		}//if (pwd == null)
+		//pwd = System.getProperty("user.dir")+"sdcard";
+		//else if(pwd.length() <= 0 ) pwd = System.getProperty("user.dir"+"sdcard");
+		
 		//shell.print(pwd);
-    return(pwd);
-  }//end execute
-  /**
+		return(pwd);
+	}//end execute
+	/**
 
-    help
+	 help
 
-    issue the help message associated with this command
+	 issue the help message associated with this command
 
-   */
-  public String help()
-  {
-    return(shell.msg(com.nohkumado.nohutils.R.string.pwd_help)+"\n");
-  }//end help
-  /** 
-   * copy this object 
-   * 
-   * @return clone
-   */
-  public PwdCommand clone()
-  {
-    //beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
-    return (PwdCommand)super.clone();
-  }//public Object clone()
+	 */
+	public String help()
+	{
+		return(shell.msg(com.nohkumado.nohutils.R.string.pwd_help) + "\n");
+	}//end help
+	/** 
+	 * copy this object 
+	 * 
+	 * @return clone
+	 */
+	public PwdCommand clone()
+	{
+		//beware! shallow copy! if you command has some arrays or other deep structures, only the ref will be copied!
+		return (PwdCommand)super.clone();
+	}//public Object clone()
+	/* Checks if external storage is available for read and write */
+	public boolean isExternalStorageWritable() {
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			return true;
+		}
+		return false;
+	}
+
+	/* Checks if external storage is available to at least read */
+	public boolean isExternalStorageReadable() {
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state) ||
+			Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+			return true;
+		}
+		return false;
+	}
 }//public class Command

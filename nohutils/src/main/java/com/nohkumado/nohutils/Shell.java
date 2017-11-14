@@ -129,8 +129,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 		this.out = out;
 		this.in = in;
-		Log.d(TAG,"setting in pout "+in+","+out);
-		out.add("setting in pout "+in+","+out);
+		//Log.d(TAG,"setting in pout "+in+","+out);
+		//out.add("setting in pout "+in+","+out);
 		if (out == null) screenContent = new ArrayList<>();
 		else
 		{
@@ -603,7 +603,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	@Override
 	public boolean onEditorAction(TextView tw, int actionId, KeyEvent event)
 	{
-		debug("editoraction[" + tw.getText() + "] id : " + actionId + " ev " + event);
+		//debug("editoraction[" + tw.getText() + "] id : " + actionId + " ev " + event);
 
 		//if (tw != out) debug( "wrong source");
 		//else debug( "good source");
@@ -626,7 +626,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		histNavigation = 0;
 		//debug( "hit the enter key... calling read");
 		String incoming = tw.getText().toString().trim();
-		debug("hit the enter key... got " + incoming);
+		//debug("hit the enter key... got " + incoming);
 		//removing prompt from incoming line
 
 		String lastprompt = prompt();
@@ -637,15 +637,16 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			while (history.size() > maxHistory) history.remove(0);
 
 		debug("read extracted " + incoming);
-		if (actQuestion != null)
+		if("".equals(incoming)) debug("incoming was empty...");
+		else if (actQuestion != null)
 		{
 			/*StringBuilder sb = new StringBuilder();
 			 sb.append("diverting to actquestion ").append(actQuestion);
 			 sb.append(" actp:"+get("prompt"));
 			 */
 			if (!promptStack.empty()) prompt(promptStack.pop());
-//sb.append(" newp:"+get("prompt"));
-//debug( sb.toString());
+            //sb.append(" newp:"+get("prompt"));
+            //debug( sb.toString());
 			debug("diverting  question to " + actQuestion);
 			CommandI toExe = actQuestion;
 			//TODO eventually her we should mitigate if its a keylistener we should rescind
@@ -670,8 +671,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
 			debug("cmd list " + toWorkOf);
 			executeCommands(toWorkOf);
-		}
-	}
+		}//else
+	}//private void reactToEnter(TextView tw)
+	
 
 	/**------------------------------------------------------------------
 	 * onKey

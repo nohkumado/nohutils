@@ -1,23 +1,23 @@
 package com.nohkumado.nohutils;
 
-import android.annotation.SuppressLint;
+import android.annotation.*;
 import android.app.*;
+import android.content.pm.*;
 import android.content.res.*;
-import android.graphics.Typeface;
+import android.database.sqlite.*;
+import android.graphics.*;
 import android.media.*;
 import android.os.*;
 import android.util.*;
 import android.widget.*;
 import com.nohkumado.nohutils.commands.*;
-import java.util.*;
-import android.database.sqlite.*;
 import com.nohkumado.nohutils.view.*;
+import java.util.*;
 
 @SuppressWarnings({"WeakerAccess", "EmptyMethod"})
 @SuppressLint("Registered")
 public class ShellActivity extends Activity implements MsgR2StringI
 {
-
   @Override
   public SQLiteOpenHelper getDbHelper()
   {
@@ -25,12 +25,10 @@ public class ShellActivity extends Activity implements MsgR2StringI
     return null;
   }
 
-
-
 	transient protected ShellI shell = null;
 	protected int textOut, textIn;
 	public static final String TAG="SA";
-
+	protected static final int PERM_REQUEST_READ = 2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -191,5 +189,37 @@ public class ShellActivity extends Activity implements MsgR2StringI
 		// TODO: Implement this method
 		return null;
 	}
+	@Override
+	public String askPermission(String whichPerm)
+	{
+		if (checkSelfPermission(whichPerm) != PackageManager.PERMISSION_GRANTED)
+		{
+			// Should we show an explanation?
+			if (shouldShowRequestPermissionRationale(whichPerm)) 
+			{
+				String[] splitted = whichPerm.split(".");
+				if(splitted.length >1)
+				{
+					Log.d(TAG,"split gave us a hit : "+splitted[splitted.length-1]);
+					shell.print(shell.msg(splitted[splitted.length-1]));
+				}
+				else shell.print(shell.msg(whichPerm));
+				// Show an explanation to the user *asynchronously* -- don't block
+				// this thread waiting for the user's response! After the user
+				// sees the explanation, try again to request the permission.
+			} 
+			else 
+			{
+				// No explanation needed, we can request the permission.
+				requestPermissions(new String[]{whichPerm},PERM_REQUEST_READ);
+
+				// MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+				// app-defined int constant. The callback method gets the
+				// result of the request.
+			}//else 
+		}//if(checkSelfPermission(whichPerm) != PackageManager.PERMISSION_GRANTED)
+
+		return "";
+	}//public String askPermission(String whichPerm)
 	
 }

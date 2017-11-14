@@ -1,10 +1,9 @@
 package com.nohkumado.utilsapp;
 
 import android.app.*;
+import android.content.pm.*;
 import android.os.*;
 import android.util.*;
-import android.view.*;
-import android.widget.*;
 import com.nohkumado.nohutils.*;
 import com.nohkumado.nohutils.commands.*;
 import com.nohkumado.utilsapp.commands.*;
@@ -13,7 +12,7 @@ import java.util.*;
 public class MainActivity extends Msg2RString
 {
 	private final static String TAG ="MA";
-
+	
 	@SuppressWarnings("UnusedAssignment")
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -34,14 +33,14 @@ public class MainActivity extends Msg2RString
 			shellfrag = new ShellFragment(this);
 			//Log.d(TAG, "shellfrag created parent linsting childs");
 			//LinearLayout minSc = (LinearLayout) findViewById(R.id.mainscreen);
-			
+
 			//if(minSc != null)
 			//	for(int index=0; index<minSc.getChildCount(); ++index) {
 			//	View nextChild = minSc.getChildAt(index);
 			//	Log.d(TAG,"main child["+index+"] "+nextChild);
 			//}
 			//Log.d(TAG,"done");
-			
+
 			fm.beginTransaction().add(R.id.mainscreen, shellfrag, "shellFrag").commit();
 			//Log.d(TAG, "shellfrag added");
 		}//if (shellfrag == null)
@@ -67,7 +66,7 @@ public class MainActivity extends Msg2RString
 
 	private void giveShellCmds()
 	{
-		if(shell.getContext() == null) shell.setContext(this);
+		if (shell.getContext() == null) shell.setContext(this);
 		CommandI[] cmds = new CommandI[]
 		{
 			new SetCommand(shell),
@@ -82,4 +81,5 @@ public class MainActivity extends Msg2RString
 
 		shell.feedCmds(availableCmds);
 	}//protected void onCreate(Bundle savedInstanceState)
+	
 }//public class MainActivity extends Msg2RString
