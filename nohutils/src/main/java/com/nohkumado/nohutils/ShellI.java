@@ -39,11 +39,9 @@ import java.util.*;
 @SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
 public interface ShellI extends PipableI
 {
+	int getInt(String p0);
 
-  int getInt(String p0);
-
-
-ShellI cpyCtor();
+	ShellI cpyCtor();
 
 
 	void setParent(ShellI shell);
@@ -62,16 +60,16 @@ ShellI cpyCtor();
 	 init
 
 	 after instantiation initialisation
-   */
+	 */
     boolean init();
-  /**
+	/**
 	 process
 
 	 this Method is the one that catches the commands and interprets them
 	 should copy some parts of nSim:lineShellI concerning batches!
-   */
-  String process(String line);
-  /**
+	 */
+	String process(String line);
+	/**
 
 	 process
 
@@ -79,91 +77,91 @@ ShellI cpyCtor();
 	 should copy some parts of nSim:lineShellI concerning batches!
 
 	 this one is for internal use, when invoking commands through the shell programmately, so no command parsing is needed, parameters are in a hastable
-   */
-  String process(String line, HashMap<String, Object> parm);
-  /**
+	 */
+	String process(String line, HashMap<String, Object> parm);
+	/**
 
 	 prompt
 
 	 build up the short help string
-   */
-  String prompt();
-  void prompt(String p);
+	 */
+	String prompt();
+	void prompt(String p);
 	void printOnCmdline(String prompt);
-  String getCmdline();
+	String getCmdline();
 	/**
 	 exit
 
 	 quit and close the shell
 
-   */
+	 */
     void exit();
-  void exit(String endMsg);
-  /** 
-   * ressources 
-   *
-   * equivalent to the environment variables of a shell....
-   * 
-   * @param locname locname
-   */
-  String preference(String locname);
-  String preference(String locname, Object res);
-  int intPref(String locaname);
+	void exit(String endMsg);
+	/** 
+	 * ressources 
+	 *
+	 * equivalent to the environment variables of a shell....
+	 * 
+	 * @param locname locname
+	 */
+	String preference(String locname);
+	String preference(String locname, Object res);
+	int intPref(String locaname);
 
-  /** 
-   * local settings 
-   *
-   * @param envname envname
-   * @return envname
-   */
-  Object get(String envname);
+	/** 
+	 * local settings 
+	 *
+	 * @param envname envname
+	 * @return envname
+	 */
+	Object get(String envname);
 	Map<String, Object> getAll();
-  /** 
-   * ressources 
-   *
-   * equivalent to the environment variables of a shell....
-   * 
-   * @param envname  envname
-   * @param obj obj
-   */
-  Object set(String envname, Object obj);
-  /** 
-   * prototype for a help function 
-   * 
-   * @return help
-   */
-  String help();
-  /**
+	/** 
+	 * ressources 
+	 *
+	 * equivalent to the environment variables of a shell....
+	 * 
+	 * @param envname  envname
+	 * @param obj obj
+	 */
+	Object set(String envname, Object obj);
+	/** 
+	 * prototype for a help function 
+	 * 
+	 * @return help
+	 */
+	String help();
+	/**
 	 issue a statement....
-   */
-  void print(String n);
-  /**
+	 */
+	void print(String n);
+	/**
 	 issue a question and expect a return
-   */
-  void ask(String n, CommandI asker);
-  void ask(String question, String defaultValue, CommandI asker);
-  void ask(String question, HashMap<String, Object> options, CommandI asker);
-  void askNum(String n, CommandI asker);
-  void askNum(String question, String defaultValue, CommandI asker);
-  void askNum(String question, HashMap<String, Object> options, CommandI asker);
-  /**
+	 */
+	void ask(String n, CommandI asker);
+	void ask(String question, String defaultValue, CommandI asker);
+	void ask(String question, HashMap<String, Object> options, CommandI asker);
+	void askNum(String n, CommandI asker);
+	void askNum(String question, String defaultValue, CommandI asker);
+	void askNum(String question, HashMap<String, Object> options, CommandI asker);
+	/**
 	 retrieve a localized message
-   */
-  String msg(String errorMsg);
+	 */
+	String msg(String errorMsg);
 	String msg(int resourceId);
 
 	/**
 	 issue an debug message
-   */
+	 */
     void debug(String errorMsg);
 	/**
 	 issue an error
-   */
+	 */
     void error(String errorMsg);
-  /*
+	/*
 	 isRunning
 	 return if the shell is running or not
-   */
+	 */
 	//public boolean isRunning();
 	/**
 	 *
@@ -178,7 +176,7 @@ ShellI cpyCtor();
 	/** 
 	 set the input editext and the output screen
 	 */
-  //public void setInOut(EditText in, TextView out);
+	//public void setInOut(EditText in, TextView out);
     void setInOut(EditText in, LoggerFrag out);
 	InputStream open(String name)  throws IOException;
 	void beep();

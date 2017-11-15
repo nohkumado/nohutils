@@ -220,7 +220,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 	 */
 	public CommandI findCmd(String token)
 	{
-		System.out.println("find command " + token);
+		//shell.debug("find command " + token);
 
 		if (commands.containsKey(token)) 
 		{

@@ -135,7 +135,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		else
 		{
 			if (screenContent == null) screenContent = new ArrayList<>();
-			screenContent.add(cmdParser.help());
+			//screenContent.add(cmdParser.help());
 			for (String line: screenContent) out.add(line);
 			screenContent = null;
 		}//else
@@ -155,6 +155,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		else error("couldn't set action listener");
 		if (out == null) error("no output screen....");
 		else prompt();
+		debug("done setting in/out");
 	}
 	/**
 
@@ -519,7 +520,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			{
 				if (aCmd != null)
 				{
-					System.out.println("abpout to exe: "+aCmd);
+					//debug("abpout to exe: "+aCmd);
 					String retVal = aCmd.execute();
 					//debug( "res3\n" + retVal);
 
@@ -636,7 +637,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		if (history.size() > maxHistory)
 			while (history.size() > maxHistory) history.remove(0);
 
-		debug("read extracted " + incoming);
+		//debug("read extracted " + incoming);
 		if("".equals(incoming)) debug("incoming was empty...");
 		else if (actQuestion != null)
 		{
@@ -647,7 +648,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			if (!promptStack.empty()) prompt(promptStack.pop());
             //sb.append(" newp:"+get("prompt"));
             //debug( sb.toString());
-			debug("diverting  question to " + actQuestion);
+			//debug("diverting  question to " + actQuestion);
 			CommandI toExe = actQuestion;
 			//TODO eventually her we should mitigate if its a keylistener we should rescind
 			//from killing it, but we needa mechanism to tell that we don't need forwarding
@@ -663,13 +664,13 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		else
 		{
 			//String logEntry = prompt() + " " + incoming;
-			debug("should print out '" + incoming + "'");
+			//debug("should print out '" + incoming + "'");
 
 			print(incoming);
 			//debug( "proceeding to parse");
 
 			ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
-			debug("cmd list " + toWorkOf);
+			//debug("cmd list " + toWorkOf);
 			executeCommands(toWorkOf);
 		}//else
 	}//private void reactToEnter(TextView tw)
@@ -1332,8 +1333,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		{
 			debug("diverting in out ot childshell");
 			childShell.setInOut(in, out); 
-		}
-	}
+		}//if (childShell != null)
+		debug("done");
+	}//public void setChild(ShellI actShell)
 	/**
 	 destroy the reference to the child shell, and re-establish the listeners, 
 	 responsible for the event loop of the shell to this one
@@ -1360,6 +1362,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		parentShell = s;
 		if (parentShell != null) 
 		{
+			//debug("setting child to subshell");
 			parentShell.setChild(this);
 		}
 	}
