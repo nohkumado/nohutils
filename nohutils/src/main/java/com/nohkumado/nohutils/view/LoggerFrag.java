@@ -11,6 +11,7 @@ import android.view.ViewGroup.*;
 import android.widget.*;
 import com.nohkumado.nohutils.*;
 import java.util.*;
+import java.util.regex.*;
 
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "UnusedReturnValue"})
 public class LoggerFrag extends Fragment
@@ -182,7 +183,17 @@ public class LoggerFrag extends Fragment
 				@Override
 				public void run()
 				{
-					textFrame.setText(sb.toString());
+					String content = sb.toString();
+					Pattern pat = Pattern.compile("<font");
+					Matcher m = pat.matcher(content);
+					//if (!"".equals(content) && Pattern.matches("<font",content))// content.matches("<font"))
+					if (m.find())
+					{
+						content = content.replaceAll("\n","<br>");
+						textFrame.setText(Html.fromHtml(content));
+					}
+
+					else textFrame.setText(content);
 					textFrame.invalidate();
 					if (textFrame.getHeight() == 0) textFrame.setHeight(LayoutParams.MATCH_PARENT);
 					if (textFrame.getWidth() == 0) textFrame.setWidth(LayoutParams.MATCH_PARENT);

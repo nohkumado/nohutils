@@ -34,7 +34,8 @@ import android.os.*;
 import android.preference.*;
 import android.util.*;
 import android.view.*;
-import android.view.inputmethod.EditorInfo;
+import android.view.View.*;
+import android.view.inputmethod.*;
 import android.widget.*;
 import android.widget.TextView.*;
 import com.nohkumado.nohutils.foreign.*;
@@ -192,6 +193,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public String process(String line)
 	{
 		//TODO check if shell is allready running otherwise push into a TODO stack
+		Log.d(TAG,"in process '"+line+"'");
 		String retVal = "";
 		ArrayList<CommandI> toWorkOf = cmdParser.parse(line);
 		if (toWorkOf.size() > 0)
@@ -609,8 +611,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		//if (tw != out) debug( "wrong source");
 		//else debug( "good source");
 
-		if (actionId == EditorInfo.IME_NULL || (event != null && event.getAction() == KeyEvent.ACTION_DOWN))
+		if ((event != null && event.getAction() == KeyEvent.ACTION_DOWN)) {}
+		else if ((event == null && actionId == EditorInfo.IME_NULL) || (event != null && event.getAction() == KeyEvent.ACTION_UP))
 		{
+			Log.d(TAG,"event : "+actionId+" , "+event);
 			reactToEnter(tw);
 		}
 		else
@@ -638,8 +642,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			while (history.size() > maxHistory) history.remove(0);
 
 		//debug("read extracted " + incoming);
-		if("".equals(incoming)) debug("incoming was empty...");
-		else if (actQuestion != null)
+		if (actQuestion != null)
 		{
 			/*StringBuilder sb = new StringBuilder();
 			 sb.append("diverting to actquestion ").append(actQuestion);
@@ -661,7 +664,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			toExe.execute();
 			printOnCmdline(prompt());
 		}
-		else
+		else if("".equals(incoming)) debug("incoming was empty...");
+		else 
 		{
 			//String logEntry = prompt() + " " + incoming;
 			//debug("should print out '" + incoming + "'");
@@ -844,7 +848,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			{
 				if (out == null) 
 				{
-					error("oyoyoy??? no screen to print " + line + "!!");
+					Log.e(TAG,"oyoyoy??? no screen to print " + line + "!!");
 					screenContent.add(line);
 				}
 				else
@@ -922,6 +926,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public void error(String aMessage) 
 	{
 		Log.e(TAG, "Error:" + aMessage);
+		print("<font color=\"red\">"+aMessage+"</font>");
 	}//public void error(String aMessage) 
 	//------------------------------------------------------------------
 	public void exit(String aMessage)
@@ -937,6 +942,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	/** in fact read a line...*/
 	public void ask(String question, CommandI caller)
 	{
+		Log.d(TAG,"asking "+question+" from "+caller);
 		actQuestion = caller;
 		//print("should ask : "+question+", p:"+prompt());
 		//debug("should ask : "+question+", p:"+prompt());
@@ -950,9 +956,17 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 	private void pushPrompt(String question)
 	{
-		debug("pushing " + get("prompt") + " in favour of " + question);
-		promptStack.push(prompt());
-		prompt(question);
+		
+		if(!question.equals(get("prompt")))
+		{
+			debug("pushing " + get("prompt") + " in favour of " + question);
+			promptStack.push(prompt());
+			prompt(question);
+		}
+		else
+		{
+			debug("rejecting new prompt, its the same " + get("prompt") + " in favour of " + question);
+		}
 	}//public String ask()
 	/**
 	 * in fact read a line...

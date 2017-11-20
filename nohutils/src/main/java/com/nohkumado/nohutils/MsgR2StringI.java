@@ -9,16 +9,9 @@ import java.util.*;
 @SuppressWarnings({"SameReturnValue", "UnusedParameters"})
 public interface MsgR2StringI
 {
-
 	public String askPermission(String p0);
-
-
-  SQLiteOpenHelper getDbHelper();
-
-
+	SQLiteOpenHelper getDbHelper();
 	String[] msgArr(int resourceId);
-
-
 	void display(String path, String type);
 
 	String msg(int stringid);
@@ -31,5 +24,5 @@ public interface MsgR2StringI
 	File getExternalFilesDir(String type);
 	void playSound();
 	String callback(String name, HashMap<String, Object> args);
-  void runOnUiThread(Runnable action);
-}
+	void runOnUiThread(Runnable action);
+}//public interface MsgR2StringI
