@@ -36,7 +36,7 @@ public class LoggerFrag extends Fragment
 	public LoggerFrag()
 	{
 		super();
-		Log.d(TAG, super.toString() + " CTOR");
+		//Log.d(TAG, super.toString() + " CTOR");
 	}
 	@SuppressLint("SetTextI18n")
 	@Override
@@ -191,8 +191,7 @@ public class LoggerFrag extends Fragment
 					{
 						content = content.replaceAll("\n","<br>");
 						textFrame.setText(Html.fromHtml(content));
-					}
-
+					}//if (m.find())
 					else textFrame.setText(content);
 					textFrame.invalidate();
 					if (textFrame.getHeight() == 0) textFrame.setHeight(LayoutParams.MATCH_PARENT);

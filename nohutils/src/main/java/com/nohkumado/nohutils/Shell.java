@@ -614,7 +614,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		if ((event != null && event.getAction() == KeyEvent.ACTION_DOWN)) {}
 		else if ((event == null && actionId == EditorInfo.IME_NULL) || (event != null && event.getAction() == KeyEvent.ACTION_UP))
 		{
-			Log.d(TAG,"event : "+actionId+" , "+event);
+			//Log.d(TAG,"event : "+actionId+" , "+event);
 			reactToEnter(tw);
 		}
 		else

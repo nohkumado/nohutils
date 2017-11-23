@@ -47,6 +47,8 @@ implements Cloneable, CommandI
 	protected HashMap<String,Object> parameter ;
 	protected PipableI stream = null;
 
+	private String helpMsg;
+
 	/**
 	 CTOR
 
@@ -55,13 +57,13 @@ implements Cloneable, CommandI
 	 */
 	public Command(ShellI s)
 	{
-		shell = s;
-		stream = shell;
+		this(s,"");
 	}// public Command()
 
 	public Command(ShellI s, String n)
 	{
-		this(s);
+		shell = s;
+		stream = shell;
 		name = n;
 	}// public Command()
 	/** 
@@ -105,7 +107,21 @@ implements Cloneable, CommandI
 	 */
 	public String help()
 	{
+		if(helpMsg != null && !"".equals(helpMsg)) return helpMsg+ "\n";
 		return(shell.msg(com.nohkumado.nohutils.R.string.no_help) + "\n");
+	}//end help
+	/**
+
+	 help
+
+	 issue the help message associated with this command
+
+	 * @return the help message
+	 */
+	public Command help(String msg)
+	{
+		helpMsg = msg;
+		return(this);
 	}//end help
 	/** 
 	 * clone this command 
