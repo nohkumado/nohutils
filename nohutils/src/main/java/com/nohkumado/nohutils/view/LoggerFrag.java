@@ -18,7 +18,7 @@ public class LoggerFrag extends Fragment
 {
 	protected final static int MAX_LINES = 25;
 	protected ArrayList<String> content = new ArrayList<>();
-	protected int max_lines;
+	protected int max_lines = 1024;
 
 	protected View viewContainer;
 	protected TextView textFrame;
@@ -53,7 +53,7 @@ public class LoggerFrag extends Fragment
 		}
 		textFrame = (TextView)viewContainer.findViewById(com.nohkumado.nohutils.R.id.loggerview);
 
-		add("starting up");
+		//add("starting up");
 		//textFrame.setText("starting up");
 		if (max_lines > 0) textFrame.setMaxLines(max_lines);
 		if (max_lines <= 0)
@@ -114,13 +114,14 @@ public class LoggerFrag extends Fragment
 		return max_lines;
 	}
 
-	public LoggerFrag add(String aLine)
+	public synchronized LoggerFrag add(String aLine)
 	{
 		//Log.d(TAG, "adding " + aLine);
 		content.add(aLine);
 		if (max_lines > 0)
 		{
-			while (content.size() > max_lines) Log.d(TAG, "removing excess line " + content.remove(0));
+		//	while (content.size() > max_lines) Log.d(TAG, "removing excess line " + content.remove(0));
+			while (content.size() > max_lines) content.remove(0);
 		}
 		if (textFrame != null)
 		{
@@ -133,7 +134,7 @@ public class LoggerFrag extends Fragment
 	/**
 
 	 */
-	private void refresh()
+	private synchronized void refresh()
 	{
 		int height    = textFrame.getHeight();
 		int scrollY   = textFrame.getScrollY();
@@ -169,7 +170,9 @@ public class LoggerFrag extends Fragment
 		}//if ((totalLines == lastLines) && totalLines < content.size())
 
 		final StringBuilder sb = new StringBuilder();
-		for (String line : content) sb.append(line).append("\n");
+		synchronized(this){
+			for (String line : content) sb.append(line).append("\n");
+		};
 		//sb.append("for Logger ").append(super.toString() + "\n");
 		//StringBuilder debug = new StringBuilder();
 		//debug.append("refresh about to print ");
@@ -178,7 +181,10 @@ public class LoggerFrag extends Fragment
 		//if(textFrame.getLayout() == null) debug.append("unknown");
 		//else debug.append(textFrame.getLayout().getLineCount());
 		//Log.d(TAG, "printing to screen(" + textFrame + ") " + sb.toString());
-		getActivity().runOnUiThread(new Runnable()
+		Activity myActivity = getActivity();
+		
+		
+		if(myActivity != null) myActivity.runOnUiThread(new Runnable()
 			{
 				@Override
 				public void run()

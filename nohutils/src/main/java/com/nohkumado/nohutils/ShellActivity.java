@@ -225,5 +225,31 @@ public class ShellActivity extends Activity implements MsgR2StringI
 
 		return "";
 	}//public String askPermission(String whichPerm)
+	public int getVersionCode()
+	{
+		int version = 0;
+		try
+		{
+			version = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+		}
+		catch (PackageManager.NameNotFoundException ignored)
+		{ }
+
+		return version;
+	}//public int getVersionCode()
+
+	public String getVersionName()
+	{
+		String version = "0";
+		try
+		{
+			version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+		}
+		catch (PackageManager.NameNotFoundException ignored)
+		{ }
+
+		return version;
+	}//public String getVersionName()
+	
 
 }//public class ShellActivity extends Activity implements MsgR2StringI
