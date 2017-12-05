@@ -1,14 +1,22 @@
 package com.nohkumado.nohutils.test;
 import com.nohkumado.nohutils.collection.*;
+import java.util.*;
 
 @SuppressWarnings("WeakerAccess")
 public class BTreeAtomTest extends UtilsTester implements Cloneable
 {
 	protected static String testName  = "BTreeAtom";
+	BTreeAtomFactory factory = new BTreeAtomFactory();
 	
 	public BTreeAtomTest()
 	{
-		BTreeAtomFactory factory = new BTreeAtomFactory();
+	
+	}//CTOR
+
+
+	@Override
+	public boolean test()
+	{
 		String[] names = new String[]{"root","+","*","1","2","3","4"};
 		BTreeAtom root = factory.instantiate(names[0]);
 		BTreeAtom[] tmp = new BTreeAtom[names.length];
@@ -20,5 +28,8 @@ public class BTreeAtomTest extends UtilsTester implements Cloneable
 		tmp[0].right(tmp[3]);
 		tmp[1].left(tmp[4]);
 		tmp[1].right(tmp[5]);
-	}//public BTreeAtomTest()
+		return super.doTrans(!"root + 1 2 * 3 4 ".equals(root.toString()), "Bttree failed 'root + 1 2 * 3 4 ' vs '"+root+"'");
+	}//public boolean doTrans(boolean result, StringBuilder msg)
+	
+	
 }//public class BTreeAtomTest extends UtilsTester

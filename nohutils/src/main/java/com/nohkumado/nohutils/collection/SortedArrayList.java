@@ -6,7 +6,7 @@ import java.util.*;
  answer from https://stackoverflow.com/users/276052/aioobe
 */
 
-class SortedArrayList<T> extends ArrayList<T>
+public class SortedArrayList<T> extends ArrayList<T>
 {
 
     @SuppressWarnings("unchecked")

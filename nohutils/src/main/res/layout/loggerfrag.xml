@@ -9,6 +9,7 @@
         android:layout_height="fill_parent"
         android:layout_width="fill_parent"
         android:text="@string/text"
+		android:textIsSelectable="true"
         android:id="@+id/loggerview"
     />
 </LinearLayout>

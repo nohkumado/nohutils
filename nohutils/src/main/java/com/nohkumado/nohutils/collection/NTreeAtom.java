@@ -40,7 +40,6 @@ public abstract class NTreeAtom<E>
 	}
 
 	protected boolean isLeave(){return true;}
-	abstract public NTreeAtom<E> set(E aProfile, String path);
 	
 	public E get(String path, String name){return null;}
 	public NTreeAtom<E> get(String path)

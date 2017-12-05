@@ -28,17 +28,16 @@ package com.nohkumado.nohutils.collection;
 public class NTreeLeave<E> extends NTreeAtom<E>
 {
 	protected E content;
+
+	public NTreeLeave set(E lname)
+	{
+		content = lname;
+		return this;
+	}
 	
 	public E getE()
 	{
 		return content;
-	}
-
-	@Override
-	public NTreeAtom<E> set(E aEe, String path)
-	{
-		content = aEe;
-		return this;
 	}
 
 	@Override
@@ -51,9 +50,9 @@ public class NTreeLeave<E> extends NTreeAtom<E>
 	public String toString(String indent)
 	{
 		StringBuilder result = new StringBuilder();
-		result.append(indent).append("leave");
-		if(content != null) result.append("*");
-		result.append(indent).append("\n");
+		result.append("(");
+		if(content != null) result.append(content);
+		result.append(")");
 		return result.toString();
-	}
-}
+	}//public String toString(String indent)
+}//public class NTreeLeave<E> extends NTreeAtom<E>

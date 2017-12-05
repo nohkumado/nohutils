@@ -17,8 +17,20 @@ public class UtilsTester
   private final static String TAG ="UT";
   protected StringBuilder log = new StringBuilder();
   protected boolean immediate = false;
+	protected StringBuilder error;
+	protected static String testName = "UtilsTester";
 
-  protected static String testName = "UtilsTester";
+	public String log()
+	{
+		if(log != null) return log.toString();
+		return "";
+	}
+
+	public boolean test()
+	{
+		// TODO: Implement this method
+		return false;
+	}
   /** 
    * 
    * 
@@ -48,7 +60,6 @@ public class UtilsTester
   {
     if (result)
     {
-      
       if (msg == null || msg.length() <= 0)
       {
         error(testName);
@@ -77,6 +88,7 @@ public class UtilsTester
    */
   public void print(String m)
   {
+	  Log.d(TAG,"print appendung to "+log+" m");
     if (immediate) Log.d(TAG, m);
     else log.append(m).append("\n");
   }// public void print(String m)
@@ -87,6 +99,7 @@ public class UtilsTester
    */
   public void error(String m)
   {
+	  Log.d(TAG,"err appending to "+log+" "+m);
     if (immediate) Log.e(TAG, m);
     else log.append("ERROR:").append(m).append("\n");
   }// public void print(String m)
