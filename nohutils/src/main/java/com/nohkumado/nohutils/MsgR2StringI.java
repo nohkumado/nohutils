@@ -9,7 +9,7 @@ import java.util.*;
 @SuppressWarnings({"SameReturnValue", "UnusedParameters"})
 public interface MsgR2StringI
 {
-	public String askPermission(String p0);
+	String askPermission(@SuppressWarnings("SameParameterValue") String p0);
 	SQLiteOpenHelper getDbHelper();
 	String[] msgArr(int resourceId);
 	void display(String path, String type);

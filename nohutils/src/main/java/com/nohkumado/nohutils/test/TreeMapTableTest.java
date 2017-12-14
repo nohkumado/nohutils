@@ -15,9 +15,7 @@ public class TreeMapTableTest extends UtilsTester
 		table.set("C","E","zwei");
 		table.set("C","B","drei");
 
-		if(doTrans(!"zwei".equals(table.get("C","E")),"failed TreeMapTable test: zwei !="+table.get("C","E"))) 
-			return true;
-		
-		return false;
+		return doTrans(!"zwei".equals(table.get("C", "E")), "failed TreeMapTable test: zwei !=" + table.get("C", "E"));
+
 	}//public boolean test()
 }//public class TreeMapTableTest extends UtilsTester

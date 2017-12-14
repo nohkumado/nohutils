@@ -12,7 +12,7 @@ public class SortedArrayTest extends UtilsTester
 		List<String> list = Arrays.asList(
 				"birnen", "aepfel", "kirschen", "trauben", "orangen"
 			);
-		SortedArrayList<String> sorted = new SortedArrayList<String>();
+		SortedArrayList<String> sorted = new SortedArrayList<>();
 		for(String item : list)
 		{
 			sorted.insertSorted(item);	

@@ -29,7 +29,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package com.nohkumado.nohutils.commands;
-import android.util.*;
 import com.nohkumado.nohutils.*;
 import java.io.*;
 import java.util.*;
@@ -186,7 +185,11 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 			{
 				int x=0; 
 				if (result.length > 1) path = ""; //reset the path if there is a path component!
-				for (; x < result.length - 1; x++) path += result[x] + System.getProperty("file.separator");
+				StringBuilder sb = new StringBuilder();
+				sb.append(path);
+				//for (; x < result.length - 1; x++) path += result[x] + System.getProperty("file.separator");
+				for (; x < result.length - 1; x++) sb.append(result[x]).append(System.getProperty("file.separator"));
+				path = sb.toString();
 				line = result[x];
 			}// if(result.lenght > 1)«»
 

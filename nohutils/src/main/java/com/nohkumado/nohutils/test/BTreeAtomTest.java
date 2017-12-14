@@ -1,6 +1,5 @@
 package com.nohkumado.nohutils.test;
 import com.nohkumado.nohutils.collection.*;
-import java.util.*;
 
 @SuppressWarnings("WeakerAccess")
 public class BTreeAtomTest extends UtilsTester implements Cloneable

@@ -29,8 +29,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package com.nohkumado.nohutils.commands;
-import android.app.*;
-import android.content.pm.*;
 import android.util.*;
 import com.nohkumado.nohutils.*;
 import java.io.*;

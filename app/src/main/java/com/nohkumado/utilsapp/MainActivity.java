@@ -1,7 +1,6 @@
 package com.nohkumado.utilsapp;
 
 import android.app.*;
-import android.content.pm.*;
 import android.os.*;
 import android.util.*;
 import com.nohkumado.nohutils.*;
@@ -30,7 +29,8 @@ public class MainActivity extends Msg2RString
 		if (shellfrag == null)
 		{
 			//Log.d(TAG, "no shell frag");
-			shellfrag = new ShellFragment(this);
+			shellfrag = new ShellFragment();
+			shellfrag.callback(this);
 			//Log.d(TAG, "shellfrag created parent linsting childs");
 			//LinearLayout minSc = (LinearLayout) findViewById(R.id.mainscreen);
 

@@ -20,7 +20,8 @@ public class ShellFragment extends Fragment
 	public ShellFragment()
 	{
 	}
-	public ShellFragment(MsgR2StringI callback)
+
+	public void callback(MsgR2StringI callback)
 	{
 		handler = callback; //need? need not?
 	}

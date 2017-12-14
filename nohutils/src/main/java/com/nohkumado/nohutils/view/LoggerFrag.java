@@ -5,7 +5,6 @@ import android.graphics.*;
 import android.os.*;
 import android.text.*;
 import android.text.method.*;
-import android.util.*;
 import android.view.*;
 import android.view.ViewGroup.*;
 import android.widget.*;
@@ -172,7 +171,7 @@ public class LoggerFrag extends Fragment
 		final StringBuilder sb = new StringBuilder();
 		synchronized(this){
 			for (String line : content) sb.append(line).append("\n");
-		};
+		}
 		//sb.append("for Logger ").append(super.toString() + "\n");
 		//StringBuilder debug = new StringBuilder();
 		//debug.append("refresh about to print ");

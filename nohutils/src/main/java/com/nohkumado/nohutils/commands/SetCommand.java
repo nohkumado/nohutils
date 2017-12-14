@@ -65,29 +65,33 @@ public class SetCommand extends Command implements Cloneable, CommandI
    */
   public String execute()
   {
-    String result = "";
+    StringBuilder result = new StringBuilder();
     if (!Objects.equals(var_name, ""))
     {
-      result += var_name + " : ";
+      result.append(var_name).append(" : ");
       if (!Objects.equals(var_value, "")) shell.set(var_name, var_value);
       if (shell.preference(var_name) != null)
-				result += shell.preference(var_name) + "\n";
-      else result += shell.get(var_name) + "\n";
+        result.append(shell.preference(var_name)).append("\n");
+      else result.append(shell.get(var_name)).append("\n");
     }// if(value != "")
     else
     {
-      result = shell.msg(com.nohkumado.nohutils.R.string.variable_list) + ":\nEnvironment:\n";
+      result.append(shell.msg(com.nohkumado.nohutils.R.string.variable_list)).append(":\nEnvironment:\n");
 			//TODO suspect here.... check it out...
       HashMap<String,Object> environment = (HashMap<String, Object>) shell.getAll();
-			for (String argName : environment.keySet()) {
+
+			result.append(result);
+      for (String argName : environment.keySet())
+			{
 
 				//TODO put this into a hiddenVars array....
 				if (!(argName.equals("shell") || argName.equals("msger") || argName.equals("Fibu")))
-					result += argName + " : " + environment.get(argName) + "\n";
+					result.append(argName).append(" : ").append(environment.get(argName)).append("\n");
+					//result += argName + " : " + environment.get(argName) + "\n";
 			}// for(Iterator<String> e = environment.keySet().iterator(); e.hasNext();)
-      result += shell.msg(com.nohkumado.nohutils.R.string.endlist) + "\n";
+      result.append(shell.msg(com.nohkumado.nohutils.R.string.endlist)).append("\n");
     }// else
-    return(result);
+    return(result.toString());
   }//end execute
 
 	/** 

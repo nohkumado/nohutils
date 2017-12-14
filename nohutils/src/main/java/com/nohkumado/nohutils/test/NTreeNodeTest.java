@@ -23,17 +23,15 @@ public class NTreeNodeTest extends UtilsTester
 			"l1","l2","l3","l4","l5","l6"
 		}; 
 		int n = 0;
-		for(int i = 0; i < names.length; i++)
-		{
+		for (String name : names) {
 			NTreeNode aNode = new NTreeNode();
 			//log.append("created node ").append(aNode.toString()).append("\n");
-			for(int x = 0; n<lname.length && x <2; n++,x++)
-			{
+			for (int x = 0; n < lname.length && x < 2; n++, x++) {
 				NTreeLeave<String> aLeave = new NTreeLeave<String>().set(lname[n]);
-				aNode.set(aLeave ,lname[n]);
+				aNode.set(aLeave, lname[n]);
 				//log.append(lname[n]).append(" ").append(aLeave).append(" added to ").append(aNode).append("\n");
 			}
-			root.set(aNode,names[i]);
+			root.set(aNode, name);
 		}//for(int i = 0; i < names.length; i++)
 		//log.append("filled root ").append(root).append("\n");
 		String rootAsS = "[one-[l1-(l1)|l2-(l2)]|two-[l3-(l3)|l4-(l4)]|three-[l5-(l5)|l6-(l6)]]";

@@ -43,8 +43,6 @@ import com.nohkumado.nohutils.view.*;
 import java.io.*;
 import java.util.*;
 
-import android.view.View.OnKeyListener;
-
 /*
  TODO
  -  maybe add a pseudo graphical mode, 
@@ -1007,13 +1005,15 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				}//if(!select.get(i).equals(defVal))
 			}// for(int i = 0 ; i < select.length; i++)
 
-			for (int i = 0 ; i < selectCopy.size(); i++)
+			StringBuilder questionBuilder = new StringBuilder(question);
+			for (int i = 0; i < selectCopy.size(); i++)
 			{
-				question += "[" + i + "] : " + selectCopy.get(i);
+				questionBuilder.append("[").append(i).append("] : ").append(selectCopy.get(i));
 				String cap = "" + captionsCopy.get(i);
-				if (cap.length() > 0) question += " (" + cap + ")";
-				question += "\n>";
+				if (cap.length() > 0) questionBuilder.append(" (").append(cap).append(")");
+				questionBuilder.append("\n>");
 			}// for(int i = 0 ; i < select.length; i++)
+			question = questionBuilder.toString();
 
 			int index;
 			String answer = "";

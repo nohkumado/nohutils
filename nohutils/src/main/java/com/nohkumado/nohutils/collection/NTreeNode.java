@@ -22,7 +22,6 @@ package com.nohkumado.nohutils.collection;
  * CONSEQUENTIAL DAMAGES RELATING  TO THE SOFTWARE.
  */
 
-import android.util.*;
 import java.util.*;
 import java.util.regex.*;
 
@@ -174,10 +173,10 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			int excise = path.indexOf("/");
 			String localKey = path.substring(0, excise);
 			String restPath = path.substring(excise + 1);
-			NTreeNode child;
+			NTreeNode<E> child;
 			if (!childs.containsKey(localKey))
 			{
-				child = new NTreeNode();
+				child = new NTreeNode<>();
 				childs.put(localKey, child);
 			}
 			else child = (NTreeNode) childs.get(localKey); //TODO beware cast exception possible

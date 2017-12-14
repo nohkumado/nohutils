@@ -4,6 +4,7 @@ package com.nohkumado.nohutils.view;
 import android.app.*;
 import android.content.*;
 import android.os.*;
+import android.util.Log;
 import android.view.*;
 import android.view.View.*;
 import android.widget.*;
@@ -114,7 +115,13 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
     viewContainer = (LinearLayout) super.onCreateView(inflater, container, savedInstanceState);
     if (viewContainer == null)
     {
-      viewContainer = (LinearLayout)inflater.inflate(com.nohkumado.nohutils.R.layout.pathviewfrag, null);
+      viewContainer = (LinearLayout)inflater.inflate(com.nohkumado.nohutils.R.layout.pathviewfrag, container);
+      if(viewContainer.getParent() != null)
+      {
+        //viewContainer.getParent().removeView(viewContainer);
+        Log.e(TAG,"parent was not null.....");
+      }//if(viewContainer.getParent() != null)
+
     }
     //Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
     //textFrame = (TextView) viewContainer.findViewById(R.id.loggerview);

@@ -121,18 +121,17 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			{
 				if (parser.errorCode() == TokenParser.UNPARSED_ARGS)
 				{
-					StringBuilder sb = new StringBuilder();
-					sb.append(shell.msg(com.nohkumado.nohutils.R.string.syntax_error));
-					sb.append(" ");
-					sb.append(shell.msg(com.nohkumado.nohutils.R.string.cmd_command));
-					sb.append(" ");
-					sb.append(parser.errorCmd());
-					sb.append(" ");
-					sb.append(shell.msg(com.nohkumado.nohutils.R.string.cmd_unparsed_args));
-					sb.append(" ");
-					sb.append(parser.errorMsg());
+					String sb = shell.msg(R.string.syntax_error) +
+							" " +
+							shell.msg(R.string.cmd_command) +
+							" " +
+							parser.errorCmd() +
+							" " +
+							shell.msg(R.string.cmd_unparsed_args) +
+							" " +
+							parser.errorMsg();
 
-					shell.print(sb.toString());
+					shell.print(sb);
 				}
 			}
 		}//if(mode == null || mode == "tokenized")
@@ -143,18 +142,17 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			{
 				if (parser.errorCode() == CharParser.UNPARSED_ARGS)
 				{
-					StringBuilder sb = new StringBuilder();
-					sb.append(shell.msg(com.nohkumado.nohutils.R.string.syntax_error));
-					sb.append(" ");
-					sb.append(shell.msg(com.nohkumado.nohutils.R.string.cmd_command));
-					sb.append(" ");
-					sb.append(parser.errorCmd());
-					sb.append(" ");
-					sb.append(shell.msg(com.nohkumado.nohutils.R.string.cmd_unparsed_args));
-					sb.append(" ");
-					sb.append(parser.errorMsg());
+					String sb = shell.msg(R.string.syntax_error) +
+							" " +
+							shell.msg(R.string.cmd_command) +
+							" " +
+							parser.errorCmd() +
+							" " +
+							shell.msg(R.string.cmd_unparsed_args) +
+							" " +
+							parser.errorMsg();
 
-					shell.print(sb.toString());
+					shell.print(sb);
 				}
 			}
 		}//if(mode == null || mode == "tokenized")

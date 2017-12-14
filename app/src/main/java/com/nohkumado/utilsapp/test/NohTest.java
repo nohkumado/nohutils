@@ -1,7 +1,7 @@
 package com.nohkumado.utilsapp.test;
 import com.nohkumado.nohutils.ShellI;
 import com.nohkumado.nohutils.test.*;
-import com.nohkumado.nohutils.collection.*;
+
 /**
  Begin, don't know where the proper testsuite fell of... :( somehow it disappeared...
  will slowly rebuild it here...

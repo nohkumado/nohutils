@@ -5,13 +5,12 @@ import android.app.*;
 import android.content.pm.*;
 import android.content.res.*;
 import android.database.sqlite.*;
-import android.graphics.*;
 import android.media.*;
 import android.os.*;
 import android.util.*;
-import android.widget.*;
+
 import com.nohkumado.nohutils.commands.*;
-import com.nohkumado.nohutils.view.*;
+
 import java.util.*;
 
 @SuppressWarnings({"WeakerAccess", "EmptyMethod"})
@@ -41,7 +40,8 @@ public class ShellActivity extends Activity implements MsgR2StringI
 		if (shellfrag == null)
 		{
 			//Log.d(TAG, "no shell frag");
-			shellfrag = new ShellFragment(this);
+			shellfrag = new ShellFragment();
+			shellfrag.callback(this);
 			//Log.d(TAG, "shellfrag created parent linsting childs");
 			//LinearLayout minSc = (LinearLayout) findViewById(R.id.mainscreen);
 

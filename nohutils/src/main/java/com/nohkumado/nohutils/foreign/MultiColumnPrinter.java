@@ -584,18 +584,18 @@ public abstract class MultiColumnPrinter
 	 */
 	private String getKey(String[] row)
 	{
-		String key = "";
+		StringBuilder key = new StringBuilder();
 
 		for (int content : keyCriteria) {
 			try {
-				key = key + row[content];
+				key.append(row[content]);
 			} catch (ArrayIndexOutOfBoundsException ae) {
 				// Happens when keyCriteria[] contains an index that
 				// does not exist in 'row'.
 				return null;
 			}
 		}
-		return key;
+		return key.toString();
 	}
 
 	/*
