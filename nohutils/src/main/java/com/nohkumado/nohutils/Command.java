@@ -57,7 +57,7 @@ implements Cloneable, CommandI
 	 */
 	public Command(ShellI s)
 	{
-		this(s,"");
+		this(s, "");
 	}// public Command()
 
 	public Command(ShellI s, String n)
@@ -82,8 +82,11 @@ implements Cloneable, CommandI
 	 * 
 	 * @return the name of this item as a string
 	 */
-	public void name(String n)
-	{name = n;}
+	public Command name(String n)
+	{
+		name = n;
+		return this;
+	}//public Command name(String n)
 
 	/**
 
@@ -107,7 +110,7 @@ implements Cloneable, CommandI
 	 */
 	public String help()
 	{
-		if(helpMsg != null && !"".equals(helpMsg)) return helpMsg+ "\n";
+		if (helpMsg != null && !"".equals(helpMsg)) return helpMsg + "\n";
 		return(shell.msg(com.nohkumado.nohutils.R.string.no_help) + "\n");
 	}//end help
 	/**
@@ -173,8 +176,8 @@ implements Cloneable, CommandI
 	public boolean setOut(PipableI out)
 	{
 		stream = out;
-    return stream != null;
-  }
+		return stream != null;
+	}
 	@Override
 	public String expand()
 	{
@@ -184,6 +187,6 @@ implements Cloneable, CommandI
 	@Override
 	public Pattern pattern()
 	{
-		return Pattern.compile("^"+name+"\\s*$");
+		return Pattern.compile("^" + name + "\\s*$");
 	}
 }//public class Command

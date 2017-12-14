@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Test utility for the library</string>
-		 <string name="hello_world">Welcome!</string>
-		<string name="testhelp">run this command to make the tests on the nohutils</string>
+	<string name="hello_world">Welcome!</string>
+	<string name="testhelp">run this command to make the tests on the nohutils</string>
+    <string name="test">test</string>
     <string name="ok">OK</string>
     <string name="up">up</string>
     <string name="home">home</string>

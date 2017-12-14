@@ -38,63 +38,65 @@ import java.util.regex.Pattern;
 //import com.nohkumado.utils.*;
 
 @SuppressWarnings("SameParameterValue")
-public interface CommandI extends Cloneable, PipableI {
+public interface CommandI extends Cloneable, PipableI
+{
 
-  CommandI clone();
+	CommandI clone();
 
 
-  Pattern pattern();
+	Pattern pattern();
 
-  /**
-   * name
-   * <p>
-   * return the name of this command
-   *
-   * @return the name of this item as a string
-   */
-  String name();
+	/**
+	 * name
+	 * <p>
+	 * return the name of this command
+	 *
+	 * @return the name of this item as a string
+	 */
+	String name();
 
-  /**
-   * name
-   * <p>
-   * set the name of this command
-   *
-   * @return the name of this item as a string
-   */
-  void name(String n);
+	/**
+	 * name
+	 * <p>
+	 * set the name of this command
+	 *
+	 * @return the name of this item as a string
+	 */
+	CommandI name(String n);
 
-  /**
-   * execute
-   * <p>
-   * activate this command
-   *
-   * @return reult
-   */
-  String execute();
+	/**
+	 * execute
+	 * <p>
+	 * activate this command
+	 *
+	 * @return reult
+	 */
+	String execute();
 
-  /**
-   * parse
-   * <p>
-   * parse for eventual arguments, return what is not needed
-   *
-   * @param line arguments
-   * @return rest
-   */
-  String parse(String line);
+	/**
+	 * parse
+	 * <p>
+	 * parse for eventual arguments, return what is not needed
+	 *
+	 * @param line arguments
+	 * @return rest
+	 */
+	String parse(String line);
 
-  /**
-   * instead of parsing the options, give them directly, eg when invoking a command from the program code directly
-   *
-   * @param parms the hashtable with the options
-   */
-  void setParameters(HashMap<String, Object> parms);
+	/**
+	 * instead of parsing the options, give them directly, eg when invoking a command from the program code directly
+	 *
+	 * @param parms the hashtable with the options
+	 */
+	void setParameters(HashMap<String, Object> parms);
 
-  /**
-   * help
-   * <p>
-   * issue the help message associated with this command
-   */
-  String help();
+	/**
+	 * help
+	 * <p>
+	 * issue the help message associated with this command
+	 */
+	String help();
+	CommandI help(String msg);
 
-  String expand();
+	String expand();
 }//public class CommandI
