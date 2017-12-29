@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "com.nohkumado.utilsapp"
         minSdkVersion 23
-        targetSdkVersion 26
-        versionCode 106
-        versionName "1.6"
+        targetSdkVersion 27
+        versionCode 107
+        versionName "1.7"
     }
     buildTypes {
         release {
