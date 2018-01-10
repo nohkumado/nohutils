@@ -150,7 +150,8 @@ public class LoggerFrag extends Fragment
 
 			if ((totalLines == lastLines) && totalLines < content.size())
 			{
-				getActivity().runOnUiThread(
+				if(getActivity() != null)
+					getActivity().runOnUiThread(
 					new Runnable()
 					{
 

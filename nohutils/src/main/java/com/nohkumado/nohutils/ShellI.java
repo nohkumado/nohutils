@@ -29,7 +29,6 @@
 
 package com.nohkumado.nohutils;
 
-//import com.nohkumado.utils.*;
 import android.os.*;
 import android.widget.*;
 import com.nohkumado.nohutils.view.*;

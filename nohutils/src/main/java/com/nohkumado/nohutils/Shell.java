@@ -298,14 +298,23 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		return(prompt);
 	}
 
-	public void printOnCmdline(String toPrint)
+	public void printOnCmdline(final String toPrint)
 	{
 		if (in != null)
 		{
-			in.setText(toPrint);
-			in.setSelection(toPrint.length());
-			setEditTextFocus(in, true);
-			in.requestFocus();			
+			if(context != null)
+				context.runOnUiThread(
+					new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							in.setText(toPrint);
+							in.setSelection(toPrint.length());
+							setEditTextFocus(in, true);
+							in.requestFocus();			
+							}//public void run()
+					});
 		}
 	}//end prompt
 	public String getCmdline()
@@ -690,9 +699,11 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	{
 		//sous traite l'evenement si pertinent
 		boolean result = false;
-		//if (actQuestion != null && actQuestion instanceof KeyPressListener) debug( "forwarding keyevent");
+		if (actQuestion != null && actQuestion instanceof KeyPressListener) debug( "forwarding keyevent to "+actQuestion);
 		if (actQuestion != null && actQuestion instanceof KeyPressListener) 
 			result = ((KeyPressListener)actQuestion).onKey(v, keyCode, event);
+		if (result) debug("actQuestion handled the keypress");
+		
 		if (result) return false;
 
 		//debug( "hit key :" + keyCode + " stamp " + event.getEventTime());
@@ -731,7 +742,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		else if (keyCode == KeyEvent.KEYCODE_TAB && event.getAction() == KeyEvent.ACTION_DOWN)
 		{
 			//tabcount++;
-			//print("hit tab key at " + event.getEventTime());
+			//debug("hit tab key at " + event.getEventTime());
 
 			//if (tabcount == 1)
 			//{
@@ -742,17 +753,19 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				String lastprompt = prompt();
 				if (lastprompt != null) incoming = incoming.replace(lastprompt.trim(), "").trim();
 
-
-				//print("tabkey, parsing: '" + incoming + "'");
+				//debug("tabkey, parsing: '" + incoming + "'");
 				ArrayList<CommandI> toWorkOf = cmdParser.parse(incoming);
+				//debug("retrieved cmds :" + toWorkOf);
 				if (toWorkOf.size() > 0)
 				{
 					CommandI lastCmd = toWorkOf.get(toWorkOf.size() - 1);
-					@SuppressWarnings("StringBufferReplaceableByString") StringBuilder corrected = new StringBuilder();
+					StringBuilder corrected = new StringBuilder();
 					corrected.append(prompt());
-					corrected.append(incoming);
-					corrected.append(lastCmd.expand());
-					//debug("changed line to "+corrected.toString());
+					if(!"".equals(lastCmd.name())) corrected.append(lastCmd.name());
+					else corrected.append(incoming);
+					String args = lastCmd.expand();
+					if(!"".equals(args)) corrected.append(" ").append(args);
+					//debug("found cmd "+lastCmd+" changed line to "+corrected.toString());
 					printOnCmdline(corrected.toString());
 				}
 				else
@@ -846,7 +859,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			{
 				if (out == null) 
 				{
-					Log.e(TAG,"oyoyoy??? no screen to print " + line + "!!");
+					//Log.e(TAG,"oyoyoy??? no screen to print " + line + "!!");
 					screenContent.add(line);
 				}
 				else
