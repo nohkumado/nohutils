@@ -66,11 +66,12 @@ public class ShellActivity extends Activity implements MsgR2StringI
 	{
 		CommandI[] cmds = new CommandI[]
 		{
-			new SetCommand(shell),
-			new QuitCommand(shell),
-			new PwdCommand(shell),
-			new LsCommand(shell),
-			new CdCommand(shell)
+				new SetCommand(shell).name(shell.msg(R.string.set)).help(shell.msg(R.string.sethelp)),
+				new QuitCommand(shell).name(shell.msg(R.string.quit)).help(shell.msg(R.string.quit_help)),
+				new PwdCommand(shell).name(shell.msg(R.string.pwd)).help(shell.msg(R.string.pwd_help)),
+				new LsCommand(shell).name(shell.msg(R.string.ls)).help(shell.msg(R.string.ls_help)),
+				new CdCommand(shell).name(shell.msg(R.string.cd)).help(shell.msg(R.string.cd_help)),
+				new VersionCommand(shell).name(shell.msg(R.string.version)).help(shell.msg(com.nohkumado.nohutils.R.string.version_help))
 		};
 		HashMap<String,CommandI> availableCmds = new HashMap<>();
 		for (CommandI cmd : cmds) availableCmds.put(cmd.name(), cmd);

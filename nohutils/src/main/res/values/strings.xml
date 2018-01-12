@@ -50,4 +50,6 @@
    <string name="up">up</string>
    <string name="variable_list">Variable list</string>
    <string name="variables">Variables</string>
+    <string name="version">version</string>
+    <string name="version_help">gives back the version number</string>
 </resources>
