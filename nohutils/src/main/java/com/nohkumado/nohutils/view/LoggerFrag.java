@@ -170,8 +170,17 @@ public class LoggerFrag extends Fragment
 		}//if ((totalLines == lastLines) && totalLines < content.size())
 
 		final StringBuilder sb = new StringBuilder();
-		synchronized(this){
-			for (String line : content) sb.append(line).append("\n");
+		synchronized(this)
+		{
+			try
+			{
+				for (String line : content) sb.append(line).append("\n");	
+			}
+			catch(OutOfMemoryError e)
+			{
+				max_lines -= 100;
+				while (content.size() > max_lines) content.remove(0);
+			}
 		}
 		//sb.append("for Logger ").append(super.toString() + "\n");
 		//StringBuilder debug = new StringBuilder();

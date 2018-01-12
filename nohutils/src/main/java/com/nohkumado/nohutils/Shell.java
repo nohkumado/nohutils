@@ -699,10 +699,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	{
 		//sous traite l'evenement si pertinent
 		boolean result = false;
-		if (actQuestion != null && actQuestion instanceof KeyPressListener) debug( "forwarding keyevent to "+actQuestion);
+		//if (actQuestion != null && actQuestion instanceof KeyPressListener) debug( "forwarding keyevent to "+actQuestion);
 		if (actQuestion != null && actQuestion instanceof KeyPressListener) 
 			result = ((KeyPressListener)actQuestion).onKey(v, keyCode, event);
-		if (result) debug("actQuestion handled the keypress");
+		//if (result) debug("actQuestion handled the keypress");
 		
 		if (result) return false;
 
