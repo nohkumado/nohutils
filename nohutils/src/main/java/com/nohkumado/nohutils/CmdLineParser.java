@@ -112,6 +112,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			shell.set("parsing", "tokenized");
 			mode = "tokenized";
 		}
+		//shell.print("mode "+mode);
 		//Log.d(TAG,"mode "+mode);
 
 		if (Objects.equals(mode, "tokenized"))

@@ -23,6 +23,7 @@ package com.nohkumado.nohutils.collection;
  * CONSEQUENTIAL DAMAGES RELATING  TO THE SOFTWARE.
  */
 import android.util.*;
+import java.util.*;
 
 /**
 * common ancestor to node an leave, abstract since it shouldn't have an 
@@ -34,20 +35,49 @@ public abstract class NTreeAtom<E>
 
 	public final static  String TAG = "NTA";
 
+	private String name;
+	protected boolean dumpPrint;
+
+	public String prettyPrint(String prefix)
+	{
+		return toString();
+	}
+
+	
+	public NTreeAtom name(String localKey)
+	{
+		name = localKey;
+		return this;
+	}
+	public String name()
+	{
+		return name;
+	}
+	public boolean isLeaf()
+	{
+		return true;
+	}
+	public boolean isNode()
+	{
+		return false;
+	}
+	
 	public NTreeAtom set(E aProfile, String cathegory, String name)
 	{
 		return null;
 	}
-
-	protected boolean isLeave(){return true;}
-	
 	public E get(String path, String name){return null;}
 	public NTreeAtom<E> get(String path)
 	{
 		return this;
 	}
-	public void setContent(E profil)
+	public NTreeAtom<E> get(ArrayList<String> path)
 	{
+		return this;
+	}
+	public NTreeAtom setContent(E profil)
+	{
+		return this;
 	}
 
 	public E getContent()
@@ -73,4 +103,10 @@ public abstract class NTreeAtom<E>
 	{
 		return indent;
 	}
-}
+	public void dump(boolean p0)
+	{
+		dumpPrint = p0;
+	}
+
+	
+}//class

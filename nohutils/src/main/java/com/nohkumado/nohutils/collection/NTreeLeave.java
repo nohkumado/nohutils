@@ -47,12 +47,21 @@ public class NTreeLeave<E> extends NTreeAtom<E>
 	}
 
 	@Override
+	public NTreeAtom setContent(E profil)
+	{
+		content = profil;
+		return super.setContent(profil);
+	}
+	
+
+	@Override
 	public String toString(String indent)
 	{
+		
 		StringBuilder result = new StringBuilder();
-		result.append("(");
+		if(!dumpPrint) result.append("(");
 		if(content != null) result.append(content);
-		result.append(")");
+		if(!dumpPrint) result.append(")");
 		return result.toString();
 	}//public String toString(String indent)
 }//public class NTreeLeave<E> extends NTreeAtom<E>

@@ -1,9 +1,6 @@
 package com.nohkumado.nohutils.commands;
 
-import com.nohkumado.nohutils.BuildConfig;
-import com.nohkumado.nohutils.Command;
-import com.nohkumado.nohutils.R;
-import com.nohkumado.nohutils.ShellI;
+import com.nohkumado.nohutils.*;
 
 /**
  * Created by bboett on 12.01.18.
@@ -26,8 +23,8 @@ public class VersionCommand extends Command
   @Override
   public String execute()
   {
-    int versionCode = BuildConfig.VERSION_CODE;
-    String versionName = BuildConfig.VERSION_NAME;
+    int versionCode = 108;//AIDE bug BuildConfig.VERSION_CODE;
+    String versionName = "1.08";//BuildConfig.VERSION_NAME;
     return shell.msg(R.string.version)+" "+versionCode+"("+ versionName+")";
   }
 }//public class VersionCommand extends Command
