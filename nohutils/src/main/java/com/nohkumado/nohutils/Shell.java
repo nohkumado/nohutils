@@ -154,7 +154,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		else error("couldn't set action listener");
 		if (out == null) error("no output screen....");
 		else prompt();
-		debug("done setting in/out");
+		//debug("done setting in/out");
 	}
 	/**
 
@@ -176,7 +176,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		}
 
 		//debug( "init printing start message");
-		print(msg(com.nohkumado.nohutils.R.string.start));
+		if(screenContent != null && screenContent.size() <= 0) print(msg(com.nohkumado.nohutils.R.string.start));
 		prompt();
 		return(true);
 	}//public void init
@@ -191,7 +191,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public String process(String line)
 	{
 		//TODO check if shell is allready running otherwise push into a TODO stack
-		Log.d(TAG,"in process '"+line+"'");
+		//Log.d(TAG,"in process '"+line+"'");
 		String retVal = "";
 		ArrayList<CommandI> toWorkOf = cmdParser.parse(line);
 		if (toWorkOf.size() > 0)
@@ -202,7 +202,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 					//System.out.println("abpout to exe: "+aCmd);
 					retVal = aCmd.execute();
 					//TODO pipe ahould interced e here 
-					debug("res\n" + retVal);
+					//debug("res\n" + retVal);
 
 					if (!Objects.equals(retVal, "")) print(retVal);
 					//System.out.println("retVal = "+retVal);
@@ -953,7 +953,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	/** in fact read a line...*/
 	public void ask(String question, CommandI caller)
 	{
-		Log.d(TAG,"asking "+question+" from "+caller);
+		//Log.d(TAG,"asking "+question+" from "+caller);
 		actQuestion = caller;
 		//print("should ask : "+question+", p:"+prompt());
 		//debug("should ask : "+question+", p:"+prompt());
@@ -970,7 +970,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		
 		if(!question.equals(get("prompt")))
 		{
-			debug("pushing " + get("prompt") + " in favour of " + question);
+			//debug("pushing " + get("prompt") + " in favour of " + question);
 			promptStack.push(prompt());
 			prompt(question);
 		}
@@ -1220,7 +1220,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				// This is a folder
 				for (String file : list) 
 				{
-					debug("asset: " + path + "/" + file);
+					//debug("asset: " + path + "/" + file);
 					if (!listAssetFiles(path + "/" + file))
 						return false;
 				}
@@ -1358,7 +1358,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		childShell = actShell;
 		if (childShell != null) 
 		{
-			debug("diverting in out ot childshell");
+			//debug("diverting in out ot childshell");
 			childShell.setInOut(in, out); 
 		}//if (childShell != null)
 		debug("done");
