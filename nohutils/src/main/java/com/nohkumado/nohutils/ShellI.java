@@ -39,6 +39,9 @@ import java.util.*;
 public interface ShellI extends PipableI
 {
 
+	public void log(String msg);
+
+
 	public void closelog();
 
 

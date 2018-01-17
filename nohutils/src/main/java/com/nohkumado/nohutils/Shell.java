@@ -178,7 +178,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		}
 
 		//debug( "init printing start message");
-		if(screenContent != null && screenContent.size() <= 0) print(msg(com.nohkumado.nohutils.R.string.start));
+		if (screenContent != null && screenContent.size() <= 0) print(msg(com.nohkumado.nohutils.R.string.start));
 		prompt();
 		return(true);
 	}//public void init
@@ -304,7 +304,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	{
 		if (in != null)
 		{
-			if(context != null)
+			if (context != null)
 				context.runOnUiThread(
 					new Runnable()
 					{
@@ -315,7 +315,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 							in.setSelection(toPrint.length());
 							setEditTextFocus(in, true);
 							in.requestFocus();			
-							}//public void run()
+						}//public void run()
 					});
 		}
 	}//end prompt
@@ -620,7 +620,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		//if (tw != out) debug( "wrong source");
 		//else debug( "good source");
 
-		if ((event != null && event.getAction() == KeyEvent.ACTION_DOWN)) {}
+		if ((event != null && event.getAction() == KeyEvent.ACTION_DOWN))
+		{}
 		else if ((event == null && actionId == EditorInfo.IME_NULL) || (event != null && event.getAction() == KeyEvent.ACTION_UP))
 		{
 			//Log.d(TAG,"event : "+actionId+" , "+event);
@@ -673,7 +674,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			toExe.execute();
 			printOnCmdline(prompt());
 		}
-		else if("".equals(incoming)) debug("incoming was empty...");
+		else if ("".equals(incoming)) debug("incoming was empty...");
 		else 
 		{
 			//String logEntry = prompt() + " " + incoming;
@@ -687,7 +688,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			executeCommands(toWorkOf);
 		}//else
 	}//private void reactToEnter(TextView tw)
-	
+
 
 	/**------------------------------------------------------------------
 	 * onKey
@@ -705,7 +706,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		if (actQuestion != null && actQuestion instanceof KeyPressListener) 
 			result = ((KeyPressListener)actQuestion).onKey(v, keyCode, event);
 		//if (result) debug("actQuestion handled the keypress");
-		
+
 		if (result) return false;
 
 		//debug( "hit key :" + keyCode + " stamp " + event.getEventTime());
@@ -763,10 +764,10 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 					CommandI lastCmd = toWorkOf.get(toWorkOf.size() - 1);
 					StringBuilder corrected = new StringBuilder();
 					corrected.append(prompt());
-					if(!"".equals(lastCmd.name())) corrected.append(lastCmd.name());
+					if (!"".equals(lastCmd.name())) corrected.append(lastCmd.name());
 					else corrected.append(incoming);
 					String args = lastCmd.expand();
-					if(!"".equals(args)) corrected.append(" ").append(args);
+					if (!"".equals(args)) corrected.append(" ").append(args);
 					//debug("found cmd "+lastCmd+" changed line to "+corrected.toString());
 					printOnCmdline(corrected.toString());
 				}
@@ -856,18 +857,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		 */
 		if (something.length() > 0) 
 		{
-			try
-			{
-				if (logging)
-				{
-					logWriter.write(something);
-					if(!something.endsWith("\n")) logWriter.write("\n");
-				}
-			}
-			catch (IOException e)
-			{
-				error("no logging "+e);
-			}
+			log(something);
 			String[] splitted = something.split("\n");
 			for (String line: splitted) 
 			{
@@ -932,6 +922,26 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		 }
 		 */
 	}//protected void print(String something)
+	public void log(String something)
+	{
+		if (something == null) something = "";
+		if (something.length() > 0) 
+		{
+			try
+			{
+				if (logging)
+				{
+					logWriter.write(something);
+					if (!something.endsWith("\n")) logWriter.write("\n");
+				}
+			}
+			catch (IOException e)
+			{
+				error("no logging " + e);
+			}
+		}//if (something.length() > 0) 
+	}//protected void log(String something)
+
 	//------------------------------------------------------------------
 	//public void setEditTextFocus(EditText searchEditText, boolean isFocused)
 	public void setEditTextFocus(EditText searchEditText, boolean isFocused)
@@ -951,7 +961,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	public void error(String aMessage) 
 	{
 		Log.e(TAG, "Error:" + aMessage);
-		print("<font color=\"red\">"+aMessage+"</font>");
+		print("<font color=\"red\">" + aMessage + "</font>");
 	}//public void error(String aMessage) 
 	//------------------------------------------------------------------
 	public void exit(String aMessage)
@@ -981,8 +991,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 	private void pushPrompt(String question)
 	{
-		
-		if(!question.equals(get("prompt")))
+
+		if (!question.equals(get("prompt")))
 		{
 			//debug("pushing " + get("prompt") + " in favour of " + question);
 			promptStack.push(prompt());
@@ -1413,17 +1423,17 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	    File logFile = new File(logFileName);
 		//if(logFile.canWrite()) 
 		//{
-			logging = true;
-			try
-			{
-				logWriter = new BufferedWriter(new FileWriter(logFile));
-				//print("openend for logging "+logFileName);
-			}
-			catch (IOException e)
-			{
-				error("couldn't open logfile "+e);
-				logging = false;
-			}//catch (IOException e)
+		logging = true;
+		try
+		{
+			logWriter = new BufferedWriter(new FileWriter(logFile));
+			//print("openend for logging "+logFileName);
+		}
+		catch (IOException e)
+		{
+			error("couldn't open logfile " + e);
+			logging = false;
+		}//catch (IOException e)
 		//}//if(logFile.canWrite()) 
 		//else error("can't write to "+logFileName);
 	}
@@ -1437,9 +1447,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		}
 		catch (IOException e)
 		{
-			error("couldn't close logfile "+e);
+			error("couldn't close logfile " + e);
 		}
 		logging = false;
 	}//public void closelog()
-	
+
 }//public class Shell
