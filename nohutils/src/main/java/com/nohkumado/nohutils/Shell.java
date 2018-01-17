@@ -61,6 +61,8 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 	protected  EditText in = null;
 
 	protected boolean batchMode = false;
+	protected boolean logging = false;
+	protected BufferedWriter logWriter;
 	//protected boolean running = true;
 	protected String scanType = null;
 
@@ -854,6 +856,18 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		 */
 		if (something.length() > 0) 
 		{
+			try
+			{
+				if (logging)
+				{
+					logWriter.write(something);
+					if(!something.endsWith("\n")) logWriter.write("\n");
+				}
+			}
+			catch (IOException e)
+			{
+				error("no logging "+e);
+			}
 			String[] splitted = something.split("\n");
 			for (String line: splitted) 
 			{
@@ -1392,5 +1406,40 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 			//debug("setting child to subshell");
 			parentShell.setChild(this);
 		}
+	}//public void setParent(ShellI s)
+	@Override
+	public void startlog(String logFileName)
+	{
+	    File logFile = new File(logFileName);
+		//if(logFile.canWrite()) 
+		//{
+			logging = true;
+			try
+			{
+				logWriter = new BufferedWriter(new FileWriter(logFile));
+				//print("openend for logging "+logFileName);
+			}
+			catch (IOException e)
+			{
+				error("couldn't open logfile "+e);
+				logging = false;
+			}//catch (IOException e)
+		//}//if(logFile.canWrite()) 
+		//else error("can't write to "+logFileName);
 	}
+	@Override
+	public void closelog()
+	{
+		try
+		{
+			if (logWriter != null) logWriter.close();
+			//print("closed logging ");
+		}
+		catch (IOException e)
+		{
+			error("couldn't close logfile "+e);
+		}
+		logging = false;
+	}//public void closelog()
+	
 }//public class Shell

@@ -38,6 +38,12 @@ import java.util.*;
 @SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
 public interface ShellI extends PipableI
 {
+
+	public void closelog();
+
+
+	public void startlog(String logFileName);
+
 	int getInt(String p0);
 
 	ShellI cpyCtor();
