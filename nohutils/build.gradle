@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 ext {
     PUBLISH_GROUP_ID = 'com.nohkumado'
     PUBLISH_ARTIFACT_ID = 'nohutils'
-    PUBLISH_VERSION = '1.8'
+    PUBLISH_VERSION = '1.10'
     //bintrayRepo = 'nohutils'
     //bintrayName = 'nohutils'
 
@@ -35,8 +35,8 @@ android {
         //applicationId "com.nohkumado.nohutils"
         minSdkVersion 23
         targetSdkVersion 26
-        versionCode 108
-        versionName "1.08"
+        versionCode 1010
+        versionName "1.010"
     }
     buildTypes {
         release {
