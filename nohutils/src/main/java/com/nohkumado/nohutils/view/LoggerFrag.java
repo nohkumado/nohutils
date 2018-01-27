@@ -42,7 +42,11 @@ public class LoggerFrag extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		//Log.d(TAG, super.toString() + " onCrateView");
-		setRetainInstance(true);
+		if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
+		{
+			setRetainInstance(true); //otherwise it will crash on android 6...	
+		}
+		
 		viewContainer = super.onCreateView(inflater, container, savedInstanceState);
 
 		if (viewContainer == null)
