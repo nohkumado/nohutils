@@ -51,10 +51,10 @@ public class VersionCommand extends Command
 			{
 				shell.error("" + e);
 			}
-			catch (IllegalArgumentException e)
-			{
-				shell.error("" + e);
-			}
+			//catch (IllegalArgumentException e)
+			//{
+			//	shell.error("" + e);
+			//}
 			//shell.print("found field " + af.getName());
 		}
 

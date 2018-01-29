@@ -39,13 +39,13 @@ import java.util.*;
 public interface ShellI extends PipableI
 {
 
-	public void log(String msg);
+	void log(String msg);
 
 
-	public void closelog();
+	void closelog();
 
 
-	public void startlog(String logFileName);
+	void startlog(String logFileName);
 
 	int getInt(String p0);
 
