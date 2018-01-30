@@ -58,7 +58,7 @@ public class ShellActivity extends Activity implements MsgR2StringI
       //	Log.d(TAG,"main child["+index+"] "+nextChild);
       //}
       //Log.d(TAG,"done");
-      if (shellWindow > 0)
+      if (findViewById(shellWindow)!= null)
         fm.beginTransaction().add(shellWindow, shellfrag, "shellFrag").commit();
       else
         fm.beginTransaction().add(shellfrag, "shellFrag").commit();
