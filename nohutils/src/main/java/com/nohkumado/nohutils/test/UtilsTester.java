@@ -129,8 +129,7 @@ public abstract class UtilsTester {
 
   public boolean assertEquals(Object one, Object two) {
     if (assertNull(one) && assertNull(two)) return true;
-    if (assertNull(one) || assertNull(two)) return false;
-    return assertTrue((one.equals(two)));
+    return !(assertNull(one) || assertNull(two)) && assertTrue((one.equals(two)));
   }
 
   public boolean assertNotEquals(Object one, Object two)

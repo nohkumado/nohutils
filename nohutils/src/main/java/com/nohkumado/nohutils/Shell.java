@@ -622,7 +622,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 
 		if ((event != null && event.getAction() == KeyEvent.ACTION_DOWN))
 		{}
-		else if ((event == null && actionId == EditorInfo.IME_NULL) || (event != null && event.getAction() == KeyEvent.ACTION_UP))
+		else if ((event == null && (actionId == EditorInfo.IME_NULL || actionId == EditorInfo.IME_ACTION_DONE)) || (event != null && event.getAction() == KeyEvent.ACTION_UP))
 		{
 			//Log.d(TAG,"event : "+actionId+" , "+event);
 			reactToEnter(tw);
@@ -1431,8 +1431,9 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 		}
 		catch (IOException e)
 		{
-			error("couldn't open logfile " + e);
 			logging = false;
+			error("couldn't open logfile " + e);
+			context.askPermission("android.permission.WRITE_EXTERNAL_STORAGE");
 		}//catch (IOException e)
 		//}//if(logFile.canWrite()) 
 		//else error("can't write to "+logFileName);
