@@ -203,7 +203,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 				child = copy();
 				childs.put(localKey, child);
 			}
-			else child = (NTreeNode) childs.get(localKey); //TODO beware cast exception possible
+			else child = (NTreeNode<E>) childs.get(localKey); //TODO beware cast exception possible
 			child.set(aNode, restPath);
 		}//if (match.find())
 		else
@@ -253,7 +253,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 		else
 		{
 			//Log.d(TAG, "continuing descending " + path);
-			return ((NTreeNode)child).set(path, kto);
+			return ((NTreeNode<E>)child).set(path, kto);
 		}
 	}//public NTreeAtom set(ArrayList<String> path, E kto)
 
@@ -265,7 +265,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 	public NTreeNode<E> copy()
 	{
 		// TODO: Implement this method
-		return new NTreeNode();
+		return new NTreeNode<E>();
 	}
 	/**
 	 * create a string representation of this tree

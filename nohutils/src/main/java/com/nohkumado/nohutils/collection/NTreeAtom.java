@@ -75,7 +75,7 @@ public abstract class NTreeAtom<E>
 	{
 		return this;
 	}
-	public NTreeAtom setContent(E profil)
+	public NTreeAtom<E> setContent(E profil)
 	{
 		return this;
 	}

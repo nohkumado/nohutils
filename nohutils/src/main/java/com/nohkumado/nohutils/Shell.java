@@ -212,6 +212,7 @@ public class Shell implements ShellI,OnEditorActionListener,OnKeyListener
 				else
 					retVal = "cmd was null??";
 			}//for(Iterator<CommandI> i = toWorkOf.iterator(); i.hasNext();)
+		//Log.d(TAG,"done process returning "+retVal);
 		return(retVal);
 	}//end process
 	/**
