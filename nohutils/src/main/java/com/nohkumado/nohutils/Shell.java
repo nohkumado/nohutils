@@ -392,7 +392,20 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
   {
     if(context == null) throw new FileNotFoundException(" no context");
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences((Context) context);
-    if(prefs.contains(key)) return prefs.getInt(key, 0);
+    if(prefs.contains(key))
+    {
+      int result;
+      try
+      {
+        result = prefs.getInt(key, 0);
+      }
+      catch(ClassCastException e)
+      {
+        result = Integer.parseInt(prefs.getString(key,""));
+      }
+
+      return result;
+    }
     throw new FileNotFoundException(" no such key " + key);
   }//private void intPref(String key)
   @Override
@@ -400,7 +413,21 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
   {
     if(context == null) throw new FileNotFoundException(" no context");
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences((Context) context);
-    if(prefs.contains(key)) return prefs.getFloat(key, 0);
+    if(prefs.contains(key))
+    {
+      float result;
+      try
+      {
+        result = prefs.getFloat(key, 0);
+      }
+      catch(ClassCastException e)
+      {
+        result = Float.parseFloat(prefs.getString(key,""));
+      }
+
+      return result;
+    }
+
     throw new FileNotFoundException(" no such key " + key);
   }//private void intPref(String key)
   @Override
@@ -408,7 +435,19 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
   {
     if(context == null) throw new FileNotFoundException(" no context");
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences((Context) context);
-    if(prefs.contains(key)) return prefs.getLong(key, 0);
+    if(prefs.contains(key))
+    {
+      long result;
+      try
+      {
+        result = prefs.getLong(key, 0);
+      }
+      catch(ClassCastException e)
+      {
+        result = Long.parseLong(prefs.getString(key,""));
+      }
+      return result;
+    }
     throw new FileNotFoundException(" no such key " + key);
   }//private void intPref(String key)
   @Override
@@ -416,7 +455,20 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
   {
     if(context == null) throw new FileNotFoundException(" no context");
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences((Context) context);
-    if(prefs.contains(key)) return prefs.getBoolean(key, false);
+    if(prefs.contains(key))
+    {
+      boolean result;
+      try
+      {
+        result = prefs.getBoolean(key, true);
+      }
+      catch(ClassCastException e)
+      {
+        result = Boolean.parseBoolean(prefs.getString(key,""));
+      }
+
+      return result;
+    }
     throw new FileNotFoundException(" no such key " + key);
   }//private void intPref(String key)
   @Override
@@ -654,6 +706,7 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
 
     if((event != null && event.getAction() == KeyEvent.ACTION_DOWN))
     {
+      //nothing to do
     } else if((event == null && (actionId == EditorInfo.IME_NULL || actionId == EditorInfo.IME_ACTION_DONE)) || (event != null && event.getAction() == KeyEvent.ACTION_UP))
     {
       //Log.d(TAG,"event : "+actionId+" , "+event);
