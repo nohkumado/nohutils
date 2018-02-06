@@ -114,9 +114,18 @@ public interface ShellI extends PipableI
 	 */
 	String preference(String locname);
 	String preference(String locname, Object res);
-	int intPref(String locaname);
+	int intPref(String locaname) throws FileNotFoundException;
+  float floatPref(String locaname) throws FileNotFoundException;
 
-	/** 
+	long longPref(String key) throws FileNotFoundException//private void intPref(String key)
+	;
+
+	boolean booleanPref(String key) throws FileNotFoundException//private void intPref(String key)
+	;
+
+	Set<String> stringSetPref(String locname);
+
+	/**
 	 * local settings 
 	 *
 	 * @param envname envname
