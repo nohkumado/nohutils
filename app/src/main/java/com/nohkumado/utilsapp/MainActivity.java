@@ -1,5 +1,6 @@
 package com.nohkumado.utilsapp;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.nohkumado.nohutils.commands.QuitCommand;
 import com.nohkumado.nohutils.commands.SetCommand;
 import com.nohkumado.nohutils.commands.VersionCommand;
 import com.nohkumado.nohutils.view.AboutDialogFragment;
+import com.nohkumado.nohutils.view.HelpDialogFragment;
 import com.nohkumado.utilsapp.commands.TestCmd;
 import com.nohkumado.nohutils.view.HelpDialog;
 
@@ -109,6 +111,8 @@ public class MainActivity extends Msg2RString
     // Handle item selection
     switch (item.getItemId()) {
       case R.id.menu_help:
+        HelpDialogFragment hFrag = new HelpDialogFragment(this);
+        hFrag.show(getFragmentManager(),"MANUAL");
         //HelpDialog dia = new HelpDialog(this, getResources().getString(R.string.help_content));
         //HelpDialog dia = new HelpDialog((Context) this);
         //dia.show();
