@@ -9,4 +9,8 @@
     <string name="home">home</string>
     <string name="type_some_command">type some command</string>
     <string name="shell_input">shell input</string>
+    <string name="menu_about">about</string>
+    <string name="menu_help">help</string>
+    <string name="help_content">the help for this app</string>
+    <string name="legal_msg"><![CDATA[All rights reserved.<br/> Not liable for any damage incurred from  use of this software<br/>  including but not limited to:<br/>  monetary loss,<br/>   temporary paralysis,<br/>  halitosis,<br/>  spontaneous combustion,<br/>   road rash,<br/>  and or premature hair loss.]]></string>
 </resources>

@@ -52,4 +52,9 @@
    <string name="variables">Variables</string>
     <string name="version">version</string>
     <string name="version_help">gives back the version number</string>
+    <string name="about_msg">About this app</string>
+   <string name="copyright">copyright</string>
+   <string name="copyright_date">2017</string>
+   <string name="contact_lbl">Contact</string>
+   <string name="about_contact">nohkumado@gmail.com</string>
 </resources>

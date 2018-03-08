@@ -1,8 +1,12 @@
 package com.nohkumado.utilsapp;
 
 import android.app.FragmentManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.nohkumado.nohutils.CommandI;
 import com.nohkumado.nohutils.Msg2RString;
@@ -13,7 +17,9 @@ import com.nohkumado.nohutils.commands.PwdCommand;
 import com.nohkumado.nohutils.commands.QuitCommand;
 import com.nohkumado.nohutils.commands.SetCommand;
 import com.nohkumado.nohutils.commands.VersionCommand;
+import com.nohkumado.nohutils.view.AboutDialogFragment;
 import com.nohkumado.utilsapp.commands.TestCmd;
+import com.nohkumado.nohutils.view.HelpDialog;
 
 import java.util.HashMap;
 
@@ -91,5 +97,32 @@ public class MainActivity extends Msg2RString
 
     shell.feedCmds(availableCmds);
   }//protected void onCreate(Bundle savedInstanceState)
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.main_menu, menu);
+    return true;
+  }
 
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    // Handle item selection
+    switch (item.getItemId()) {
+      case R.id.menu_help:
+        //HelpDialog dia = new HelpDialog(this, getResources().getString(R.string.help_content));
+        //HelpDialog dia = new HelpDialog((Context) this);
+        //dia.show();
+        return true;
+      case R.id.menu_about:
+
+        //AboutDialogFragment dia = new AboutDialogFragment(this, getResources().getString(R.string.help_content));
+        AboutDialogFragment dia = new AboutDialogFragment(this);
+        dia.setInfo(dia.readRawTextFile(R.raw.info));
+        dia.setLegal(dia.readRawTextFile(R.raw.legal));
+        dia.show(getFragmentManager(),"ABOUT");
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
 }//public class MainActivity extends Msg2RString
