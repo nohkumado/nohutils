@@ -1,20 +1,16 @@
 package com.nohkumado.nohutils.view;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nohkumado.nohutils.BuildConfig;
@@ -34,15 +30,13 @@ import java.lang.reflect.Field;
 public class AboutDialogFragment extends DialogFragment
 {
   private static final String TAG = "ADia";
-  private static Context context;
-  private String info;
   private String legal;
+  private int logoId;
+  private String version;
 
-  @SuppressLint("ValidFragment")
-  public AboutDialogFragment(Context mainActivity)
+  public AboutDialogFragment()
   {
     super();
-    context = mainActivity;
   }
 
   @Override
@@ -54,29 +48,34 @@ public class AboutDialogFragment extends DialogFragment
     LayoutInflater inflater = getActivity().getLayoutInflater();
 
     View diaView = inflater.inflate(R.layout.about, null);
-    int resourceId = context.getResources().getIdentifier("app_name", "string", context.getPackageName());
+    int resourceId = getActivity().getResources().getIdentifier("app_name", "string", getActivity().getPackageName());
     if(resourceId > 0)
     {
-      ((TextView) diaView.findViewById(R.id.about_title)).setText(context.getResources().getString(resourceId));
+      ((TextView) diaView.findViewById(R.id.about_title)).setText(getActivity().getResources().getString(resourceId));
     }
-    ((TextView) diaView.findViewById(R.id.about_version)).setText(version());
+    if(version == null) version= version();
+    ((TextView) diaView.findViewById(R.id.about_version)).setText(version);
 
-    ((TextView) diaView.findViewById(R.id.v_label)).setText(firstCap(context.getResources().getString(R.string.version)));
-    ((TextView) diaView.findViewById(R.id.cpy_label)).setText(firstCap(context.getResources().getString(R.string.copyright)));
-    ((TextView) diaView.findViewById(R.id.about_copyright)).setText(context.getResources().getString(R.string.copyright_date));
+    ((TextView) diaView.findViewById(R.id.v_label)).setText(firstCap(getActivity().getResources().getString(R.string.version)));
+    ((TextView) diaView.findViewById(R.id.cpy_label)).setText(firstCap(getActivity().getResources().getString(R.string.copyright)));
+    ((TextView) diaView.findViewById(R.id.about_copyright)).setText(getActivity().getResources().getString(R.string.copyright_date));
 
-    TextView tv = ((TextView) diaView.findViewById(R.id.about_contact));
-    tv.setText(context.getResources().getString(R.string.about_contact));
+    if(logoId != 0) ((ImageView) diaView.findViewById(R.id.logo_img)).setImageResource(logoId);
+
+    TextView tv = diaView.findViewById(R.id.about_contact);
+    tv.setText(getActivity().getResources().getString(R.string.about_contact));
     //tv.setLinkTextColor(Color.WHITE);
     Linkify.addLinks(tv, Linkify.ALL);
 
+    tv = diaView.findViewById(R.id.legal_text);
 
     if(legal != null && !"".equals(legal))
     {
-      tv = (TextView) diaView.findViewById(R.id.legal_text);
       tv.setText(legal);
       Log.d(TAG,"set legal to "+legal);
     }
+    else
+      tv.setText(R.string.legal_msg);
 
     //TextView tv = (TextView) diaView.findViewById(R.id.info_text);
     //tv.setText(Html.fromHtml(info));
@@ -109,9 +108,9 @@ public class AboutDialogFragment extends DialogFragment
     return builder.create();
   }
 
-  public static String readRawTextFile(int id)
+  public String readRawTextFile(int id)
   {
-    InputStream inputStream = context.getResources().openRawResource(id);
+    InputStream inputStream = getActivity().getResources().openRawResource(id);
 
     InputStreamReader in = new InputStreamReader(inputStream);
     BufferedReader buf = new BufferedReader(in);
@@ -133,7 +132,6 @@ public class AboutDialogFragment extends DialogFragment
 
   public void setInfo(String info)
   {
-    this.info = info;
   }
 
   public void setLegal(String s)
@@ -165,6 +163,7 @@ public class AboutDialogFragment extends DialogFragment
       }
       catch (IllegalAccessException e)
       {
+        //well do nothing about it....
       }
     }
 
@@ -172,17 +171,26 @@ public class AboutDialogFragment extends DialogFragment
     {
       try
       {
-        versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
-        versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        versionCode = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionCode;
+        versionName = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
       }
       catch (PackageManager.NameNotFoundException ignored)
       { }
     }//if(aide_bug)
-Log.d(TAG," returning version "+versionCode + "(" + versionName + ")");
     return versionCode + "(" + versionName + ")";
   }
   public String firstCap(String msg)
   {
     return msg.substring(0, 1).toUpperCase() + msg.substring(1);
+  }
+
+  public void setLogo(int flowchart)
+  {
+    logoId = flowchart;
+  }
+
+  public void version(String s)
+  {
+    version = s;
   }
 }

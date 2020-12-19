@@ -14,7 +14,7 @@ public class Tester
 {
 	public static final String TAG = "Tester";
 	//protected static String testName = "Tester";
-	protected ShellI shell = null;
+	protected ShellI shell;
 	protected boolean doAlsoLogOutput = false;
 
 	public Tester(ShellI s)

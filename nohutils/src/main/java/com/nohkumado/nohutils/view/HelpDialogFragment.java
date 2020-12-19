@@ -3,18 +3,10 @@ package com.nohkumado.nohutils.view;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.nohkumado.nohutils.R;
@@ -32,22 +24,20 @@ import java.io.InputStreamReader;
 public class HelpDialogFragment extends DialogFragment
 {
   private static final String TAG = "HelpFrag";
-  private final Context context;
 
-  public HelpDialogFragment(Context ctxt)
+  public HelpDialogFragment()
   {
     super();
-    context = ctxt;
   }
-
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState)
   {
     // Use the Builder class for convenient dialog construction
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-
-    SpannableString content = new SpannableString(Html.fromHtml( readRawTextFile(R.raw.manual)));
+    WebView webView = new WebView(getActivity());
+    webView.loadDataWithBaseURL("file:///android_asset/", readRawTextFile(R.raw.manual), "text/html", "utf-8", null);
+    //SpannableString content = new SpannableString(Html.fromHtml( readRawTextFile(R.raw.manual)));
  /*   SpannableString content = new SpannableString(Html.fromHtml( readRawTextFile(R.raw.manual)));
     Log.e(TAG,"gfailed to inkify "+content);
 
@@ -65,7 +55,7 @@ public class HelpDialogFragment extends DialogFragment
 
     builder.setTitle(R.string.manual_title)
         //.setMessage(content)
-        .setMessage(content)
+        .setView(webView)
         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
         {
           public void onClick(DialogInterface dialog, int id)
@@ -80,15 +70,14 @@ public class HelpDialogFragment extends DialogFragment
           }
         })*/
     ;
-    AlertDialog d = builder.create();
     // Create the AlertDialog object and return it
     //((TextView)d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
 
-    return d;
+    return builder.create();
   }
   public String readRawTextFile(int id)
   {
-    InputStream inputStream = context.getResources().openRawResource(id);
+    InputStream inputStream = getActivity().getResources().openRawResource(id);
 
     InputStreamReader in = new InputStreamReader(inputStream);
     BufferedReader buf = new BufferedReader(in);
@@ -112,8 +101,8 @@ public class HelpDialogFragment extends DialogFragment
     super.onStart();
 
     // Make the dialog's TextView clickable
-    ((TextView)this.getDialog().findViewById(android.R.id.message))
-        .setMovementMethod(LinkMovementMethod.getInstance());
+    TextView tv = this.getDialog().findViewById(android.R.id.message);
+    if(tv != null) tv.setMovementMethod(LinkMovementMethod.getInstance());
   }
 
 }

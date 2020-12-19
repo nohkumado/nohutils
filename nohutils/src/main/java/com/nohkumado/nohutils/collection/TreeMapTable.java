@@ -171,7 +171,7 @@ public class TreeMapTable<E,G> implements Iterable
   }
 	public boolean rename(E oldTok,E newTok)
   {
-	  if(rows.keySet().contains(oldTok))
+	  if(rows.containsKey(oldTok))
 	  {
 		  if(!"".equals(newTok))
 		  {

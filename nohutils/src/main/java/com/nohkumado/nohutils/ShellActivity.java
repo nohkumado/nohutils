@@ -66,12 +66,12 @@ public class ShellActivity extends Activity implements MsgR2StringI
     }//if (shellfrag == null)
     shell = shellfrag.shell();
 
-    giveShellCommands();
+    //giveShellCommands(); //fragment should do it now
 
     if (shell != null) shell.set("msger", this);
   }//protected void onCreate(Bundle savedInstanceState)
 
-  protected void giveShellCommands()
+  public void giveShellCommands(ShellI shell)
   {
     CommandI[] cmds = new CommandI[]
         {
@@ -195,14 +195,12 @@ public class ShellActivity extends Activity implements MsgR2StringI
   @Override
   public String callback(String name, HashMap<String, Object> args)
   {
-    // TODO: Implement this method
     return null;
   }
 
   @Override
   public SQLiteOpenHelper getDbHelper()
   {
-    // TODO: Implement this method
     return null;
   }
 

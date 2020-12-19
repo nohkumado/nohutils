@@ -44,7 +44,7 @@ public abstract class NTreeAtom<E>
 	}
 
 	
-	public NTreeAtom name(String localKey)
+	public NTreeAtom<E> name(String localKey)
 	{
 		name = localKey;
 		return this;
@@ -62,7 +62,7 @@ public abstract class NTreeAtom<E>
 		return false;
 	}
 	
-	public NTreeAtom set(E aProfile, String cathegory, String name)
+	public NTreeAtom<E> set(E aProfile, String cathegory, String name)
 	{
 		return null;
 	}

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
    <string name="addNewPathSeg">add new path</string>
-   <string name="cat">cat</string>
+   <string name="cat" translatable="false">cat</string>
    <string name="cat_help">cat {path}, issue contents of the designed file</string>
    <string name="cat_not_file">not a regular file</string>
-   <string name="cd">cd</string>
+   <string name="cd" translatable="false">cd</string>
    <string name="cd_does_not_exist">does not exist</string>
    <string name="cd_help">cd {path}, change directory</string>
    <string name="cd_not_a_dir">not a directory</string>
    <string name="cd_not_enough_rights">not enough rights</string>
    <string name="cd_provide_a_dir_to_enter">provide a dir to enter</string>
-   <string name="cmd_command">command</string>
+   <string name="cmd_command" translatable="false">command</string>
    <string name="cmd_unparsed_args">has unparsed arguments</string>
    <string name="endlist">End list</string>
-   <string name="hello_world">Hello world!</string>
+   <string name="hello_world" translatable="false">Hello world!</string>
    <string name="home">home</string>
-   <string name="lib_name">nohutils</string>
-   <string name="ls">ls</string>
+   <string name="lib_name" translatable="false">nohutils</string>
+   <string name="ls" translatable="false">ls</string>
    <string name="ls_help">ls, list directory content</string>
    <string name="ls_not_enough_rights">not enough rights</string>
    <string name="lscmd_invalid_pattern">invalid pattern</string>
@@ -26,8 +26,8 @@
    <string name="not_a_numeric"><![CDATA["Answer wasn\'t numeric"]]></string>
    <string name="not_an_int"><![CDATA["Answer wasn\'t int"]]></string>
    <string name="numeric_asked">asking for numeric input</string>
-   <string name="ok">OK</string>
-   <string name="pwd">pwd</string>
+   <string name="ok" translatable="false">OK</string>
+   <string name="pwd" translatable="false">pwd</string>
    <string name="pwd_help">pwd, to display actual working directory</string>
    <string name="question_is_int">Asking for int</string>
    <string name="quit">quit</string>
@@ -35,7 +35,7 @@
    <string name="rename_from">from</string>
    <string name="rename_to">to</string>
    <string name="rename_tok">rename a token</string>
-   <string name="set">set</string>
+   <string name="set" translatable="false">set</string>
    <string name="sethelp">set {varname} {value}, without argument show values</string>
    <string name="shell_changetoinsert">change to insert</string>
    <string name="shell_changetooverwrite">change to overwrite</string>
@@ -43,19 +43,21 @@
    <string name="shell_help">issue help</string>
    <string name="start">welcome to noh shell</string>
    <string name="syntax_error">syntax error!</string>
-   <string name="test">test</string>
+   <string name="test" translatable="false">test</string>
    <string name="testhelp">run this command to make the tests on the nohutils</string>
-   <string name="text">Text</string>
-   <string name="tok_name">name</string>
+   <string name="text" translatable="false">Text</string>
+   <string name="tok_name" translatable="false">name</string>
    <string name="up">up</string>
    <string name="variable_list">Variable list</string>
-   <string name="variables">Variables</string>
-    <string name="version">version</string>
+   <string name="variables" translatable="false">Variables</string>
+    <string name="version" translatable="false">version</string>
     <string name="version_help">gives back the version number</string>
     <string name="about_msg">About this app</string>
-   <string name="copyright">copyright</string>
-   <string name="copyright_date">2017</string>
+   <string name="copyright" translatable="false">copyright</string>
+   <string name="copyright_date" translatable="false">2017</string>
    <string name="contact_lbl">Contact</string>
-   <string name="about_contact">nohkumado@gmail.com</string>
+   <string name="about_contact" translatable="false">nohkumado@gmail.com</string>
    <string name="manual_title">Manual</string>
+    <string name="legal_msg">All rights reserved.<br/> Not liable for any damage incurred from  use of this software<br/>  including but not limited to:<br/>  monetary loss,<br/>   temporary paralysis,<br/>  halitosis,<br/>  spontaneous combustion,<br/>   road rash,<br/>  and or premature hair loss.</string>
+    <string name="logo" translatable="false">logo</string>
 </resources>

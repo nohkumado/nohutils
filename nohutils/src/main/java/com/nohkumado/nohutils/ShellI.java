@@ -166,7 +166,7 @@ public interface ShellI extends PipableI
 	 */
 	String msg(String errorMsg);
 	String msg(int resourceId);
-
+	String[] msgArr(int resourceId);
 	/**
 	 issue an debug message
 	 */
@@ -198,4 +198,7 @@ public interface ShellI extends PipableI
 	InputStream open(String name)  throws IOException;
 	void beep();
 	void endQuestion(); //stop forwarding keyevents to a question
+
+
+	Object rmRessource(String dataName);
 }//public class ShellI

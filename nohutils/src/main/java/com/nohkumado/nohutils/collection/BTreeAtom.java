@@ -171,9 +171,9 @@ public class BTreeAtom
     if (left == null && cmpTo.left == null &&
         right == null && cmpTo.right == null) return toRet; //is leaf
     if (left != null && cmpTo.left != null) toRet &= left.equals(cmpTo.left);
-    else toRet &= false;
+    else toRet = false;
     if (right != null && cmpTo.right != null) toRet &= right.equals(cmpTo.right);
-    else toRet &= false;
+    else toRet = false;
 
     return toRet;
   }// public boolean equals(Object obj)

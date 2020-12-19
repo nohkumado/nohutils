@@ -22,7 +22,6 @@ public class NohTest extends UtilsTester {
   public NohTest(ShellI s) {
   }
 
-  @SuppressWarnings("UnusedAssignment")
   public String runTest() {
 
     try {

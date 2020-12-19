@@ -105,7 +105,6 @@ public abstract class UtilsTester {
     return assertTrue(!cond, msg);
   }
   public boolean assertTrue(boolean cond) {
-    if (cond) return cond;
     return cond;
   }
 
@@ -127,9 +126,9 @@ public abstract class UtilsTester {
     return assertTrue(cond != null);
   }
 
-  public boolean assertEquals(Object one, Object two) {
-    if (assertNull(one) && assertNull(two)) return true;
-    return !(assertNull(one) || assertNull(two)) && assertTrue((one.equals(two)));
+  public boolean assertEquals(Object one, Object two)
+  {
+    return assertNull(one) && assertNull(two) || !(assertNull(one) || assertNull(two)) && assertTrue((one.equals(two)));
   }
 
   public boolean assertNotEquals(Object one, Object two)

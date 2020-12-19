@@ -1,8 +1,6 @@
 package com.nohkumado.utilsapp;
 
-import android.app.AlertDialog;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,7 +19,6 @@ import com.nohkumado.nohutils.commands.VersionCommand;
 import com.nohkumado.nohutils.view.AboutDialogFragment;
 import com.nohkumado.nohutils.view.HelpDialogFragment;
 import com.nohkumado.utilsapp.commands.TestCmd;
-import com.nohkumado.nohutils.view.HelpDialog;
 
 import java.util.HashMap;
 
@@ -29,7 +26,6 @@ public class MainActivity extends Msg2RString
 {
   private final static String TAG = "MA";
 
-  @SuppressWarnings("UnusedAssignment")
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
@@ -111,7 +107,7 @@ public class MainActivity extends Msg2RString
     // Handle item selection
     switch (item.getItemId()) {
       case R.id.menu_help:
-        HelpDialogFragment hFrag = new HelpDialogFragment(this);
+        HelpDialogFragment hFrag = new HelpDialogFragment();
         hFrag.show(getFragmentManager(),"MANUAL");
         //HelpDialog dia = new HelpDialog(this, getResources().getString(R.string.help_content));
         //HelpDialog dia = new HelpDialog((Context) this);
@@ -120,7 +116,7 @@ public class MainActivity extends Msg2RString
       case R.id.menu_about:
 
         //AboutDialogFragment dia = new AboutDialogFragment(this, getResources().getString(R.string.help_content));
-        AboutDialogFragment dia = new AboutDialogFragment(this);
+        AboutDialogFragment dia = new AboutDialogFragment();
         dia.setInfo(dia.readRawTextFile(R.raw.info));
         dia.setLegal(dia.readRawTextFile(R.raw.legal));
         dia.show(getFragmentManager(),"ABOUT");

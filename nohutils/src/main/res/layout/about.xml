@@ -10,8 +10,9 @@
             android:id="@+id/logo_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center"
-            android:src="@drawable/ic_launcher" />
+            android:layout_gravity="start|center"
+            android:src="@drawable/ic_launcher"
+            android:contentDescription="@string/logo" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -22,7 +23,6 @@
                 android:id="@+id/about_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
                     android:id="@+id/v_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
+                    android:layout_gravity="start"
                     android:paddingHorizontal="1sp"
                     android:text="@string/version" />
 
@@ -43,8 +43,8 @@
                     android:id="@+id/about_version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="TextView" />
+                    android:layout_gravity="end"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -56,7 +56,7 @@
                     android:id="@+id/cpy_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
+                    android:layout_gravity="start"
                     android:paddingHorizontal="1sp"
                     android:text="@string/copyright" />
 
@@ -64,7 +64,7 @@
                     android:id="@+id/about_copyright"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right" />
+                    android:layout_gravity="end" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
                     android:id="@+id/contact_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
+                    android:layout_gravity="start"
                     android:paddingHorizontal="1sp"
                     android:text="@string/contact_lbl" />
 
@@ -83,7 +83,7 @@
                     android:id="@+id/about_contact"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right" />
+                    android:layout_gravity="end" />
             </LinearLayout>
 
         </LinearLayout>
@@ -99,7 +99,7 @@
             android:layout_margin="8sp"
             android:layout_span="2"
             android:textColor="#cccccc"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="italic" />
     </TableRow>
 </TableLayout>

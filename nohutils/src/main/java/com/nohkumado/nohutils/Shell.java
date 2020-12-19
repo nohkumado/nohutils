@@ -46,7 +46,7 @@ import java.io.*;
 import java.util.*;
 
 /*
- TODO
+ LATER
  -  maybe add a pseudo graphical mode, 
  meaning if a cmd can be done graphically it should be done so....
  - delegate the command queue to a worker thread.... 
@@ -192,7 +192,6 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
    */
   public String process(String line)
   {
-    //TODO check if shell is allready running otherwise push into a TODO stack
     //Log.d(TAG,"in process '"+line+"'");
     String retVal = "";
     ArrayList<CommandI> toWorkOf = cmdParser.parse(line);
@@ -203,7 +202,6 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
         {
           //System.out.println("abpout to exe: "+aCmd);
           retVal = aCmd.execute();
-          //TODO pipe ahould interced e here
           //debug("res\n" + retVal);
 
           if(!Objects.equals(retVal, "")) print(retVal);
@@ -226,7 +224,6 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
    */
   public String process(String line, HashMap<String, Object> parm)
   {
-    //TODO check if shell is allready running otherwise push into a TODO stack
     String retVal = "";
     CommandI aCmd = cmdParser.findCmd(line);
     if(aCmd != null)
@@ -292,7 +289,6 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
       if(pwd == null) pwd = System.getProperty("user.dir");
       prompt = prompt.replaceAll("\\\\w", pwd);
     }// if(prompt.matches(".*\\\\w.*")pp)
-    //TODO argh....
     printOnCmdline(prompt);
     //set("prompt", prompt);
     return (prompt);
@@ -358,7 +354,7 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
    * ressources
    * <p>
    * equivalent to the environment variables of a shell....
-   * TODO check with the other projects here a confusion
+   * check with the other projects here a confusion
    * between settings from config handler which are stored betweend
    * sessions and local vars that should be dropped::::
    * changed now, be careful with other projects!! preferences is now called (instead of ressource) and it string only (will have to revert if necessary) and accesses shared prefs
@@ -490,13 +486,12 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
   {
     Object result = null;
     if(localVars.containsKey(envname)) result = localVars.remove(envname);
-    return (result);
-		/* TODO when we switch over to android library
-		 SharedPreferences mySPrefs =PreferenceManager.getDefaultSharedPreferences(this);
+
+		 SharedPreferences mySPrefs =PreferenceManager.getDefaultSharedPreferences((Context) context);
 		 SharedPreferences.Editor editor = mySPrefs.edit();
-		 editor.remove(String key);
+		 editor.remove(envname);
 		 editor.apply();
-		 */
+    return (result);
   }// public Object rmRessource(String envname)
 
   /**
@@ -518,7 +513,7 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
     try
     {
       String value = preference(key);
-      if(value != null) result = Integer.valueOf(value);
+      if(value != null) result = Integer.parseInt(value);
     } catch(NumberFormatException e)
     {
       Log.e(TAG, "no number for " + key + " : " + preference(key));
@@ -569,6 +564,14 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
 
     return (context.getResources().getString(resourceId));
   }// public String msg(String m)
+
+  @Override
+  public String[] msgArr(int resourceId)
+  {
+    if(context == null) return new String[] {"no context"};
+
+    return (context.getResources().getStringArray(resourceId));
+  }
 
   /**
    * returns the message associated with a token
@@ -1093,7 +1096,6 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
    *
    * @param question a string to issue to prompts for an answer
    * @param options  more data, e.g. default value, a range selection, captions for range selection,
-   * @return user inpoout
    */
   public void ask(String question, HashMap<String, Object> options, CommandI caller)
   {
@@ -1151,7 +1153,7 @@ public class Shell implements ShellI, OnEditorActionListener, OnKeyListener
         {
           try
           {
-            index = Integer.valueOf(answer);
+            index = Integer.parseInt(answer);
           }// try
           catch(NumberFormatException e)
           {

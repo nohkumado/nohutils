@@ -25,15 +25,19 @@ public class Msg2RString extends Activity implements MsgR2StringI
 	@Override
 	public SQLiteOpenHelper getDbHelper()
 	{
-		// TODO: Implement this method
 		return null;
 	}
 
 	@Override
 	public String callback(String name, HashMap<String, Object> args)
 	{
-		// TODO: Implement this method
 		return null;
+	}
+
+	@Override
+	public void giveShellCommands(ShellI shell)
+	{
+
 	}
 
 	@Override
@@ -69,7 +73,6 @@ public class Msg2RString extends Activity implements MsgR2StringI
 		}
 		catch (Resources.NotFoundException e)
 		{ Log.e(TAG, "not found message : " + resourceId);}
-		// TODO: Implement this method
 		return null;
 	}
 
@@ -94,7 +97,7 @@ public class Msg2RString extends Activity implements MsgR2StringI
 
 	/**
 	 * sample onCreate
-	 @Override
+	 @ Override
 	 protected void onCreate(Bundle savedInstanceState)
 	 {
 	 super.onCreate(savedInstanceState);
@@ -165,6 +168,8 @@ public class Msg2RString extends Activity implements MsgR2StringI
 		{
 			case RESULT_SETTINGS:
 				break;
+			case -1: //stop studio from complainign from not enough reason for switch
+				break;
 
 		}
 
@@ -192,6 +197,7 @@ public class Msg2RString extends Activity implements MsgR2StringI
 	{
 		if (checkSelfPermission(whichPerm) != PackageManager.PERMISSION_GRANTED)
 		{
+			Log.d(TAG, "permission "+whichPerm+" not granted");
 			// Should we show an explanation?
 			if (shouldShowRequestPermissionRationale(whichPerm)) 
 			{
@@ -201,7 +207,11 @@ public class Msg2RString extends Activity implements MsgR2StringI
 					Log.d(TAG,"split gave us a hit : "+splitted[splitted.length-1]);
 					shell.print(shell.msg(splitted[splitted.length-1]));
 				}
-				else shell.print(shell.msg(whichPerm));
+				else
+        {
+          shell.print(shell.msg(whichPerm));
+          Log.d(TAG,"explanation concerninng "+whichPerm);
+        }
 				// Show an explanation to the user *asynchronously* -- don't block
 				// this thread waiting for the user's response! After the user
 				// sees the explanation, try again to request the permission.
@@ -216,7 +226,7 @@ public class Msg2RString extends Activity implements MsgR2StringI
 				// result of the request.
 			}//else 
 		}//if(checkSelfPermission(whichPerm) != PackageManager.PERMISSION_GRANTED)
-
+else Log.d(TAG, "permission "+whichPerm+" granted!!");
 		return "";
 	}//public String askPermission(String whichPerm)
 	

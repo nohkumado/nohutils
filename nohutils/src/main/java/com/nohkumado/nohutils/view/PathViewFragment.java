@@ -61,7 +61,7 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
         //Log.d(TAG, "check container : " + viewContainer);
         if (viewContainer != null)
         {
-			LinearLayout container = (LinearLayout)viewContainer.findViewById(com.nohkumado.nohutils.R.id.treeselector);
+			LinearLayout container = viewContainer.findViewById(R.id.treeselector);
           //Log.d(TAG, "adding spinner to container");
           //spinInit.add(true);
           spinViews.add(v);
@@ -126,11 +126,11 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
     //Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
     //textFrame = (TextView) viewContainer.findViewById(R.id.loggerview);
 
-    pathChangeBut = (ImageButton)viewContainer.findViewById(com.nohkumado.nohutils.R.id.path_ok);
+    pathChangeBut = viewContainer.findViewById(R.id.path_ok);
     pathChangeBut.setOnClickListener(this);
-	  pathUpBut = (ImageButton)viewContainer.findViewById(com.nohkumado.nohutils.R.id.upButton);
+	  pathUpBut = viewContainer.findViewById(R.id.upButton);
     pathUpBut.setOnClickListener(this);
-	  pathHomeBut = (ImageButton)viewContainer.findViewById(com.nohkumado.nohutils.R.id.homeButton);
+	  pathHomeBut = viewContainer.findViewById(R.id.homeButton);
     pathHomeBut.setOnClickListener(this);
 
 
@@ -145,7 +145,6 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
 
     return viewContainer;
   }//public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-  @SuppressWarnings("UnusedAssignment")
   @Override
   public void onClick(View knopf)
   {

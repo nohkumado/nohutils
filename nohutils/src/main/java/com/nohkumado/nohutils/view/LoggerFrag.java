@@ -54,7 +54,7 @@ public class LoggerFrag extends Fragment
 			viewContainer = inflater.inflate(R.layout.loggerfrag, container, false);
 			//Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
 		}
-		textFrame = (TextView)viewContainer.findViewById(com.nohkumado.nohutils.R.id.loggerview);
+		textFrame = viewContainer.findViewById(R.id.loggerview);
 
 		//add("starting up");
 		//textFrame.setText("starting up");

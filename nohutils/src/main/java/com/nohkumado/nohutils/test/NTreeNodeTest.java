@@ -19,12 +19,12 @@ public class NTreeNodeTest extends UtilsTester
 		String[] names = new String[] {
 			"one", "two","three"
 		};
-		String[]lname =  new String[]{
+		String[] lname =  new String[]{
 			"l1","l2","l3","l4","l5","l6"
 		}; 
 		int n = 0;
 		for (String name : names) {
-			NTreeNode aNode = new NTreeNode();
+			NTreeNode<String> aNode = new NTreeNode<>();
 			//log.append("created node ").append(aNode.toString()).append("\n");
 			for (int x = 0; n < lname.length && x < 2; n++, x++) {
 				NTreeLeave<String> aLeave = new NTreeLeave<String>().set(lname[n]);

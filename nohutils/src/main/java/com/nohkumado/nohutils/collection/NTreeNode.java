@@ -220,7 +220,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 		else path = name;
 		return set(aProfile, path);
 	}
-	public NTreeAtom set(ArrayList<String> path, E kto)
+	public NTreeAtom<E> set(ArrayList<String> path, E kto)
 	{
 		String localKey = path.remove(0);
 		NTreeAtom<E> child;
@@ -243,7 +243,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			if (path.size() > 0) 
 			{
 				Log.e(TAG, "still have " + path + "to walk, but " + child + " is leaf exchanging...");
-				NTreeNode replacement = copy();
+				NTreeNode<E> replacement = copy();
 				replacement.setContent(child.getContent()).name(child.name());
 				childs.put(localKey,replacement);
 				return replacement.set(path, kto);
@@ -265,7 +265,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 	public NTreeNode<E> copy()
 	{
 		// TODO: Implement this method
-		return new NTreeNode<E>();
+		return new NTreeNode<>();
 	}
 	/**
 	 * create a string representation of this tree

@@ -29,7 +29,7 @@ public class NTreeLeave<E> extends NTreeAtom<E>
 {
 	protected E content;
 
-	public NTreeLeave set(E lname)
+	public NTreeLeave<E>  set(E lname)
 	{
 		content = lname;
 		return this;
@@ -47,7 +47,7 @@ public class NTreeLeave<E> extends NTreeAtom<E>
 	}
 
 	@Override
-	public NTreeAtom setContent(E profil)
+  public NTreeAtom<E> setContent(E profil)
 	{
 		content = profil;
 		return super.setContent(profil);
