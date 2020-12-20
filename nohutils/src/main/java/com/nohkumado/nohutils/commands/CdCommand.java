@@ -65,33 +65,33 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 	@Override
 	public String execute()
 	{
-		Log.d(TAG, "cd exe ");
+		//Log.d(TAG, "cd exe ");
 		String result = "";
 		if (path != null && path.length() > 0)
 		{
-			Log.d(TAG, "path valid: " + path);
+			//Log.d(TAG, "path valid: " + path+" actpath = "+shell.get("pwd"));
 			if (!path.startsWith("/"))
 			{
-				Log.d(TAG, "no absolute path ");
+				//Log.d(TAG, "no absolute path ");
 				String pwd = (String)shell.get("pwd");
-				Log.d(TAG, "shell tells us pwd is:  " + pwd);
+				//Log.d(TAG, "shell tells us pwd is:  " + pwd);
 				if (pwd == null) pwd = (String)shell.get("user.dir");
 				else if (pwd.length() <= 0) pwd = (String)shell.get("user.dir");
-				Log.d(TAG, "consistency?  " + pwd);
+				//Log.d(TAG, "consistency?  " + pwd);
 
 				if (!(pwd.equals("/") && pwd.endsWith("/"))) pwd += System.getProperty("file.separator");
-				Log.d(TAG, "add missing /?:  " + pwd);
+				//Log.d(TAG, "add missing /?:  " + pwd);
 				path = pwd + path;
-				Log.d(TAG, "no absolute path " + pwd);
+				//Log.d(TAG, "no absolute path " + pwd);
 			}// else
-			Log.d(TAG, "about to cd into " + path);
+			//Log.d(TAG, "about to cd into " + path);
 			File newDir = new File(path);
 			shell.print(name+" : "+newDir.getAbsolutePath());
 			if (newDir.exists())
 			{
 				if(!newDir.canRead() && path.startsWith((String)shell.get("user.dir")))
 					{
-					Log.d(TAG,"need to ask permission for this dir!!");
+					//Log.d(TAG,"need to ask permission for this dir!!");
 						shell.getContext().askPermission("android.permission.READ_EXTERNAL_STORAGE");
 				}
 				
@@ -103,7 +103,7 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 			else result += shell.msg(R.string.cd_does_not_exist);
 		}// if(line != null && line.length() > 0)
 		else result += shell.msg(R.string.cd_provide_a_dir_to_enter);
-
+		//Log.d(TAG, "act pwd = "+shell.get("pwd"));
 		return(result);
 	}//end execute
 
@@ -124,7 +124,7 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 			PwdCommand pwdC = new PwdCommand(shell);
 			pwdC.execute();
 		}
-		Log.d(TAG, "parsing " + line);
+		//Log.d(TAG, "parsing '" + line+"'");
 		if (line.length() <= 0) //resetting path
 		{
 			//available "app.home", "user.dir" or "app.dir"
@@ -141,11 +141,20 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 		File newpos;
 		if (line.startsWith("~/"))
 		{
+			//Log.d(TAG,"relative to home");
 			line = line.replace("~",shell.get("user.dir").toString());
 			newpos = new File(line);
 		}
-		else if (!path.startsWith("/")) newpos = new File((String)shell.get("pwd"), line);
-		else newpos = new File(line);
+		else if (line.startsWith("/"))
+		{
+			//Log.d(TAG,"absolute");
+			newpos = new File(line);
+		}
+		else
+		{
+			//Log.d(TAG,"relative to pwd");
+			newpos = new File((String)shell.get("pwd"), line);
+		}
 
 		try
 		{
@@ -172,8 +181,8 @@ public class CdCommand extends FileExpandCommand implements Cloneable, CommandI
 		 }// if(line.matches(".."))
 		 else path = line;
 		 */
-		Log.d(TAG, "about to move into " + path);
-		Log.d(TAG, "locally " + this.path + " from parent '" + super.path + "'");
+		//Log.d(TAG, "about to move into " + path);
+		//Log.d(TAG, "locally " + this.path + " from parent '" + super.path + "'");
 		return("");
 	}// public String parse(String line)
 	/**

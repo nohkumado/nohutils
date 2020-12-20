@@ -15,15 +15,14 @@ public class ShellFragment extends Fragment
 
 	private MsgR2StringI handler;
 
-	private View viewContainer;
-	
-	public ShellFragment()
+  public ShellFragment()
 	{
 	}
 
 	public void callback(MsgR2StringI callback)
 	{
 		handler = callback; //need? need not?
+    handler.giveShellCommands(shell());
 	}
 
 	@Override
@@ -36,7 +35,8 @@ public class ShellFragment extends Fragment
 			{
 				//Log.d(TAG,"attaching "+context+" instead of "+handler);
 				handler = (MsgR2StringI) context;
-				shell().setContext(handler);	
+				shell().setContext(handler);
+				handler.giveShellCommands(shell());
 			}//if(handler == null || !handler.equals(context))
 		}//if(context instanceof MsgR2StringI)
 		else Log.e(TAG,"couldn't attach context, no MsgR2StringI... "+context);
@@ -64,15 +64,15 @@ public class ShellFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		setRetainInstance(true);
-		viewContainer = super.onCreateView(inflater, container, savedInstanceState);
+    View viewContainer = super.onCreateView(inflater, container, savedInstanceState);
 		
 		if (viewContainer == null)
 		{
 			//Log.d(TAG,"inflating shellview");
-			viewContainer = (RelativeLayout)inflater.inflate(R.layout.shellviewfrag, container,false);
+			viewContainer = inflater.inflate(R.layout.shellviewfrag, container,false);
 			//viewContainer = (RelativeLayout)inflater.inflate(R.layout.shellviewfrag, null,false);
 		}
-		EditText cmdLine = (EditText) viewContainer.findViewById(R.id.shell_text_in);
+		EditText cmdLine = viewContainer.findViewById(R.id.shell_text_in);
 		//FragmentManager fm = getFragmentManager();
 		FragmentManager fm = getChildFragmentManager();
 		LoggerFrag logger = (LoggerFrag)fm.findFragmentById(R.id.shell_text_out);
@@ -108,4 +108,3 @@ public class ShellFragment extends Fragment
 		return viewContainer;
 	}//public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 }//public class ShellFragment extends Fragment
-

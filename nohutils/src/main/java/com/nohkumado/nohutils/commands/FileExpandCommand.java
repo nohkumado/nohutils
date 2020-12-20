@@ -73,7 +73,7 @@ public class FileExpandCommand extends Command implements Cloneable, CommandI
 	{
 		String actPath = path;
 		Log.d(TAG,"expanding '"+path+"'");
-		@SuppressWarnings("UnusedAssignment") File actTry = new File(path);
+		File actTry;
 
 		if (!path.startsWith("/")) actPath = shell.get("pwd") + "/" + actPath;
 

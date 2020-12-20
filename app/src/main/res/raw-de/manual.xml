@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xml:lang="en">
+    <head>
+        <meta
+            content="text/html; charset=UTF-8"
+            http-equiv="Content-Type" />
+
+        <title>Handbuch</title>
+    </head>
+    <body>
+        <h3>Handbuch für die Testapp</h3>
+        <p>Eine gleichnamige Datei sollte in den Projekten zu finden sein, die diese Bibliothek
+            benutzen
+        </p>
+        <p>mit dem echten Handbuch für besagte App</p>
+        <p>schickt mir <a href="mailto:nohkumado@gmail.com">eine Mail</a> für Fragen</p>
+
+    </body>
+</html>

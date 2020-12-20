@@ -29,7 +29,6 @@
 
 package com.nohkumado.nohutils;
 
-//import com.nohkumado.utils.*;
 import android.os.*;
 import android.widget.*;
 import com.nohkumado.nohutils.view.*;
@@ -39,6 +38,15 @@ import java.util.*;
 @SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
 public interface ShellI extends PipableI
 {
+
+	void log(String msg);
+
+
+	void closelog();
+
+
+	void startlog(String logFileName);
+
 	int getInt(String p0);
 
 	ShellI cpyCtor();
@@ -106,9 +114,18 @@ public interface ShellI extends PipableI
 	 */
 	String preference(String locname);
 	String preference(String locname, Object res);
-	int intPref(String locaname);
+	int intPref(String locaname) throws FileNotFoundException;
+  float floatPref(String locaname) throws FileNotFoundException;
 
-	/** 
+	long longPref(String key) throws FileNotFoundException//private void intPref(String key)
+	;
+
+	boolean booleanPref(String key) throws FileNotFoundException//private void intPref(String key)
+	;
+
+	Set<String> stringSetPref(String locname);
+
+	/**
 	 * local settings 
 	 *
 	 * @param envname envname
@@ -149,7 +166,7 @@ public interface ShellI extends PipableI
 	 */
 	String msg(String errorMsg);
 	String msg(int resourceId);
-
+	String[] msgArr(int resourceId);
 	/**
 	 issue an debug message
 	 */
@@ -181,4 +198,7 @@ public interface ShellI extends PipableI
 	InputStream open(String name)  throws IOException;
 	void beep();
 	void endQuestion(); //stop forwarding keyevents to a question
+
+
+	Object rmRessource(String dataName);
 }//public class ShellI

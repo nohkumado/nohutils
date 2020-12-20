@@ -12,7 +12,6 @@
             android:pivotX="50%"
             android:pivotY="50%" >
             <shape
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:shape="line"
                 android:top="1dip" >
                 <size

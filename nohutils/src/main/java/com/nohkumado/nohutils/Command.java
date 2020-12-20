@@ -74,7 +74,10 @@ implements Cloneable, CommandI
 	 * @return the name of this item as a string
 	 */
 	public String name()
-	{ return(name); }// public String name()
+	{ 
+		if (name == null) name = "";
+		return(name); 
+	}// public String name()
 	/** 
 	 * name
 	 *

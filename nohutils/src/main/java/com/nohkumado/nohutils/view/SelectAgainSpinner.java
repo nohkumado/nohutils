@@ -1,5 +1,6 @@
 package com.nohkumado.nohutils.view;
 
+import android.annotation.SuppressLint;
 import android.content.*;
 import android.util.*;
 import android.widget.*;
@@ -30,6 +31,7 @@ import android.widget.*;
  }
  }
  */
+@SuppressLint("AppCompatCustomView")
 public class SelectAgainSpinner extends Spinner
 {
   private int lastSelected = 0;

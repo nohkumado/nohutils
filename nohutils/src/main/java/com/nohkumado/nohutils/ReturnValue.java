@@ -38,7 +38,7 @@ public class ReturnValue<E> implements Cloneable
     protected String msg = "";
     protected int errno = 0;
     protected E value = null;
-    protected String stringName = "ReturnValue";
+    protected String stringName;
     //protected Item item = null;
     /** 
      * CTOR 
@@ -57,9 +57,9 @@ public class ReturnValue<E> implements Cloneable
      *
      * @return  the cloned object
      */
-    public ReturnValue clone() throws CloneNotSupportedException
+    public ReturnValue<E> clone() throws CloneNotSupportedException
     {
-        return((ReturnValue) super.clone());
+        return((ReturnValue<E>) super.clone());
     }//end clone
     /** 
      * status
@@ -102,7 +102,6 @@ public class ReturnValue<E> implements Cloneable
      * setter for the status
      * 
      * @param s status to set
-     * @return nothing
      */
     public void status(boolean s)
     {
@@ -141,7 +140,7 @@ public class ReturnValue<E> implements Cloneable
      * 
      * @param m mesg
      */
-    public void croakmore(ReturnValue m)
+    public void croakmore(ReturnValue<E> m)
     {
         croakmore(m.report());
     }// public String setReport(String m)

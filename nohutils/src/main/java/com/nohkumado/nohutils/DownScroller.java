@@ -4,7 +4,7 @@ import android.widget.*;
 @SuppressWarnings("WeakerAccess")
 public class DownScroller implements Runnable
 {
-	ScrollView scroll_view = null;
+	ScrollView scroll_view;
 	
 	public DownScroller(ScrollView sc)
 	{

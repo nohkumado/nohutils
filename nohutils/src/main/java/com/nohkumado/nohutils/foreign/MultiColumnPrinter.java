@@ -38,6 +38,7 @@ package com.nohkumado.nohutils.foreign;
  *
  */
 
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Vector;
 import java.util.Map;
@@ -170,7 +171,7 @@ public abstract class MultiColumnPrinter
 	private Vector table = null;
 	private Vector titleTable = null;
 	private Vector titleSpanTable = null;
-	private int curLength[];
+	private int[] curLength;
 
 	private boolean sortNeeded = DEFAULT_SORT;
 	private int[] keyCriteria = null;
@@ -303,7 +304,7 @@ public abstract class MultiColumnPrinter
 	 * @param span Array of integers that reflect the number of collumns
 	 * the corresponding title string will occupy.
 	 */
-	public void addTitle(String[] row, int span[])
+	public void addTitle(String[] row, int[] span)
 	{
 		// Need to create a new instance of it, otherwise the new values will
 		// always overwrite the old values.
@@ -357,10 +358,7 @@ public abstract class MultiColumnPrinter
 
 		if (curLength != null)
 		{
-			for (int i = 0; i < curLength.length; ++i)
-			{
-				curLength[i] = 0;
-			}
+			Arrays.fill(curLength, 0);
 		}
 	}
 
@@ -653,7 +651,6 @@ public abstract class MultiColumnPrinter
 		}
 	}
 
-	@SuppressWarnings("UnusedAssignment")
 	private void printBorder()
 	{
 

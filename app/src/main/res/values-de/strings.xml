@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Test utility for the library</string>
+    <string name="home">Willkommen</string>
+    <string name="type_some_command">Test starten</string>
+    <string name="menu_help">Hilfe</string>
+    <string name="up">hoch</string>
+    <string name="shell_input">Eingabe</string>
+    <string name="menu_about">Über</string>
+    <string name="help_content">Hilfe überdie App</string>
+    <string name="hello_world">Willkommen</string>
+    <string name="testhelp">Tests starten</string>
+</resources>

@@ -25,4 +25,6 @@ public interface MsgR2StringI
 	void playSound();
 	String callback(String name, HashMap<String, Object> args);
 	void runOnUiThread(Runnable action);
+
+	void giveShellCommands(ShellI shell);
 }//public interface MsgR2StringI

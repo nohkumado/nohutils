@@ -71,7 +71,7 @@ public class CharParser
             
             cmdPart = line.substring(0,matcher.start(1)); 
             argPart = matcher.group(1);
-            line = line.substring(matcher.end(1),line.length());
+            line = line.substring(matcher.end(1));
           }
           else
           {
@@ -97,7 +97,7 @@ public class CharParser
 					else
           {
             //Log.d(TAG," cmd '"+line+"' not found");
-            result &= false;
+            result = false;
           }
 					//noinspection UnnecessaryContinue
 					continue;

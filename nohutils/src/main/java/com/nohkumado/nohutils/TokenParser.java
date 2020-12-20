@@ -41,7 +41,7 @@ public class TokenParser
 				line = line.trim();
 				//dont forget to call the parse method of the command  
 				//need to split it up 
-				//TODO BTW here we add the parsing ehm... 
+				//BTW here we add the parsing ehm...
 				//since the Commands hold the shell, they dont need to get the heap 
 				//explicitely, no?
 				CommandI aCmd = parentParser.findCmd(line);

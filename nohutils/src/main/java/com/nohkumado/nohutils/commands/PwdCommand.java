@@ -52,11 +52,13 @@ public class PwdCommand extends Command implements Cloneable, CommandI
 	{
 		super(s);
 		if (s != null) name = s.msg(com.nohkumado.nohutils.R.string.pwd);
+		setEnvPaths();
 	}// public Command()
 
 	public PwdCommand(ShellI s, String n)
 	{
 		super(s, n);
+		setEnvPaths();
 	}// public PwdCommand()
 	/**
 
@@ -72,12 +74,7 @@ public class PwdCommand extends Command implements Cloneable, CommandI
 		String pwd = (String)shell.get("pwd");
 		if (pwd == null) 
 		{
-			//starting up....
-			shell.set("app.home", ((Activity)(shell.getContext())).getExternalFilesDir("").getAbsolutePath());
-			shell.set("user.dir", Environment.getExternalStoragePublicDirectory("").getAbsolutePath());
-			shell.set("app.dir", ((Activity)(shell.getContext())).getFilesDir().getAbsolutePath());
-			if(isExternalStorageReadable()) pwd = shell.get("app.home").toString();
-			else pwd = shell.get("app.dir").toString();
+			pwd = setEnvPaths();
 			shell.set("pwd", pwd);
 		}//if (pwd == null)
 		//pwd = System.getProperty("user.dir")+"sdcard";
@@ -86,6 +83,17 @@ public class PwdCommand extends Command implements Cloneable, CommandI
 		//shell.print(pwd);
 		return(pwd);
 	}//end execute
+	public String setEnvPaths()
+	{
+		String pwd ;
+		//starting up....
+		shell.set("app.home", ((Activity)(shell.getContext())).getExternalFilesDir("").getAbsolutePath());
+		shell.set("user.dir", Environment.getExternalStoragePublicDirectory("").getAbsolutePath());
+		shell.set("app.dir", ((Activity)(shell.getContext())).getFilesDir().getAbsolutePath());
+		if(isExternalStorageReadable()) pwd = shell.get("app.home").toString();
+		else pwd = shell.get("app.dir").toString();
+		return pwd;
+	}
 	/**
 
 	 help

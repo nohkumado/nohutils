@@ -24,6 +24,7 @@ package com.nohkumado.nohutils.collection;
 
 import java.util.*;
 import java.util.regex.*;
+import android.util.*;
 
 /**
  * Node of a n-dimensional tree
@@ -31,12 +32,9 @@ import java.util.regex.*;
 @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public class NTreeNode<E>  extends NTreeAtom<E>
 {
-	protected HashMap<String, NTreeAtom<E>> childs = new HashMap<>();
+	protected HashMap<String, NTreeAtom<E>> children = new HashMap<>();
 	protected Pattern slash = Pattern.compile("/");
 	public static final String TAG = "NTN";
-
-
-
 	/**
 	 * remove a subtree
 	 */
@@ -44,20 +42,20 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 	public NTreeAtom<E> remove(String path)
 	{
 		Matcher match = slash.matcher(path);
-		//String[] splitted = path.split("/");
+		//String[] split = path.split("/");
 		if (match.find())
 		{
 			int excise = path.indexOf("/");
 			String localKey = path.substring(0, excise);
 
-			NTreeAtom<E> child = childs.get(localKey);
+			NTreeAtom<E> child = children.get(localKey);
 			if (child != null)
 			{
 				return child.remove(path.substring(excise + 1));
 			}
 			return null;
 		}
-		return childs.remove(path);
+		return children.remove(path);
 	}
 
 	/**
@@ -69,7 +67,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 		//Log.d(TAG, "asked for " + path);
 		if ("".equals(path)) return  this;
 
-		//String[] splitted = path.split("/");
+		//String[] split = path.split("/");
 		Matcher match = slash.matcher(path);
 		if (match.find())
 		{
@@ -78,7 +76,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			String restPath = path.substring(excise + 1);
 			//Log.d(TAG, "extracted local key: " + localKey + " / " + restPath);
 
-			NTreeAtom<E> child = childs.get(localKey);
+			NTreeAtom<E> child = children.get(localKey);
 			if (child != null)
 			{
 				//Log.d(TAG, "returning node... " + child.get(restPath));
@@ -88,16 +86,42 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			return null;
 		}//if (match.find())
 		//Log.d(TAG, "returning leave " + path+" "+childs.get(path));
-		return childs.get(path);
+		return children.get(path);
+	}//public NTreeAtom<E> get(String path)
+	/**
+	 * get an atom, use a / separated path to navigate in the tree
+	 */
+	@Override
+	public NTreeAtom<E> get(ArrayList<String> path)
+	{
+		//Log.d(TAG, "asked for " + path);
+		if (path.size() <= 0) return  this;
+        String localKey = path.get(0);
+
+		NTreeAtom<E> child = children.get(localKey);
+		if (child != null)
+		{
+			path.remove(0);
+			//Log.d(TAG, "returning node... " + child.get(restPath));
+			return child.get(path);
+		}
+
+		//Log.d(TAG, "nothing found under this path.. available "+childs.keySet());
+		return null;
 	}//public NTreeAtom<E> get(String path)
 
 	/**
 	 * return true if this is a leave
 	 */
 	@Override
-	protected boolean isLeave()
+	public boolean isLeaf()
 	{
 		return false;
+	}
+	@Override
+	public boolean isNode()
+	{
+		return true;
 	}
 
 
@@ -113,58 +137,6 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 		else return null;
 	}
 
-	/**
-	 * insert a content somewhere in the tree at the end of the / separated path given,
-	 * create intermediary nodes if necessary
-	 */
-	
-	/*public NTreeAtom<E> set(E someContent, String path)
-	{
-		super.set(someContent,path);
-		NTreeAtom<E> child;
-		Log.d(TAG, "setting with content"+someContent+" in node '" + path+"'");
-		String localKey = path;
-		String restPath = "";
-
-		Matcher match = slash.matcher(path);
-		if (match.find())
-		{
-			int excise = path.indexOf("/");
-			localKey = path.substring(0, excise);
-			restPath = path.substring(excise + 1);
-			//Log.d(TAG, "set extracted local key: " + localKey + " rest " + restPath);
-		}
-
-		Log.d(TAG, "splitted path into " + localKey + " / " + restPath);
-
-		if (restPath.length() > 0)
-		{
-			child = childs.get(localKey);
-			if (child == null)
-			{
-				Log.d(TAG, "creating new node " + localKey);
-				child = new NTreeNode<>();
-				childs.put(localKey, child);
-			}
-			child = child.set(someContent, restPath);
-		}
-		else
-		{
-			Log.d(TAG, "am leave ");
-
-			child = childs.get(path);
-			if (child == null)
-			{
-				Log.d(TAG, "creating leave " + path);
-				child = new NTreeLeave<>();
-				childs.put(path, child);
-			}
-			child.setContent(someContent);
-		}
-		Log.d(TAG, "done setting  " + someContent + " to " + path);
-
-		return child;
-	}*/
 	public NTreeAtom<E> set(NTreeAtom<E> aNode, String path)
 	{
 		Matcher match = slash.matcher(path);
@@ -174,18 +146,18 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			String localKey = path.substring(0, excise);
 			String restPath = path.substring(excise + 1);
 			NTreeNode<E> child;
-			if (!childs.containsKey(localKey))
+			if (!children.containsKey(localKey))
 			{
-				child = new NTreeNode<>();
-				childs.put(localKey, child);
+				child = copy();
+				children.put(localKey, child);
 			}
-			else child = (NTreeNode) childs.get(localKey); //TODO beware cast exception possible
-			child.set(aNode,restPath);
+			else child = (NTreeNode<E>) children.get(localKey); //TODO beware cast exception possible
+			child.set(aNode, restPath);
 		}//if (match.find())
 		else
 		{
 			//no / thus a plain key
-			childs.put(path, aNode);
+			children.put(path, aNode);
 		}
 		return this;
 	}//	public void set(NTreeNode aNode, String p1)
@@ -196,27 +168,102 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 		else path = name;
 		return set(aProfile, path);
 	}
+	public NTreeAtom<E> set(ArrayList<String> path, E kto)
+	{
+		String localKey = path.remove(0);
+		NTreeAtom<E> child;
+		if (!children.containsKey(localKey))
+		{
+			//Log.d(TAG, "create new atom " + localKey + "/" + path+" in "+name());
+			if (path.size() > 0) child = copy();
+			else child = makeLeaf();
+			child.name(localKey);
+			children.put(localKey, child);
+		}
+		else 
+		{
+			//Log.d(TAG, "found atom " + localKey + "/" + path);
+			child = children.get(localKey);
+		}
+		if (child.isLeaf())
+		{
+			//Log.d(TAG, "setting kto to leaf ");
+			if (path.size() > 0) 
+			{
+				Log.e(TAG, "still have " + path + "to walk, but " + child + " is leaf exchanging...");
+				NTreeNode<E> replacement = copy();
+				replacement.setContent(child.getContent()).name(child.name());
+				children.put(localKey,replacement);
+				return replacement.set(path, kto);
+			}
+			else return child.setContent(kto);
+		}
+		else
+		{
+			//Log.d(TAG, "continuing descending " + path);
+			return ((NTreeNode<E>)child).set(path, kto);
+		}
+	}//public NTreeAtom set(ArrayList<String> path, E kto)
+
+	public NTreeAtom<E> makeLeaf()
+	{
+		return new NTreeLeave<>();
+	}//public NTreeAtom set(ArrayList<String> path, E kto)
+
+	public NTreeNode<E> copy()
+	{
+		// TODO: Implement this method
+		return new NTreeNode<>();
+	}
 	/**
 	 * create a string representation of this tree
 	 */
 	@Override
 	public String toString(String indent)
 	{
+		boolean indented = false;
+		if (indent != null && indent.length() > 0) indented = true;
+
 		StringBuilder result = new StringBuilder();
+		if (indented && dumpPrint) result.append(indent);
+		if(name() != null && name().length() >0) result.append(name());
 		result.append("[");
+		if (indented && dumpPrint) result.append("\n").append(indent).append(indent);
 		//result.append(indent).append("[");
-		boolean start = true;
-		if (childs.size() <= 0)
+		if (children.size() <= 0)
 		{
-			result.append("| empty");
+			result.append("empty");
 		}
-		else for (String name : childs.keySet())
+		else 
+		{
+			boolean first = true;
+			for (Map.Entry<String, NTreeAtom<E>> entry : children.entrySet())
 			{
-				if (!start) result.append("|");
-				else start = false;
-				result.append(name).append("-").append(childs.get(name).toString(indent + "  "));
+				String name = entry.getKey();
+				NTreeAtom<E> child = entry.getValue();
+				if(first) first = false;
+				else result.append(",");
+				if(child.isNode())result.append(child.toString(indent + indent));
+				else if(dumpPrint) result.append(indent).append(name).append(child.toString(indent + indent)).append("\n");
+				else result.append(child.toString(indent));
+				//if (indented && !dumpPrint) result.append(indent);
 			}
+		}//else
+		if (indented && !dumpPrint) result.append(indent);
 		result.append("]");
+		if (dumpPrint) if (indented) result.append("\n");
 		return result.toString();
 	}//public String toString(String indent)
+	public NTreeNode<E> name(String localKey)
+	{
+		super.name(localKey);
+		return this;
+	}
+	public void dump(boolean p0)
+	{
+		super.dump(p0);
+		for (Map.Entry<String, NTreeAtom<E>> entry : children.entrySet()) {
+			entry.getValue().dump(p0);
+		}
+	}//public void dump(boolean p0)
 }//public class NTreeNode<E>  extends NTreeAtom<E>

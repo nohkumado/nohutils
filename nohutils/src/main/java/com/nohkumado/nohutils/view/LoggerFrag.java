@@ -42,7 +42,11 @@ public class LoggerFrag extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		//Log.d(TAG, super.toString() + " onCrateView");
-		setRetainInstance(true);
+		if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
+		{
+			setRetainInstance(true); //otherwise it will crash on android 6...	
+		}
+		
 		viewContainer = super.onCreateView(inflater, container, savedInstanceState);
 
 		if (viewContainer == null)
@@ -50,7 +54,7 @@ public class LoggerFrag extends Fragment
 			viewContainer = inflater.inflate(R.layout.loggerfrag, container, false);
 			//Log.d(TAG, "arg container : " + container + " inflated one  : " + viewContainer);
 		}
-		textFrame = (TextView)viewContainer.findViewById(com.nohkumado.nohutils.R.id.loggerview);
+		textFrame = viewContainer.findViewById(R.id.loggerview);
 
 		//add("starting up");
 		//textFrame.setText("starting up");
@@ -150,7 +154,8 @@ public class LoggerFrag extends Fragment
 
 			if ((totalLines == lastLines) && totalLines < content.size())
 			{
-				getActivity().runOnUiThread(
+				if(getActivity() != null)
+					getActivity().runOnUiThread(
 					new Runnable()
 					{
 
@@ -169,8 +174,17 @@ public class LoggerFrag extends Fragment
 		}//if ((totalLines == lastLines) && totalLines < content.size())
 
 		final StringBuilder sb = new StringBuilder();
-		synchronized(this){
-			for (String line : content) sb.append(line).append("\n");
+		synchronized(this)
+		{
+			try
+			{
+				for (String line : content) sb.append(line).append("\n");	
+			}
+			catch(OutOfMemoryError e)
+			{
+				max_lines -= 100;
+				while (content.size() > max_lines) content.remove(0);
+			}
 		}
 		//sb.append("for Logger ").append(super.toString() + "\n");
 		//StringBuilder debug = new StringBuilder();

@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 30
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         applicationId "com.nohkumado.utilsapp"
         minSdkVersion 23
-        targetSdkVersion 26
-        versionCode 104
-        versionName "1.4"
+        targetSdkVersion 30
+        versionCode 1012
+        versionName "1.012"
     }
     buildTypes {
         release {
@@ -20,6 +20,6 @@ android {
 }
 
 dependencies {
-	compile project(':nohutils')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+	implementation project(':nohutils')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }

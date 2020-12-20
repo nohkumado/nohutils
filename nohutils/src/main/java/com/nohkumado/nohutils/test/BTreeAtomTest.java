@@ -27,7 +27,10 @@ public class BTreeAtomTest extends UtilsTester implements Cloneable
 		tmp[0].right(tmp[3]);
 		tmp[1].left(tmp[4]);
 		tmp[1].right(tmp[5]);
-		return super.doTrans(!"root + 1 2 * 3 4 ".equals(root.toString()), "Bttree failed 'root + 1 2 * 3 4 ' vs '"+root+"'");
+		String target = "root + 1 2 * 3 4";
+		String result = root.toString();
+		result = result.replaceAll(" ","_");
+		return super.doTrans(!target.equals(root.toString()), "\nBttree failed '"+target+"'\n vs          '"+result+"'");
 	}//public boolean doTrans(boolean result, StringBuilder msg)
 	
 	

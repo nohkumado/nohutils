@@ -29,9 +29,9 @@ public class NTreeLeave<E> extends NTreeAtom<E>
 {
 	protected E content;
 
-	public NTreeLeave set(E lname)
+	public NTreeLeave<E>  set(E arg)
 	{
-		content = lname;
+		content = arg;
 		return this;
 	}
 	
@@ -47,12 +47,20 @@ public class NTreeLeave<E> extends NTreeAtom<E>
 	}
 
 	@Override
+  public NTreeAtom<E> setContent(E profile)
+	{
+		content = profile;
+		return super.setContent(profile);
+	}
+	
+
+	@Override
 	public String toString(String indent)
 	{
 		StringBuilder result = new StringBuilder();
-		result.append("(");
+		if(!dumpPrint) result.append("(");
 		if(content != null) result.append(content);
-		result.append(")");
+		if(!dumpPrint) result.append(")");
 		return result.toString();
 	}//public String toString(String indent)
 }//public class NTreeLeave<E> extends NTreeAtom<E>

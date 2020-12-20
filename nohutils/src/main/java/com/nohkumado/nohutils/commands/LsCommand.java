@@ -139,7 +139,7 @@ public class LsCommand extends FileExpandCommand implements Cloneable, CommandI
 				//Log.d("lscm", "available chars: " + numOfchars + " malength: " + maxlength + " = " + numOfCols);
 
 				ColumPrinter mp = new  ColumPrinter(numOfCols, 2);
-				String    oneRow[] = new String [ content.size() + 1 ];//+ 1 to be sure....
+				String[] oneRow = new String [ content.size() + 1 ];//+ 1 to be sure....
 				int counter = 0;
 				for (String name : content)
 				{

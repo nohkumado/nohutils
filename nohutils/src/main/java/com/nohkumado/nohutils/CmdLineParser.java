@@ -112,60 +112,63 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			shell.set("parsing", "tokenized");
 			mode = "tokenized";
 		}
+		//shell.print("mode "+mode);
 		//Log.d(TAG,"mode "+mode);
 
-		if (Objects.equals(mode, "tokenized"))
+		switch(mode)
 		{
-			TokenParser parser = new TokenParser(this);
-			if (strictParse && !parser.parse(line, resultStack))
+			case "tokenized":
 			{
-				if (parser.errorCode() == TokenParser.UNPARSED_ARGS)
+				TokenParser parser = new TokenParser(this);
+				if(strictParse && !parser.parse(line, resultStack))
 				{
-					String sb = shell.msg(R.string.syntax_error) +
-							" " +
-							shell.msg(R.string.cmd_command) +
-							" " +
-							parser.errorCmd() +
-							" " +
-							shell.msg(R.string.cmd_unparsed_args) +
-							" " +
-							parser.errorMsg();
+					if(parser.errorCode() == TokenParser.UNPARSED_ARGS)
+					{
+						String sb = shell.msg(R.string.syntax_error) +
+								" " +
+								shell.msg(R.string.cmd_command) +
+								" " +
+								parser.errorCmd() +
+								" " +
+								shell.msg(R.string.cmd_unparsed_args) +
+								" " +
+								parser.errorMsg();
 
-					shell.print(sb);
+						shell.print(sb);
+					}
 				}
+				break;
 			}
-		}//if(mode == null || mode == "tokenized")
-		else if (Objects.equals(mode, "char"))
-		{
-			CharParser parser = new CharParser(this);
-			if (strictParse && !parser.parse(line, resultStack))
+			case "char":
 			{
-				if (parser.errorCode() == CharParser.UNPARSED_ARGS)
+				CharParser parser = new CharParser(this);
+				if(strictParse && !parser.parse(line, resultStack))
 				{
-					String sb = shell.msg(R.string.syntax_error) +
-							" " +
-							shell.msg(R.string.cmd_command) +
-							" " +
-							parser.errorCmd() +
-							" " +
-							shell.msg(R.string.cmd_unparsed_args) +
-							" " +
-							parser.errorMsg();
+					if(parser.errorCode() == CharParser.UNPARSED_ARGS)
+					{
+						String sb = shell.msg(R.string.syntax_error) +
+								" " +
+								shell.msg(R.string.cmd_command) +
+								" " +
+								parser.errorCmd() +
+								" " +
+								shell.msg(R.string.cmd_unparsed_args) +
+								" " +
+								parser.errorMsg();
 
-					shell.print(sb);
+						shell.print(sb);
+					}
 				}
+				break;
 			}
-		}//if(mode == null || mode == "tokenized")
-
-		else if (Objects.equals(mode, "vilike"))
-		{
-			Log.d(TAG, "please provide an implementation for this parsing mode");
-		}//else if(mode == "vilike")
-		else
-		{
-			Log.e(TAG, "unsupported parsing mode");
-			help(); return(resultStack);
-		}//else
+			case "vilike":
+				Log.d(TAG, "please provide an implementation for this parsing mode");
+				break;
+			default:
+				Log.e(TAG, "unsupported parsing mode");
+				help();
+				return (resultStack);
+		}
 
 		if (strictParse && resultStack.size() <= 0)  shell.print(shell.msg(com.nohkumado.nohutils.R.string.syntax_error));
 
@@ -206,7 +209,8 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		{
 			helpBld.append(cmdName).append(" : ");
 			CommandI aCmd = commands.get(cmdName);
-			String cmdHelp = aCmd.help();
+      assert aCmd != null;
+      String cmdHelp = aCmd.help();
 			helpBld.append(cmdHelp);
 			if (!(cmdHelp != null && cmdHelp.endsWith("\n"))) helpBld.append("\n");
 		}//for(Iterator<String> i = commands.keySet().iterator(); i.hasNext();)
@@ -223,7 +227,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		if (commands.containsKey(token)) 
 		{
 			//System.out.println("got it:"+commands.get(token));
-			return commands.get(token).clone();
+			return Objects.requireNonNull(commands.get(token)).clone();
 		}//if(commands.containsKey(token)) 
 		String key = "";
 		ArrayList<String> matchingKeys = new ArrayList<>();
@@ -237,7 +241,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 			}//if(actKey.matches("^"+token))
 			//else Log.d(TAG, "no key matches " + actKey);
 		}//for(Iterator<String> e = commands.keySet().iterator(); e.hasNext();)
-		if (matchingKeys.size() == 1) return commands.get(key).clone();
+		if (matchingKeys.size() == 1) return Objects.requireNonNull(commands.get(key)).clone();
 		if (matchingKeys.size() > 1)
 		{
 			CommandI aCmd = new Command(shell); // dummy command to avoid the help output

@@ -3,10 +3,14 @@
     <string name="app_name">Test utility for the library</string>
 	<string name="hello_world">Welcome!</string>
 	<string name="testhelp">run this command to make the tests on the nohutils</string>
-    <string name="test">test</string>
-    <string name="ok">OK</string>
+    <string name="test" translatable="false">test</string>
+    <string name="ok" translatable="false">OK</string>
     <string name="up">up</string>
     <string name="home">home</string>
     <string name="type_some_command">type some command</string>
     <string name="shell_input">shell input</string>
+    <string name="menu_about">about</string>
+    <string name="menu_help">help</string>
+    <string name="help_content">the help for this app</string>
+    <string name="legal_msg" translatable="false"><![CDATA[All rights reserved.<br/> Not liable for any damage incurred from  use of this software<br/>  including but not limited to:<br/>  monetary loss,<br/>   temporary paralysis,<br/>  halitosis,<br/>  spontaneous combustion,<br/>   road rash,<br/>  and or premature hair loss.]]></string>
 </resources>

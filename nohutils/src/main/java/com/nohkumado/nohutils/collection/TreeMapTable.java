@@ -14,8 +14,10 @@ public class TreeMapTable<E,G> implements Iterable
     if(colNames == null)  colNames =   new TreeMap<>();
   }//CTOR zenfone problem search....
 
-
-
+  public boolean contains(String token)
+  {
+	  return rows.containsKey(token);
+  }
   public synchronized G set(E row, E col, G val)
   {
     ArrayMap<E,G> aRow = rows.get(row);
@@ -41,7 +43,7 @@ public class TreeMapTable<E,G> implements Iterable
 
     }
     return null;
-  }
+  }//public G get(E row, E col)
   public E get(int row)
   {
     int i= 0;
@@ -167,4 +169,17 @@ public class TreeMapTable<E,G> implements Iterable
     rows.clear();
     colNames.clear();
   }
-}
+	public boolean rename(E oldTok,E newTok)
+  {
+	  if(rows.containsKey(oldTok))
+	  {
+		  if(!"".equals(newTok))
+		  {
+			  rows.put(newTok,rows.remove(oldTok));
+			  return true;
+		  }//if(!"".equals(newTok))
+	  }//if(rows.keySet().contains(oldTok))
+	  return false;
+  }//public boolean rename(String oldTok,String newTok)
+	
+}//public class TreeMapTable<E,G> implements Iterable

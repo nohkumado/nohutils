@@ -24,6 +24,9 @@ package com.nohkumado.nohutils.collection;
  */
 import android.util.*;
 
+
+import java.util.*;
+
 /**
 * common ancestor to node an leave, abstract since it shouldn't have an 
 * implementation....
@@ -34,20 +37,49 @@ public abstract class NTreeAtom<E>
 
 	public final static  String TAG = "NTA";
 
-	public NTreeAtom set(E aProfile, String cathegory, String name)
+	private String name;
+	protected boolean dumpPrint;
+
+	public String prettyPrint(String prefix)
+	{
+		return toString();
+	}
+
+	
+	public NTreeAtom<E> name(String localKey)
+	{
+		name = localKey;
+		return this;
+	}
+	public String name()
+	{
+		return name;
+	}
+	public boolean isLeaf()
+	{
+		return true;
+	}
+	public boolean isNode()
+	{
+		return false;
+	}
+	
+	public NTreeAtom<E> set(E aProfile, String category, String name)
 	{
 		return null;
 	}
-
-	protected boolean isLeave(){return true;}
-	
 	public E get(String path, String name){return null;}
 	public NTreeAtom<E> get(String path)
 	{
 		return this;
 	}
-	public void setContent(E profil)
+	public NTreeAtom<E> get(ArrayList<String> path)
 	{
+		return this;
+	}
+	public NTreeAtom<E> setContent(E profile)
+	{
+		return this;
 	}
 
 	public E getContent()
@@ -73,4 +105,10 @@ public abstract class NTreeAtom<E>
 	{
 		return indent;
 	}
-}
+	public void dump(boolean p0)
+	{
+		dumpPrint = p0;
+	}
+
+	
+}//class

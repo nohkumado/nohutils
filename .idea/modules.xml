@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/UtilsApp.iml" filepath="$PROJECT_DIR$/UtilsApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/UtilsApp.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/UtilsApp.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nohutils/UtilsApp.nohutils.iml" filepath="$PROJECT_DIR$/.idea/modules/nohutils/UtilsApp.nohutils.iml" />
       <module fileurl="file://$PROJECT_DIR$/nohutils/nohutils.iml" filepath="$PROJECT_DIR$/nohutils/nohutils.iml" />
     </modules>
   </component>
