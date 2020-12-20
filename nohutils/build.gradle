@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 ext {
     PUBLISH_GROUP_ID = 'com.nohkumado'
     PUBLISH_ARTIFACT_ID = 'nohutils'
-    PUBLISH_VERSION = '1.15'
+    PUBLISH_VERSION = '1.16'
     //bintrayRepo = 'nohutils'
     //bintrayName = 'nohutils'
 
@@ -35,8 +35,8 @@ android {
         //applicationId "com.nohkumado.nohutils"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 1015
-        versionName "1.015"
+        versionCode 1016
+        versionName "1.016"
     }
     buildTypes {
         release {
@@ -47,6 +47,8 @@ android {
 }
 
 dependencies {
+    classpath ‘com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4’
+    classpath ‘com.github.dcendents:android-maven-gradle-plugin:1.4.1’
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
