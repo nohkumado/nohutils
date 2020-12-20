@@ -23,6 +23,8 @@ package com.nohkumado.nohutils.collection;
  * CONSEQUENTIAL DAMAGES RELATING  TO THE SOFTWARE.
  */
 import android.util.*;
+
+
 import java.util.*;
 
 /**
@@ -62,7 +64,7 @@ public abstract class NTreeAtom<E>
 		return false;
 	}
 	
-	public NTreeAtom<E> set(E aProfile, String cathegory, String name)
+	public NTreeAtom<E> set(E aProfile, String category, String name)
 	{
 		return null;
 	}
@@ -75,7 +77,7 @@ public abstract class NTreeAtom<E>
 	{
 		return this;
 	}
-	public NTreeAtom<E> setContent(E profil)
+	public NTreeAtom<E> setContent(E profile)
 	{
 		return this;
 	}
