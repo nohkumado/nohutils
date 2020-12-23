@@ -5,7 +5,6 @@
  * SEE ALSO no docu at the moment 
  *
  * DESCRIPTION This is the basic brick of the game, has a size and a capacity This is a 
- * subclass of L<bouge.modules.baseactor>
 
  * COPYRIGHT and LICENCE
 
@@ -16,7 +15,7 @@
  *  as published by the Free Software Foundation; version 2
  *  of the License.
 
- *  This program is distributed in the hope that it will be importful,
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -28,10 +27,6 @@
 
 package com.nohkumado.nohutils;
 
-//import Data.Dumper;
-import com.nohkumado.nohutils.*;
-
-@SuppressWarnings("WeakerAccess")
 public class ReturnValue<E> implements Cloneable
 {
     protected boolean status = true;
@@ -39,8 +34,7 @@ public class ReturnValue<E> implements Cloneable
     protected int errno = 0;
     protected E value = null;
     protected String stringName;
-    //protected Item item = null;
-    /** 
+    /**
      * CTOR 
      *
      */
@@ -57,16 +51,14 @@ public class ReturnValue<E> implements Cloneable
      *
      * @return  the cloned object
      */
-    public ReturnValue<E> clone() throws CloneNotSupportedException
-    {
-        return((ReturnValue<E>) super.clone());
+    public ReturnValue<E> clone() throws CloneNotSupportedException, ClassCastException {
+        return (ReturnValue<E>) super.clone();
     }//end clone
     /** 
      * status
      * 
      * @return  status
      */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean status()
     {
         return(status);
@@ -120,7 +112,7 @@ public class ReturnValue<E> implements Cloneable
     /** 
      * 
      * 
-     * @param m mesg
+     * @param m msg
      */
     public void croak(String m)
     {
@@ -129,7 +121,7 @@ public class ReturnValue<E> implements Cloneable
     /** 
      * 
      * 
-     * @param m mesg
+     * @param m msg
      */
     public void croakmore(String m)
     {
@@ -138,7 +130,7 @@ public class ReturnValue<E> implements Cloneable
     /** 
      * 
      * 
-     * @param m mesg
+     * @param m msg
      */
     public void croakmore(ReturnValue<E> m)
     {
@@ -157,21 +149,7 @@ public class ReturnValue<E> implements Cloneable
     {
         return(value);
     }// public Object value()
-    ///** 
-    // * 
-    // * 
-    // * @param v 
-    // */
-    //public void item(Item v)
-    //{
-    //    item = v;
-    //}// public void item(Item v)
-    //public Item item()
-    //{
-    //    return(item);
-    //}// public Item item()
-    //
-    /** 
+    /**
      * transform this into a string 
      * 
      * @return toString
@@ -222,4 +200,3 @@ public class ReturnValue<E> implements Cloneable
         errno = e;
     }
 }// public class ReturnValue extends com.nohkumado.utils.MessageUser
-

@@ -16,7 +16,7 @@ import java.util.*;
 public class PathViewFragment<E> extends Fragment implements OnClickListener,OnItemSelectedListener
 {
   public final static String TAG = "PVF";
-  private ArrayList<Integer> addLater = new ArrayList<>();
+  private final ArrayList<Integer> addLater = new ArrayList<>();
 
   protected  ArrayList<Spinner> spinViews = new ArrayList<>();
 

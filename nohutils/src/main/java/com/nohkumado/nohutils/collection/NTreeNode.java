@@ -1,7 +1,7 @@
 package com.nohkumado.nohutils.collection;
 /* Copyright (C) 2016 Bruno Böttcher
  * nohkumado@gmail.com
- * https://sites.google.com/site/nokumado/
+ * https://nokumado.eu
  *
  * All rights reserved
  *
@@ -29,7 +29,6 @@ import android.util.*;
 /**
  * Node of a n-dimensional tree
  */
-@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public class NTreeNode<E>  extends NTreeAtom<E>
 {
 	protected HashMap<String, NTreeAtom<E>> children = new HashMap<>();
@@ -42,7 +41,6 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 	public NTreeAtom<E> remove(String path)
 	{
 		Matcher match = slash.matcher(path);
-		//String[] split = path.split("/");
 		if (match.find())
 		{
 			int excise = path.indexOf("/");
@@ -82,10 +80,10 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 				//Log.d(TAG, "returning node... " + child.get(restPath));
 				return child.get(restPath);
 			}
-			//Log.d(TAG, "nothing found under this path.. available "+childs.keySet());
+			//Log.d(TAG, "nothing found under this path.. available "+children.keySet());
 			return null;
 		}//if (match.find())
-		//Log.d(TAG, "returning leave " + path+" "+childs.get(path));
+		//Log.d(TAG, "returning leave " + path+" "+children.get(path));
 		return children.get(path);
 	}//public NTreeAtom<E> get(String path)
 	/**
@@ -106,7 +104,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			return child.get(path);
 		}
 
-		//Log.d(TAG, "nothing found under this path.. available "+childs.keySet());
+		//Log.d(TAG, "nothing found under this path.. available "+children.keySet());
 		return null;
 	}//public NTreeAtom<E> get(String path)
 
@@ -137,83 +135,19 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 		else return null;
 	}
 
-	public NTreeAtom<E> set(NTreeAtom<E> aNode, String path)
-	{
-		Matcher match = slash.matcher(path);
-		if (match.find())
-		{
-			int excise = path.indexOf("/");
-			String localKey = path.substring(0, excise);
-			String restPath = path.substring(excise + 1);
-			NTreeNode<E> child;
-			if (!children.containsKey(localKey))
-			{
-				child = copy();
-				children.put(localKey, child);
-			}
-			else child = (NTreeNode<E>) children.get(localKey); //TODO beware cast exception possible
-			child.set(aNode, restPath);
-		}//if (match.find())
-		else
-		{
-			//no / thus a plain key
-			children.put(path, aNode);
-		}
-		return this;
-	}//	public void set(NTreeNode aNode, String p1)
-
-	public NTreeAtom<E> set(NTreeAtom<E> aProfile, String path, String name)
-	{
-		if (path != null && path.length() > 0) path += "/" + name;
-		else path = name;
-		return set(aProfile, path);
-	}
-	public NTreeAtom<E> set(ArrayList<String> path, E kto)
-	{
-		String localKey = path.remove(0);
-		NTreeAtom<E> child;
-		if (!children.containsKey(localKey))
-		{
-			//Log.d(TAG, "create new atom " + localKey + "/" + path+" in "+name());
-			if (path.size() > 0) child = copy();
-			else child = makeLeaf();
-			child.name(localKey);
-			children.put(localKey, child);
-		}
-		else 
-		{
-			//Log.d(TAG, "found atom " + localKey + "/" + path);
-			child = children.get(localKey);
-		}
-		if (child.isLeaf())
-		{
-			//Log.d(TAG, "setting kto to leaf ");
-			if (path.size() > 0) 
-			{
-				Log.e(TAG, "still have " + path + "to walk, but " + child + " is leaf exchanging...");
-				NTreeNode<E> replacement = copy();
-				replacement.setContent(child.getContent()).name(child.name());
-				children.put(localKey,replacement);
-				return replacement.set(path, kto);
-			}
-			else return child.setContent(kto);
-		}
-		else
-		{
-			//Log.d(TAG, "continuing descending " + path);
-			return ((NTreeNode<E>)child).set(path, kto);
-		}
-	}//public NTreeAtom set(ArrayList<String> path, E kto)
 
 	public NTreeAtom<E> makeLeaf()
 	{
 		return new NTreeLeave<>();
 	}//public NTreeAtom set(ArrayList<String> path, E kto)
 
+    @SuppressWarnings("unchecked")
 	public NTreeNode<E> copy()
 	{
-		// TODO: Implement this method
-		return new NTreeNode<>();
+		NTreeNode<E> copy = new NTreeNode<>();
+		copy.children = (HashMap<String, NTreeAtom<E>>) children.clone();
+		copy.slash = slash;
+		return copy;
 	}
 	/**
 	 * create a string representation of this tree
@@ -266,4 +200,75 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 			entry.getValue().dump(p0);
 		}
 	}//public void dump(boolean p0)
+
+	@Override
+	public NTreeAtom<E> set(NTreeAtom<E> aNode, String path) {
+		Matcher match = slash.matcher(path);
+		if (match.find())
+		{
+			int excise = path.indexOf("/");
+			String localKey = path.substring(0, excise);
+			String restPath = path.substring(excise + 1);
+			NTreeNode<E> child;
+			if (!children.containsKey(localKey))
+			{
+				child = copy();
+				children.put(localKey, child);
+			}
+			else child = (NTreeNode<E>) children.get(localKey);
+			if(child != null) child.set(aNode, restPath);
+		}//if (match.find())
+		else children.put(path, aNode);
+		return this;
+	}
+
+	@Override
+	protected E set(ArrayList<String> path, E kto) {
+		String localKey = path.remove(0);
+		NTreeAtom<E> child;
+		if (!children.containsKey(localKey))
+		{
+			//Log.d(TAG, "create new atom " + localKey + "/" + path+" in "+name());
+			if (path.size() > 0) child = copy();
+			else child = makeLeaf();
+			child.name(localKey);
+			children.put(localKey, child);
+		}
+		else
+		{
+			//Log.d(TAG, "found atom " + localKey + "/" + path);
+			child = children.get(localKey);
+		}
+		if (child != null && child.isLeaf())
+		{
+			//Log.d(TAG, "setting kto to leaf ");
+			if (path.size() > 0)
+			{
+				Log.e(TAG, "still have " + path + "to walk, but " + child + " is leaf exchanging...");
+				NTreeNode<E> replacement = copy();
+				replacement.setContent(child.getContent()).name(child.name());
+				children.put(localKey,replacement);
+				return replacement.set(path, kto);
+			}
+			else {
+				child.setContent(kto);
+				return kto;
+			}
+		}
+		else
+		{
+			//Log.d(TAG, "continuing descending " + path);
+			 child.set(path, kto);
+			return kto;
+		}
+	}
+	/*
+	@Override
+	public NTreeAtom<E> set(NTreeAtom<E> aProfile, String path, String name)
+	{
+		if (path != null && path.length() > 0) path += "/" + name;
+		else path = name;
+		return set(aProfile, path);
+	}
+	*/
 }//public class NTreeNode<E>  extends NTreeAtom<E>

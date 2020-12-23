@@ -1,35 +1,38 @@
 apply plugin: 'com.android.library'
+//apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+
+
+//apply from: "../tools/script-git-version.gradle"
 
 ext {
-    PUBLISH_GROUP_ID = 'com.nohkumado'
-    PUBLISH_ARTIFACT_ID = 'nohutils'
-    PUBLISH_VERSION = '1.16'
-    //bintrayRepo = 'nohutils'
-    //bintrayName = 'nohutils'
+    bintrayRepo = 'maven' // Repo name in bintray dashboard
+    bintrayName = 'nohutils' // package name of the bintray repo
+    userOrganisation = 'nokumado'
 
-    //publishedGroupId = 'com.nohkumado'
-    //libraryName = 'nohutils'
-    //artifact = 'nohutils'
+    publishedGroupId = 'nohutils'   // this is the ID we want to see in implementation line
+    libraryName = 'nohutils'     // this is the module name of library
+    artifact = 'nohutils'        // this is the artifact we want to see in implementation line
 
-    //libraryDescription = 'A set of utilities that can be used in android apps'
+    libraryDescription = 'Androidifeid Noh Urils, mainly a shell' // description of library
 
-    //siteUrl = 'https://github.com/nohkumado/nohutils'
-    //gitUrl = 'https://github.com/nohkumado/nohutils.git'
+    siteUrl = 'https://github.com/nohkumado/nohutils'    // git repo url
+    gitUrl = 'https://github.com/nohkumado/nohutils.git' // git repo vcs url
 
-    //libraryVersion = '1.0.0'
+    libraryVersion = 1.16      // library version
 
-    //developerId = 'nohkumado'
-    //developerName = 'Noh Kuma Do'
-    //developerEmail = 'nohkumado@gmail.com'
+    developerId = 'nohkumado'                // This is your bintray username
+    developerName = 'NohKumaDo Software Dev'              // Developer's name
+    developerEmail = 'nohkumado@gmail.com'                // Developer's email
 
-    //licenseName = 'LGPL license, Version 3.0'
-    //licenseUrl = 'https://www.gnu.org/licenses/lgpl.txt'
-    //allLicenses = ["LGPL-3.0"]
+    licenseName = 'GPL3'  // for example, The Apache Software License, Version 2.0
+    licenseUrl = 'https://opensource.org/licenses/gpl-licence'   // for example, http://www.apache.org/licenses/LICENSE-2.0.txt
+    allLicenses = ["GPL3"]    // array of licenses, for example, ["Apache-2.0"]
 }
+
 
 android {
     compileSdkVersion 30
-
 
     defaultConfig {
         //applicationId "com.nohkumado.nohutils"
@@ -45,16 +48,85 @@ android {
         }
     }
 }
-
 dependencies {
-    classpath ‘com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4’
-    classpath ‘com.github.dcendents:android-maven-gradle-plugin:1.4.1’
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-//apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
-//to build with this: ./gradlew clean build generateRelease
-//Add these lines to publish library to bintray. This is the readymade scripts made by github user nuuneoi to make uploading to bintray easy.
-//Place it at the end of the file
-//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+// Bintray
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+
+    //configurations = ['archives']
+     publications = ['nohutils']
+    pkg {
+        repo = 'maven'
+        name = 'nohutils'
+        userOrg = 'nokumado'
+        licenses = ['GPL3']    // array of licenses, for example, ["Apache-2.0"]
+        vcsUrl = 'https://github.com/nohkumado/nohutils.git' // git repo vcs url
+
+
+        version {
+            name = '1.16'
+            desc = 'House keeping revision'
+            released  = new Date()
+            vcsTag = '1.6'
+            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+        }
+        siteUrl = 'https://github.com/nohkumado/nohutils'    // git repo url
+        publish = true
+        publicDownloadNumbers = true
+    }
+}
+// Create the pom configuration:
+def pomConfig = {
+    licenses {
+        license {
+            name "GNU public licence V3"
+            url  'https://opensource.org/licenses/gpl-licence'
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "nokumado"
+            name "nohkumado"
+            email "nohkumado@gmail.com"
+        }
+    }
+
+    scm {
+        url 'https://github.com/nohkumado/nohutils.git'
+    }
+}
+
+publishing {
+    publications {
+        nohutils(MavenPublication) {
+            // Define this explicitly if using implementation or api configurations
+            pom.withXml {
+                def dependenciesNode = asNode().getAt('dependencies')[0] ?: asNode().appendNode('dependencies')
+
+                // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
+                    // Ensure dependencies such as fileTree are not included.
+                    if (it.name != 'unspecified') {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+            //groupId 'com.nohkumado.nohutils'
+            //artifactId 'nohutils'
+            //version '1.16'
+        }
+    }
+}
+apply from: 'publish.gradle'

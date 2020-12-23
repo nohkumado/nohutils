@@ -95,7 +95,7 @@ public class BTreeAtom {
      */
     public String toString(String indent, String childSep) {
         StringBuilder result = new StringBuilder();
-        String subindent = new String(indent);
+        String subindent = indent;
         if (indent.length() > 0)
             subindent = new StringBuilder().append(indent).append(" ").toString();
         else subindent = " ";

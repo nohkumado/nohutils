@@ -1,7 +1,7 @@
 package com.nohkumado.nohutils.collection;
 /* Copyright (C) 2016 Bruno Böttcher
  * nohkumado@gmail.com
- * https://sites.google.com/site/nokumado/
+ * https://nokumado.eu
  *
  * All rights reserved
  *
@@ -21,38 +21,21 @@ package com.nohkumado.nohutils.collection;
  * ANY DAMAGES, INCLUDING ANY LOST PROFITS OR OTHER INCIDENTAL OR 
  * CONSEQUENTIAL DAMAGES RELATING  TO THE SOFTWARE.
  */
+
+import android.util.Log;
+
+import java.util.ArrayList;
+
 /**
 * Tree leave, its sole purpose is to hold the reference to some content
 */
-@SuppressWarnings("WeakerAccess")
 public class NTreeLeave<E> extends NTreeAtom<E>
 {
-	protected E content;
-
 	public NTreeLeave<E>  set(E arg)
 	{
 		content = arg;
 		return this;
 	}
-	
-	public E getE()
-	{
-		return content;
-	}
-
-	@Override
-	public E getContent()
-	{
-		return content;
-	}
-
-	@Override
-  public NTreeAtom<E> setContent(E profile)
-	{
-		content = profile;
-		return super.setContent(profile);
-	}
-	
 
 	@Override
 	public String toString(String indent)
@@ -63,4 +46,18 @@ public class NTreeLeave<E> extends NTreeAtom<E>
 		if(!dumpPrint) result.append(")");
 		return result.toString();
 	}//public String toString(String indent)
+
+	@Override
+	public NTreeAtom<E> set(NTreeAtom<E> aNode, String path) {
+	    Log.e(TAG, "called add to path on leave..."+aNode);
+		return this;
+	}
+
+	@Override
+	protected E set(ArrayList<String> path, E kto) {
+		content = kto;
+		return content;
+	}
+
+
 }//public class NTreeLeave<E> extends NTreeAtom<E>

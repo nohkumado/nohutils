@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="UtilsApp.nohutils:jar">
+    <output-path>$PROJECT_DIR$/build/classes/artifacts/UtilsApp_nohutils_jar</output-path>
+    <root id="archive" name="UtilsApp.nohutils.jar">
+      <element id="module-output" name="UtilsApp.nohutils" />
+    </root>
+  </artifact>
+</component>

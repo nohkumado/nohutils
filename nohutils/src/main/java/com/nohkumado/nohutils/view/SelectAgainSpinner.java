@@ -34,7 +34,7 @@ import android.widget.*;
 @SuppressLint("AppCompatCustomView")
 public class SelectAgainSpinner extends Spinner
 {
-  private int lastSelected = 0;
+  private final int lastSelected = 0;
 
   public SelectAgainSpinner(Context context)
   { super(context); }

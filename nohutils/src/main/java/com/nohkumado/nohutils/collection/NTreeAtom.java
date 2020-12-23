@@ -39,6 +39,7 @@ public abstract class NTreeAtom<E>
 
 	private String name;
 	protected boolean dumpPrint;
+	protected E content;
 
 	public String prettyPrint(String prefix)
 	{
@@ -68,7 +69,7 @@ public abstract class NTreeAtom<E>
 	{
 		return null;
 	}
-	public E get(String path, String name){return null;}
+	public E get(String path, String name){return content;}
 	public NTreeAtom<E> get(String path)
 	{
 		return this;
@@ -79,13 +80,13 @@ public abstract class NTreeAtom<E>
 	}
 	public NTreeAtom<E> setContent(E profile)
 	{
+	    content = profile;
 		return this;
 	}
 
 	public E getContent()
 	{
-		// TODO: Implement this method
-		return null;
+		return content;
 	}
 
 	
@@ -110,5 +111,8 @@ public abstract class NTreeAtom<E>
 		dumpPrint = p0;
 	}
 
-	
+	public abstract NTreeAtom<E> set(NTreeAtom<E> aNode, String path)//	public void set(NTreeNode aNode, String p1)
+	;
+
+	protected abstract E set(ArrayList<String> path, E kto);
 }//class

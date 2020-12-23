@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="fuckbuildconfig" pattern="!src[UtilsApp.app]:com.nohkumado.utilsapp.BuildConfig" />
+</component>

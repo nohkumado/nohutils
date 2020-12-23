@@ -171,7 +171,7 @@ public abstract class MultiColumnPrinter
 	private Vector table = null;
 	private Vector titleTable = null;
 	private Vector titleSpanTable = null;
-	private int[] curLength;
+	private final int[] curLength;
 
 	private boolean sortNeeded = DEFAULT_SORT;
 	private int[] keyCriteria = null;

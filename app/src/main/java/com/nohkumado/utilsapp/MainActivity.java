@@ -44,7 +44,7 @@ public class MainActivity extends Msg2RString
       //Log.d(TAG, "no shell frag");
       shellfrag = new ShellFragment();
       shellfrag.callback(this);
-      //Log.d(TAG, "shellfrag created parent linsting childs");
+      //Log.d(TAG, "shellfrag created parent listing children");
       //LinearLayout minSc = (LinearLayout) findViewById(R.id.mainscreen);
 
       //if(minSc != null)
@@ -105,15 +105,15 @@ public class MainActivity extends Msg2RString
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle item selection
-    switch (item.getItemId()) {
-      case R.id.menu_help:
+      if(item.getItemId() == R.id.menu_help) {
         HelpDialogFragment hFrag = new HelpDialogFragment();
-        hFrag.show(getFragmentManager(),"MANUAL");
+        hFrag.show(getFragmentManager(), "MANUAL");
         //HelpDialog dia = new HelpDialog(this, getResources().getString(R.string.help_content));
         //HelpDialog dia = new HelpDialog((Context) this);
         //dia.show();
         return true;
-      case R.id.menu_about:
+      }
+      else  if(item.getItemId() == R.id.menu_about) {
 
         //AboutDialogFragment dia = new AboutDialogFragment(this, getResources().getString(R.string.help_content));
         AboutDialogFragment dia = new AboutDialogFragment();
@@ -121,7 +121,8 @@ public class MainActivity extends Msg2RString
         dia.setLegal(dia.readRawTextFile(R.raw.legal));
         dia.show(getFragmentManager(),"ABOUT");
         return true;
-      default:
+      }
+      else {
         return super.onOptionsItemSelected(item);
     }
   }
