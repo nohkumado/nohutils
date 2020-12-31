@@ -71,8 +71,11 @@ public class BTreeAtom {
     }
 
     public BTreeAtom left(BTreeAtom tmp) {
-        tmp.parent = this;
-        left = tmp;
+        if(tmp != null)
+        {
+            tmp.parent = this;
+            left = tmp;
+        }
         return left;
     }
 
@@ -85,7 +88,7 @@ public class BTreeAtom {
     /**
      * return true if this is a leave
      */
-    protected boolean isNode() {
+    public boolean isNode() {
         return parent == null || (left != null || right != null);
     }//protected boolean isLeaf()
 

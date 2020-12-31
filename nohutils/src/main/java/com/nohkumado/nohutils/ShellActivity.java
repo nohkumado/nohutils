@@ -71,8 +71,9 @@ public class ShellActivity extends Activity implements MsgR2StringI
     if (shell != null) shell.set("msger", this);
   }//protected void onCreate(Bundle savedInstanceState)
 
-  public void giveShellCommands(ShellI shell)
+  public void giveShellCommands(ShellI sh)
   {
+    if(sh != null) shell = sh;
     CommandI[] cmds = new CommandI[]
         {
             new SetCommand(shell).name(shell.msg(R.string.set)).help(shell.msg(R.string.sethelp)),
