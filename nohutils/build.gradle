@@ -1,9 +1,7 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 
 
-//apply from: "../tools/script-git-version.gradle"
 
 ext {
     bintrayRepo = 'maven' // Repo name in bintray dashboard
