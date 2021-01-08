@@ -3,3 +3,15 @@ gen/
 obj/
 libs/*/*.so
 local.properties
+*.jar
+app/build
+*.apk
+*.class
+*.dex
+*.lock
+*.flat
+*.log
+*.bin
+*.properties
+log
+.gradle

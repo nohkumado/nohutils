@@ -1,1 +1,9 @@
 /build
+*.jar
+app/build
+*.apk
+*.class
+*.dex
+*.lock
+*.flat
+*.log
