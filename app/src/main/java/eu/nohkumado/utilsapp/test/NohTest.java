@@ -1,12 +1,12 @@
-package com.nohkumado.utilsapp.test;
+package eu.nohkumado.utilsapp.test;
 
-import com.nohkumado.nohutils.ShellI;
-import com.nohkumado.nohutils.test.BTreeAtomTest;
-import com.nohkumado.nohutils.test.NTreeNodeTest;
-import com.nohkumado.nohutils.test.SortedArrayTest;
-import com.nohkumado.nohutils.test.TreeMapTableTest;
-import com.nohkumado.nohutils.test.UtilsTester;
-import com.nohkumado.nohutils.test.UtilsTesterTest;
+import eu.nohkumado.nohutils.ShellI;
+import eu.nohkumado.nohutils.test.BTreeAtomTest;
+import eu.nohkumado.nohutils.test.NTreeNodeTest;
+import eu.nohkumado.nohutils.test.SortedArrayTest;
+import eu.nohkumado.nohutils.test.TreeMapTableTest;
+import eu.nohkumado.nohutils.test.UtilsTester;
+import eu.nohkumado.nohutils.test.UtilsTesterTest;
 
 /**
  * Begin, don't know where the proper testsuite fell of... :( somehow it disappeared...

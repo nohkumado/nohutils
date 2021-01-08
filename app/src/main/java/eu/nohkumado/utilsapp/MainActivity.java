@@ -1,4 +1,4 @@
-package com.nohkumado.utilsapp;
+package eu.nohkumado.utilsapp;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -7,18 +7,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.nohkumado.nohutils.CommandI;
-import com.nohkumado.nohutils.Msg2RString;
-import com.nohkumado.nohutils.ShellFragment;
-import com.nohkumado.nohutils.commands.CdCommand;
-import com.nohkumado.nohutils.commands.LsCommand;
-import com.nohkumado.nohutils.commands.PwdCommand;
-import com.nohkumado.nohutils.commands.QuitCommand;
-import com.nohkumado.nohutils.commands.SetCommand;
-import com.nohkumado.nohutils.commands.VersionCommand;
-import com.nohkumado.nohutils.view.AboutDialogFragment;
-import com.nohkumado.nohutils.view.HelpDialogFragment;
-import com.nohkumado.utilsapp.commands.TestCmd;
+import eu.nohkumado.nohutils.CommandI;
+import eu.nohkumado.nohutils.Msg2RString;
+import eu.nohkumado.nohutils.ShellFragment;
+import eu.nohkumado.nohutils.commands.CdCommand;
+import eu.nohkumado.nohutils.commands.LsCommand;
+import eu.nohkumado.nohutils.commands.PwdCommand;
+import eu.nohkumado.nohutils.commands.QuitCommand;
+import eu.nohkumado.nohutils.commands.SetCommand;
+import eu.nohkumado.nohutils.commands.VersionCommand;
+import eu.nohkumado.nohutils.view.AboutDialogFragment;
+import eu.nohkumado.nohutils.view.HelpDialogFragment;
+
+import com.nohkumado.utilsapp.R;
+
+import eu.nohkumado.utilsapp.commands.TestCmd;
 
 import java.util.HashMap;
 

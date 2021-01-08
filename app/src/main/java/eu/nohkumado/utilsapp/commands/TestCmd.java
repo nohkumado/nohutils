@@ -1,4 +1,4 @@
-package com.nohkumado.utilsapp.commands;
+package eu.nohkumado.utilsapp.commands;
 /*
  * after instantiation, execute it!
  *
@@ -18,8 +18,12 @@ package com.nohkumado.utilsapp.commands;
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-import com.nohkumado.nohutils.*;
-import com.nohkumado.utilsapp.test.*;
+import com.nohkumado.utilsapp.R;
+
+import eu.nohkumado.nohutils.Command;
+import eu.nohkumado.nohutils.CommandI;
+import eu.nohkumado.nohutils.ShellI;
+import eu.nohkumado.utilsapp.test.NohTest;
 
 public class TestCmd extends Command implements Cloneable, CommandI
   {

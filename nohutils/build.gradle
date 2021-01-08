@@ -17,7 +17,7 @@ ext {
     siteUrl = 'https://github.com/nohkumado/nohutils'    // git repo url
     gitUrl = 'https://github.com/nohkumado/nohutils.git' // git repo vcs url
 
-    libraryVersion = 1.16      // library version
+    libraryVersion = 1.17      // library version
 
     developerId = 'nohkumado'                // This is your bintray username
     developerName = 'NohKumaDo Software Dev'              // Developer's name
@@ -36,13 +36,16 @@ android {
         //applicationId "com.nohkumado.nohutils"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 1016
-        versionName "1.016"
+        versionCode 1017
+        versionName "1.017"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        demo {
+            versionNameSuffix 'demo'
         }
     }
 }
@@ -51,80 +54,81 @@ dependencies {
 }
 
 // Bintray
-//Properties properties = new Properties()
-//properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-//   bintray {
-//       user = properties.getProperty("bintray.user")
-//       key = properties.getProperty("bintray.apikey")
+//   Properties properties = new Properties()
+//   properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//
+//      bintray {
+//          user = properties.getProperty("bintray.user")
+//          key = properties.getProperty("bintray.apikey")
+//           override = true
 //
 //
-//       //configurations = ['archives']
-//        publications = ['nohutils']
-//       pkg {
-//           repo = 'maven'
-//           name = 'nohutils'
-//           userOrg = 'nokumado'
-//           licenses = ['GPL3']    // array of licenses, for example, ["Apache-2.0"]
-//           vcsUrl = 'https://github.com/nohkumado/nohutils.git' // git repo vcs url
+//          //configurations = ['archives']
+//           publications = ['nohutils']
+//          pkg {
+//              repo = 'maven'
+//              name = 'nohutils'
+//              userOrg = 'nokumado'
+//              licenses = ['GPL3']    // array of licenses, for example, ["Apache-2.0"]
+//              vcsUrl = 'https://github.com/nohkumado/nohutils.git' // git repo vcs url
 //
 //
-//           version {
-//               name = '1.16'
-//               desc = 'House keeping revision'
-//               released  = new Date()
-//               vcsTag = '1.6'
-//               attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
-//           }
-//           siteUrl = 'https://github.com/nohkumado/nohutils'    // git repo url
-//           publish = true
-//           publicDownloadNumbers = true
-//       }
-//   }
-// Create the pom configuration:
-//   def pomConfig = {
-//       licenses {
-//           license {
-//               name "GNU public licence V3"
-//               url  'https://opensource.org/licenses/gpl-licence'
-//               distribution "repo"
-//           }
-//       }
-//       developers {
-//           developer {
-//               id "nokumado"
-//               name "nohkumado"
-//               email "nohkumado@gmail.com"
-//           }
-//       }
+//              version {
+//                  name = '1.16'
+//                  desc = 'House keeping revision'
+//                  released  = new Date()
+//                  vcsTag = '1.6'
+//                  attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+//              }
+//              siteUrl = 'https://github.com/nohkumado/nohutils'    // git repo url
+//              publish = true
+//              publicDownloadNumbers = true
+//          }
+//      }
+//         //   Create the pom configuration:
+//      def pomConfig = {
+//          licenses {
+//              license {
+//                  name "GNU public licence V3"
+//                  url  'https://opensource.org/licenses/gpl-licence'
+//                  distribution "repo"
+//              }
+//          }
+//          developers {
+//              developer {
+//                  id "nokumado"
+//                  name "nohkumado"
+//                  email "nohkumado@gmail.com"
+//              }
+//          }
 //
-//       scm {
-//           url 'https://github.com/nohkumado/nohutils.git'
-//       }
-//   }
+//          scm {
+//              url 'https://github.com/nohkumado/nohutils.git'
+//          }
+//      }
 //
-//   publishing {
-//       publications {
-//           nohutils(MavenPublication) {
-//               // Define this explicitly if using implementation or api configurations
-//               pom.withXml {
-//                   def dependenciesNode = asNode().getAt('dependencies')[0] ?: asNode().appendNode('dependencies')
+//      publishing {
+//          publications {
+//              nohutils(MavenPublication) {
+//                  // Define this explicitly if using implementation or api configurations
+//                  pom.withXml {
+//                      def dependenciesNode = asNode().getAt('dependencies')[0] ?: asNode().appendNode('dependencies')
 //
-//                   // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
-//                   configurations.implementation.allDependencies.each {
-//                       // Ensure dependencies such as fileTree are not included.
-//                       if (it.name != 'unspecified') {
-//                           def dependencyNode = dependenciesNode.appendNode('dependency')
-//                           dependencyNode.appendNode('groupId', it.group)
-//                           dependencyNode.appendNode('artifactId', it.name)
-//                           dependencyNode.appendNode('version', it.version)
-//                       }
-//                   }
-//               }
-//               //groupId 'com.nohkumado.nohutils'
-//               //artifactId 'nohutils'
-//               //version '1.16'
-//           }
-//       }
-//   }
-//   apply from: 'publish.gradle'
+//                      // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+//                      configurations.implementation.allDependencies.each {
+//                          // Ensure dependencies such as fileTree are not included.
+//                          if (it.name != 'unspecified') {
+//                              def dependencyNode = dependenciesNode.appendNode('dependency')
+//                              dependencyNode.appendNode('groupId', it.group)
+//                              dependencyNode.appendNode('artifactId', it.name)
+//                              dependencyNode.appendNode('version', it.version)
+//                          }
+//                      }
+//                  }
+//                  //groupId 'com.nohkumado.nohutils'
+//                  //artifactId 'nohutils'
+//                  //version '1.16'
+//              }
+//          }
+//      }
+//      apply from: 'publish.gradle'
