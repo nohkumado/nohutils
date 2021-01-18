@@ -44,6 +44,11 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 		if (match.find())
 		{
 			int excise = path.indexOf("/");
+			if(excise <= 0)//absolute path.....
+			{
+				path = path.substring(1);
+				excise = path.indexOf("/");
+			}
 			String localKey = path.substring(0, excise);
 
 			NTreeAtom<E> child = children.get(localKey);
@@ -271,4 +276,12 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 		return set(aProfile, path);
 	}
 	*/
+	public TreeContext accept(TreeVisitor visitor, TreeContext context)
+	{
+		TreeContext ctx = visitor.visit(this, context);
+		for (Map.Entry<String, NTreeAtom<E>> entry : children.entrySet()) {
+			ctx = entry.getValue().accept(visitor, ctx);
+		}
+		return ctx;
+	}
 }//public class NTreeNode<E>  extends NTreeAtom<E>

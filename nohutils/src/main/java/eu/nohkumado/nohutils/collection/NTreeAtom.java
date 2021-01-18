@@ -115,4 +115,6 @@ public abstract class NTreeAtom<E>
 	;
 
 	protected abstract E set(ArrayList<String> path, E kto);
+
+	protected abstract TreeContext accept(TreeVisitor visitor, TreeContext nothing);
 }//class

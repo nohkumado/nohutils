@@ -58,6 +58,16 @@ public class NTreeLeave<E> extends NTreeAtom<E>
 		content = kto;
 		return content;
 	}
+	public TreeContext accept(TreeVisitor visitor, TreeContext context)
+	{
+	   TreeContext nothing = visitor.visit(this, context);
+	   return nothing;
+	}
 
-
+	@Override
+	public String name()
+	{
+		if( super.name() == null) return  getContent().toString();
+		return (super.name());
+	}
 }//public class NTreeLeave<E> extends NTreeAtom<E>
