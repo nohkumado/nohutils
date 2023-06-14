@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="addNewPathSeg">add new path</string>
+    <string name="cat_help">cat {pfad}, druckt die Datei aus</string>
+    <string name="cat_not_file">keine normale Datei</string>
+    <string name="cd_does_not_exist">existiert nicht</string>
+    <string name="cd_help">cd { Pfad} wechsle das Verzeichnis</string>
+    <string name="cd_not_a_dir">kein Verzeichnis</string>
+    <string name="cd_not_enough_rights">ungenügenden Privilegien</string>
+    <string name="cd_provide_a_dir_to_enter">bitte ein Verzeichnis angeben</string>
+    <string name="cmd_unparsed_args">hat nichtverwendete Argumente</string>
+    <string name="endlist">Listenende</string>
+    <string name="home">Wurzel</string>
+    <string name="ls_help">ls, Verzeichnis listen</string>
+    <string name="ls_not_enough_rights">nicht genug Rechte</string>
+    <string name="lscmd_invalid_pattern">ungültiges Muster</string>
+    <string name="need_specifying">brauche mehr?</string>
+    <string name="no_help">keine Hilfe</string>
+    <string name="not_a_int">keine ganze Zahl</string>
+    <string name="not_a_numeric">keine Nummer</string>
+    <string name="not_an_int">keine ganze Zahl</string>
+    <string name="numeric_asked">Verlange eine Zahl</string>
+</resources>

@@ -49,7 +49,7 @@ public class NTreeLeave<E> extends NTreeAtom<E>
 
 	@Override
 	public NTreeAtom<E> set(NTreeAtom<E> aNode, String path) {
-	    Log.e(TAG, "called add to path on leave..."+aNode);
+		Log.e(TAG, "called add to path on leave..."+aNode);
 		return this;
 	}
 
@@ -60,8 +60,7 @@ public class NTreeLeave<E> extends NTreeAtom<E>
 	}
 	public TreeContext accept(TreeVisitor visitor, TreeContext context)
 	{
-	   TreeContext nothing = visitor.visit(this, context);
-	   return nothing;
+		return visitor.visit(this, context);
 	}
 
 	@Override

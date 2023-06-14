@@ -59,7 +59,7 @@ public abstract class UtilsTester {
    * @param status status
    */
   public boolean doTrans(ReturnValue status) {
-    return doTrans(!status.status(), status.report());
+    return doTrans(status.status(), status.report());
   }// public void doTrans(Item toCheck)
 
   /**

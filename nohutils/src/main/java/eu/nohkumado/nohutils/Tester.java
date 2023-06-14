@@ -14,7 +14,7 @@ public class Tester
 {
 	public static final String TAG = "Tester";
 	//protected static String testName = "Tester";
-	protected ShellI shell;
+	protected final ShellI shell;
 	protected boolean doAlsoLogOutput = false;
 
 	public Tester(ShellI s)
@@ -57,7 +57,7 @@ public class Tester
 	 */
 	public boolean doTrans(ReturnValue status)
 	{
-		return doTrans(!status.status(), status.report());
+		return doTrans(status.status(), status.report());
 	}// public void doTrans(Item toCheck)
 	/** 
 	 * 

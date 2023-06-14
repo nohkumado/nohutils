@@ -30,11 +30,16 @@
 package eu.nohkumado.nohutils;
 
 //import com.nohkumado.utils.*;
-import java.util.*;
 
-import android.util.*;
+import android.util.Log;
 
 import com.nohkumado.nohutils.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.TreeMap;
 
 @SuppressWarnings({"SameParameterValue", "WeakerAccess", "CanBeFinal"})
 public class CmdLineParser  implements Cloneable,CommandParserI
@@ -247,7 +252,7 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 		if (matchingKeys.size() > 1)
 		{
 			CommandI aCmd = new Command(shell); // dummy command to avoid the help output
-			shell.print(shell.msg(com.nohkumado.nohutils.R.string.need_specifying) + " " + matchingKeys.toString());
+			shell.print(shell.msg(com.nohkumado.nohutils.R.string.need_specifying) + " " + matchingKeys);
 			return(aCmd);
 		}//if(matchingKeys.size() > 1)
 		return(null);
@@ -261,5 +266,19 @@ public class CmdLineParser  implements Cloneable,CommandParserI
 	public void parseMode(String mode)
 	{
 		shell.set("parsing", mode);
+	}
+
+	@Override
+	public CmdLineParser clone()
+	{
+		try
+		{
+			CmdLineParser clone = (CmdLineParser) super.clone();
+			// TODO: copy mutable state here, so the clone can't change the internals of the original
+			return clone;
+		} catch (CloneNotSupportedException e)
+		{
+			throw new AssertionError();
+		}
 	}
 }//public class CmdLineParser

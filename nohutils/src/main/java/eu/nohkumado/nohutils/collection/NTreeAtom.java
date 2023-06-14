@@ -80,7 +80,7 @@ public abstract class NTreeAtom<E>
 	}
 	public NTreeAtom<E> setContent(E profile)
 	{
-	    content = profile;
+		content = profile;
 		return this;
 	}
 

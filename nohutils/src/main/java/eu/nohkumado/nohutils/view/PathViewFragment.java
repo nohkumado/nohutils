@@ -132,9 +132,9 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
 
     pathChangeBut = viewContainer.findViewById(R.id.path_ok);
     pathChangeBut.setOnClickListener(this);
-	  pathUpBut = viewContainer.findViewById(R.id.upButton);
+    pathUpBut = viewContainer.findViewById(R.id.upButton);
     pathUpBut.setOnClickListener(this);
-	  pathHomeBut = viewContainer.findViewById(R.id.homeButton);
+    pathHomeBut = viewContainer.findViewById(R.id.homeButton);
     pathHomeBut.setOnClickListener(this);
 
 
@@ -152,8 +152,8 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
   @Override
   public void onClick(View knopf)
   {
-    if (knopf == pathChangeBut) changePath();  
-    else if (knopf == pathUpBut) 
+    if (knopf == pathChangeBut) changePath();
+    else if (knopf == pathUpBut)
     {
       int lastIndex = spinViews.size() - 1;
       E actIt = dataFrag.extractData(spinViews.get(lastIndex).getSelectedItem(), spinViews.get(lastIndex).getSelectedItemPosition());
@@ -168,7 +168,7 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
       for (int lastIndex = spinViews.size() - 1; lastIndex > 0; lastIndex--)
       {
         remove(lastIndex);
-        dataFrag.remove(lastIndex);  
+        dataFrag.remove(lastIndex);
       }//for(int lastIndex = spinViews.size() -1; lastIndex > 0; lastIndex--)
     }//else if (knopf == pathHomeBut)
   }//public void onClick(View knopf)
@@ -189,9 +189,9 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
       remove(index);
       dataFrag.remove(index);
     }//for(int index = spinViews.size() -1; index > lastSpinnerTouched; index-- )
-    
+
     dataFrag.setItem(selectedIt, actPos);
-    
+
     if (viewContainer != null)  viewContainer.invalidate();
     if (viewContainer != null)  viewContainer.refreshDrawableState();
     //Log.d(TAG, "------ end set last touched " + lastSpinnerTouched);
@@ -213,9 +213,9 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
     //E actIt = dataFrag.extractData(spin.getSelectedItem(), spin.getSelectedItemPosition());
     spin.setAdapter(null);
     LinearLayout parent = (LinearLayout) spin.getParent();
-    if (parent != null) 
+    if (parent != null)
     {
-      parent.removeView(spin); 
+      parent.removeView(spin);
       parent.invalidate();
       parent.refreshDrawableState();
     }//if (parent != null) 
@@ -244,7 +244,7 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
 
   public void redrawPathView()
   {
-    if (viewContainer != null)  
+    if (viewContainer != null)
     {
       viewContainer.removeAllViews();
       int i = 0,count = spinViews.size();
@@ -256,7 +256,7 @@ public class PathViewFragment<E> extends Fragment implements OnClickListener,OnI
           TextView slash = new TextView(context);
           slash.setText("/");
           viewContainer.addView(slash);
-        } 
+        }
         i++;
       }
       viewContainer.invalidate();

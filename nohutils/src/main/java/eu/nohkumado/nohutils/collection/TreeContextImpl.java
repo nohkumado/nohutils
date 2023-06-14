@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TreeContextImpl<E> implements TreeContext
 {
-  List<E> flatList = new ArrayList<E>();
+  final List<E> flatList = new ArrayList<E>();
 
   public void add(E key)
   {

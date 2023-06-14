@@ -48,7 +48,9 @@ public class AboutDialogFragment extends DialogFragment
     LayoutInflater inflater = getActivity().getLayoutInflater();
 
     View diaView = inflater.inflate(R.layout.about, null);
-    int resourceId = getActivity().getResources().getIdentifier("app_name", "string", getActivity().getPackageName());
+    //int resourceId = getActivity().getResources().getIdentifier("app_name", "string", getActivity().getPackageName());
+    int resourceId = getResources().getIdentifier("app_name", "string", getActivity().getPackageName());
+
     if(resourceId > 0)
     {
       ((TextView) diaView.findViewById(R.id.about_title)).setText(getActivity().getResources().getString(resourceId));

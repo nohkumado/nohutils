@@ -57,7 +57,6 @@ public class SelectAgainSpinner extends Spinner
    }//protected void onLayout(boolean changed, int l, int t, int r, int b)
    */
   
-  @SuppressWarnings("ConstantConditions")
   @Override
   public void setSelection(int position, boolean animate)
   {
@@ -71,7 +70,6 @@ public class SelectAgainSpinner extends Spinner
   }// public void setSelection(int position, boolean animate)
   
 
-  @SuppressWarnings("ConstantConditions")
   @Override
   public void setSelection(int position)
   {

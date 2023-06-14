@@ -22,9 +22,13 @@ package eu.nohkumado.nohutils.collection;
  * CONSEQUENTIAL DAMAGES RELATING  TO THE SOFTWARE.
  */
 
-import java.util.*;
-import java.util.regex.*;
-import android.util.*;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Node of a n-dimensional tree
@@ -160,8 +164,7 @@ public class NTreeNode<E>  extends NTreeAtom<E>
 	@Override
 	public String toString(String indent)
 	{
-		boolean indented = false;
-		if (indent != null && indent.length() > 0) indented = true;
+		boolean indented = indent != null && indent.length() > 0;
 
 		StringBuilder result = new StringBuilder();
 		if (indented && dumpPrint) result.append(indent);

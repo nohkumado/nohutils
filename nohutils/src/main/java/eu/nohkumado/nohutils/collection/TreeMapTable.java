@@ -1,6 +1,11 @@
 package eu.nohkumado.nohutils.collection;
-import android.util.*;
-import java.util.*;
+
+import android.util.ArrayMap;
+
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 
 @SuppressWarnings({"WeakerAccess", "UnusedReturnValue"})
 public class TreeMapTable<E,G> implements Iterable

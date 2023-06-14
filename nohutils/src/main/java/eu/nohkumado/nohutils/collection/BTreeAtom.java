@@ -22,6 +22,7 @@ package eu.nohkumado.nohutils.collection;
  * CONSEQUENTIAL DAMAGES RELATING  TO THE SOFTWARE.
  */
 
+
 import java.util.ArrayList;
 
 /**
@@ -30,8 +31,6 @@ import java.util.ArrayList;
 @SuppressWarnings({"WeakerAccess", "CanBeFinal", "UnusedReturnValue", "ConstantConditions"})
 public class BTreeAtom {
     protected BTreeAtomFactory factory;
-    //public static BTreeAtom factory(String n)
-    //{ return new BTreeAtom(n);}
 
     protected String name;
     protected BTreeAtom parent, left, right;
@@ -98,9 +97,9 @@ public class BTreeAtom {
      */
     public String toString(String indent, String childSep) {
         StringBuilder result = new StringBuilder();
-        String subindent = indent;
+        String subindent;
         if (indent.length() > 0)
-            subindent = new StringBuilder().append(indent).append(" ").toString();
+            subindent = indent + " ";
         else subindent = " ";
         result.append(name);
         if (childSep != null && childSep.length() > 0 && isNode()) result.append(" (");
@@ -156,7 +155,6 @@ public class BTreeAtom {
      * broken...
      * ------------------------------------------------------------------
      */
-    @SuppressWarnings("SimplifiableIfStatement")
     public boolean equals(Object obj) {
         if (!(obj instanceof BTreeAtom)) return false;
         BTreeAtom cmpTo = (BTreeAtom) obj;

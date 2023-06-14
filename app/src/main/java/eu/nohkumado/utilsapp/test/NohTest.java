@@ -15,7 +15,7 @@ import eu.nohkumado.nohutils.test.UtilsTesterTest;
 @SuppressWarnings("UnusedParameters")
 public class NohTest extends UtilsTester {
   private final static String TAG = "NoT";
-  StringBuilder result = new StringBuilder();
+  final StringBuilder result = new StringBuilder();
   UtilsTester tester = new TreeMapTableTest();
 
 
@@ -29,7 +29,7 @@ public class NohTest extends UtilsTester {
       test();
     }//try
     catch (NullPointerException e) {
-      result.append(tester.log()).append("\n").append(e.toString());
+      result.append(tester.log()).append("\n").append(e);
     }
     return result.toString();
   }//public String runTest()

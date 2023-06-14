@@ -33,7 +33,7 @@ public class ReturnValue<E> implements Cloneable
     protected String msg = "";
     protected int errno = 0;
     protected E value = null;
-    protected String stringName;
+    protected final String stringName;
     /**
      * CTOR 
      *
@@ -61,7 +61,7 @@ public class ReturnValue<E> implements Cloneable
      */
     public boolean status()
     {
-        return(status);
+        return (!status);
     }// public boolean status()
     /** 
      * failed

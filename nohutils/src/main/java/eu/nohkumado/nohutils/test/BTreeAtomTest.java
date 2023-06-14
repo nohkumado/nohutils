@@ -7,7 +7,7 @@ import eu.nohkumado.nohutils.collection.BTreeAtomFactory;
 public class BTreeAtomTest extends UtilsTester implements Cloneable
 {
 	protected static String testName  = "BTreeAtom";
-	BTreeAtomFactory factory = new BTreeAtomFactory();
+	final BTreeAtomFactory factory = new BTreeAtomFactory();
 	
 	public BTreeAtomTest()
 	{
@@ -34,6 +34,19 @@ public class BTreeAtomTest extends UtilsTester implements Cloneable
 		result = result.replaceAll(" ","_");
 		return super.doTrans(!target.equals(root.toString()), "\nBttree failed '"+target+"'\n vs          '"+result+"'");
 	}//public boolean doTrans(boolean result, StringBuilder msg)
-	
-	
+
+
+	@Override
+	public BTreeAtomTest clone()
+	{
+		try
+		{
+			BTreeAtomTest clone = (BTreeAtomTest) super.clone();
+			// TODO: copy mutable state here, so the clone can't change the internals of the original
+			return clone;
+		} catch (CloneNotSupportedException e)
+		{
+			throw new AssertionError();
+		}
+	}
 }//public class BTreeAtomTest extends UtilsTester

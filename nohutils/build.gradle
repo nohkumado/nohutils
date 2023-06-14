@@ -30,14 +30,12 @@ ext {
 
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
 
     defaultConfig {
         //applicationId "com.nohkumado.nohutils"
         minSdkVersion 23
-        targetSdkVersion 30
-        versionCode 1017
-        versionName "1.017"
+        targetSdkVersion 33
     }
     buildTypes {
         release {
@@ -45,13 +43,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         demo {
-            versionNameSuffix 'demo'
         }
     }
+    namespace 'com.nohkumado.nohutils'
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 // Bintray

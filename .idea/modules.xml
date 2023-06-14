@@ -4,7 +4,13 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/UtilsApp.iml" filepath="$PROJECT_DIR$/UtilsApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/UtilsApp.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/UtilsApp.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/UtilsApp.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/UtilsApp.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/UtilsApp.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/UtilsApp.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/UtilsApp.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/UtilsApp.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/nohutils/UtilsApp.nohutils.iml" filepath="$PROJECT_DIR$/.idea/modules/nohutils/UtilsApp.nohutils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nohutils/UtilsApp.nohutils.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/nohutils/UtilsApp.nohutils.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nohutils/UtilsApp.nohutils.main.iml" filepath="$PROJECT_DIR$/.idea/modules/nohutils/UtilsApp.nohutils.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nohutils/UtilsApp.nohutils.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/nohutils/UtilsApp.nohutils.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/nohutils/nohutils.iml" filepath="$PROJECT_DIR$/nohutils/nohutils.iml" />
     </modules>
   </component>
